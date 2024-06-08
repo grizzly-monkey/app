@@ -1,0 +1,16 @@
+@import "./mixins.scss";
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth !important;
+  -webkit-animation-timing-function: linear !important;
+  animation-timing-function: linear !important;
+}
