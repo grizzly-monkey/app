@@ -14,3 +14,42 @@
   -webkit-animation-timing-function: linear !important;
   animation-timing-function: linear !important;
 }
+
+.heading1 {
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 600;
+  color: $black;
+  text-transform: capitalize;
+}
+
+.heading2 {
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 500;
+  color: $black;
+}
+
+.heading3 {
+  font-size: 18px;
+  // line-height: ;
+  color: $black;
+}
+
+.heading4 {
+  font-size: 16px;
+  // line-height: ;
+  color: $black;
+}
+
+.bodyText {
+  font-size: 14px;
+  // line-height: ;
+  color: $black;
+}
+
+.description {
+  font-size: 12px;
+  // line-height: ;
+  color: $black;
+}
