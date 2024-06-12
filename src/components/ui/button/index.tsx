@@ -4,7 +4,7 @@ import { BaseButtonProps } from "antd/es/button/button";
 interface ButtonProps extends BaseButtonProps {
   label: string;
   style?: React.CSSProperties;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const Button = (props: ButtonProps) => {
