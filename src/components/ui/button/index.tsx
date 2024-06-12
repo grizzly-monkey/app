@@ -1,7 +1,7 @@
 import { Button as AntdButton } from "antd";
-import { BaseButtonProps } from "antd/es/button/button";
+import { ButtonProps as AntdButtonProps } from "antd/es/button/button";
 
-interface ButtonProps extends BaseButtonProps {
+interface ButtonProps extends AntdButtonProps {
   label: string;
   style?: React.CSSProperties;
   onClick?: () => void;

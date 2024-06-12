@@ -192,7 +192,21 @@ const UserManagement = () => {
                                 <Input.Password placeholder="password" />
                             </Form.Item>
                         </Col>
-
+                        <Col span={12}>
+                            <Form.Item
+                                name="roles"
+                                label="Roles"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please enter the roles!',
+                                    },
+                                ]}
+                                hasFeedback
+                            >
+                                
+                            </Form.Item>
+                        </Col>
                     </Row>
                 </Form>
             </Modal>

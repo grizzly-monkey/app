@@ -6,13 +6,14 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Inter", sans-serif;
+  font-family: "LufgaRegular", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   scroll-behavior: smooth !important;
   -webkit-animation-timing-function: linear !important;
   animation-timing-function: linear !important;
+  color: $black;
 }
 
 .heading1 {
@@ -51,5 +52,31 @@
 .description {
   font-size: 12px;
   // line-height: ;
-  color: $black;
+  color: $gray-6;
+}
+
+.ant-input {
+  border-radius: 6px;
+  font-weight: 500;
+  color: $gray-6;
+}
+.ant-input {
+  height: 45px;
+  border: 1px solid $gray-4;
+}
+.ant-form-item-label {
+  font-weight: 600;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.ant-btn span {
+  color: white;
+}
+
+.ant-form-item-required::before {
+  content: "" !important;
 }
