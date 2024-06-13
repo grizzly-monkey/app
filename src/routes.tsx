@@ -6,6 +6,12 @@ import Login from "./pages/auth/login";
 import routePaths from "./config/routePaths";
 import SignUp from "./pages/auth/signUp";
 import ForgotPassword from "./pages/auth/forgotPassword";
+import Farm from "./pages/farm";
+import Polyhouse from "./pages/polyhouse";
+import Reservoirs from "./pages/reservoirs";
+import Inventory from "./pages/inventory";
+import Tasks from "./pages/tasks";
+import Workflow from "./pages/workflow";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +35,66 @@ const router = createBrowserRouter([
   {
     path: routePaths.forgotPassword,
     element: <ForgotPassword />,
+  },
+  {
+    path: routePaths.farm,
+    element: <Layout />,
+    children: [
+      {
+        path: routePaths.farm,
+        element: <Farm />,
+      },
+    ],
+  },
+  {
+    path: routePaths.polyhouse,
+    element: <Layout />,
+    children: [
+      {
+        path: routePaths.polyhouse,
+        element: <Polyhouse />,
+      },
+    ],
+  },
+  {
+    path: routePaths.reservoirs,
+    element: <Layout />,
+    children: [
+      {
+        path: routePaths.reservoirs,
+        element: <Reservoirs />,
+      },
+    ],
+  },
+  {
+    path: routePaths.inventory,
+    element: <Layout />,
+    children: [
+      {
+        path: routePaths.inventory,
+        element: <Inventory />,
+      },
+    ],
+  },
+  {
+    path: routePaths.tasks,
+    element: <Layout />,
+    children: [
+      {
+        path: routePaths.tasks,
+        element: <Tasks />,
+      },
+    ],
+  },
+  {
+    path: routePaths.workflow,
+    element: <Layout />,
+    children: [
+      {
+        path: routePaths.workflow,
+        element: <Workflow />,
+      },
+    ],
   },
 ]);
 
