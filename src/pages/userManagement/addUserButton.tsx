@@ -6,6 +6,9 @@ import Button from "@/components/ui/button";
 import Select from "@/components/ui/select";
 import { Col, Row, Form as AntdForm } from "antd";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import UserActions from "@/redux/user/actions";
+import requestingSelector from "@/redux/requesting/requestingSelector";
 
 const roles = [
     {
@@ -18,7 +21,7 @@ const roles = [
 
     },
     {
-        lable: "Farm Manager",
+        label: "Farm Manager",
         value: "FARM_MANAGER"
     },
     {
@@ -35,19 +38,24 @@ const roles = [
 const AddUserButton = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [form] = AntdForm.useForm();
+//     const loading = useSelector((state) =>
+//     requestingSelector(state, [UserActions.CREATE_USER],""),
+//   )
+    const dispatch = useDispatch();
     const showModal = () => {
         setIsModalOpen(true);
     };
 
     const handleOk = () => {
         form.validateFields().then((values:any) => {
-            console.log("fieldsd",values);
+           dispatch(UserActions.createUser(values))
         });
     };
 
     const handleCancel = () => {
         setIsModalOpen(false);
     };
+
     return (
         <>
             <Button label="Add User" style={{ padding: "0 0" }} onClick={showModal} />

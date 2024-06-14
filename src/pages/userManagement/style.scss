@@ -22,3 +22,10 @@
     -webkit-overflow-scrolling: touch;
 }
 
+.ant-drawer-mask{
+    background-color: rgba(0, 0, 0, 0) !important;
+}
+.ant-drawer-content-wrapper{
+    box-shadow: 0 0 0 0 !important;
+    border: 1px solid #f0f0f0 !important;
+}

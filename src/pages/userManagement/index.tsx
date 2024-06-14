@@ -4,8 +4,10 @@ import "./style.scss";
 import { useDispatch, useSelector } from "react-redux";
 import UserSelectors from "@/redux/user/selectors";
 import AddUserButton from "./addUserButton";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import UserActions from "@/redux/user/actions";
+import Sidebar from "./sidebar";
+import { use } from "i18next";
 
 const { Search } = Input;
 const ColorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
@@ -35,11 +37,11 @@ const columns: TableProps<User>['columns'] = [
         sorter: (a, b) => a.firstName.length - b.firstName.length,
         key: '1',
     },
-    {
-        title: 'Email',
-        dataIndex: 'email',
-        key: '2',
-    },
+    // {
+    //     title: 'Email',
+    //     dataIndex: 'email',
+    //     key: '2',
+    // },
 
     {
         title: 'Contact',
@@ -76,53 +78,57 @@ const columns: TableProps<User>['columns'] = [
 
 ]
 
-const data: User[] = [
-    {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'one@gmail.com',
-        roles: ['Admin','User'],
-        contactNumber: '1234567890',
-    },
-    {
-        firstName: 'Jane',
-        lastName: 'Doe',
-        email: 'two@gamil.com',
-        roles: ['User'],
-        contactNumber: '0987654321',
-    },
-    {
-        firstName: 'John',
-        lastName: 'Smith',
-        email: 'thre@gmail.com',
-        roles: ['Admin'],
-        contactNumber: '1234567890',
-    }
-]
+
 const UserManagement = () => {
+    const [filteredUsers, setFilteredUsers] = useState<User[]>([])
     const dispatch = useDispatch()
     const users = useSelector(UserSelectors.selectUsers)
+    const selectedUser = useSelector(UserSelectors.selectSelectedUser)
+    const onRow = (record: User) => {
+        return {
+            onClick: () => {
+                dispatch(UserActions.selectUser(record))
+            }
+        }
+    
+    }
+
+    const onSearch = (e: any) => {
+        const value = e.target.value;
+        const filteredData = users.filter((user:any) => {
+            return user.firstName.toLowerCase().includes(value.toLowerCase()) || user.lastName.toLowerCase().includes(value.toLowerCase())
+        })
+        setFilteredUsers(filteredData)
+
+    }
 
     useEffect(() => {
         dispatch(UserActions.fetchUsers())
     }, [])
     
+    useEffect(() => {
+        setFilteredUsers(users)
+    }, [users])
+
     return (
-        <div >
+        <div style={{position:'relative', height:'90vh'}}>
+            <Sidebar />
             <Card
-                style={{ width: "100%" }}
+                style={{ width: !selectedUser ? '100%' : 'calc( 100% - 378px)' }}
                 bordered={false}
                 title="Users"
                 className="criclebox tablespace"
                 extra={
                     <Flex gap={20}>
-                        <Search placeholder="input search text"  style={{ width: '200%', height:'32px'}} />
+                        <Search placeholder="input search text"  style={{ width: '200%', height:'32px'}} onChange={onSearch}/>
                         <AddUserButton/>
                     </Flex>
                 }
             >
                 <div className="table-responsive">
-                    <Table columns={columns} dataSource={data} className="ant-border-space" />
+                    <Table columns={columns} dataSource={filteredUsers} className="ant-border-space" onRow={onRow}
+                    //  style={{ width: !selectedUser ? '100%' : 'calc( 100% - 378px)' }}
+                    />
                 </div>
             </Card>
         </div>
