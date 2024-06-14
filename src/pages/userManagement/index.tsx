@@ -7,7 +7,6 @@ import AddUserButton from "./addUserButton";
 import { useEffect, useState } from "react";
 import UserActions from "@/redux/user/actions";
 import Sidebar from "./sidebar";
-import { use } from "i18next";
 
 const { Search } = Input;
 const ColorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
@@ -111,7 +110,7 @@ const UserManagement = () => {
     }, [users])
 
     return (
-        <div style={{position:'relative', height:'90vh'}}>
+        <div style={{position:'relative', height:'calc( 100vh - 85px)'}}>
             <Sidebar />
             <Card
                 style={{ width: !selectedUser ? '100%' : 'calc( 100% - 378px)' }}

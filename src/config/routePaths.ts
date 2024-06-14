@@ -9,7 +9,6 @@ const routePaths = {
   inventory:'/inventory',
   tasks:'/tasks',
   workflow:'/workflow',
-  userManagement: "/users",
 };
 
 export default routePaths;
