@@ -6,49 +6,25 @@ import Button from "@/components/ui/button";
 import Select from "@/components/ui/select";
 import { Col, Row, Form as AntdForm } from "antd";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import UserActions from "@/redux/user/actions";
-import requestingSelector from "@/redux/requesting/requestingSelector";
-
-const roles = [
-    {
-        label: "Admin",
-        value: "ADMIN"
-    },
-    {
-        label: "Owner",
-        value: "OWNER"
-
-    },
-    {
-        label: "Farm Manager",
-        value: "FARM_MANAGER"
-    },
-    {
-        label: "Agronomist",
-        value: "ARGONOMIST"
-    },
-    {
-        label: "Viewer",
-        value: "VIEWER"
-    }
-]
-
+import { roles } from "./utils";
+import { CreateUser } from "./types";
 
 const AddUserButton = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [form] = AntdForm.useForm();
-//     const loading = useSelector((state) =>
-//     requestingSelector(state, [UserActions.CREATE_USER],""),
-//   )
+    //     const loading = useSelector((state) =>
+    //     requestingSelector(state, [UserActions.CREATE_USER],""),
+    //   )
     const dispatch = useDispatch();
     const showModal = () => {
         setIsModalOpen(true);
     };
 
     const handleOk = () => {
-        form.validateFields().then((values:any) => {
-           dispatch(UserActions.createUser(values))
+        form.validateFields().then((values: CreateUser) => {
+            dispatch(UserActions.createUser(values))
         });
     };
 
@@ -99,7 +75,7 @@ const AddUserButton = () => {
                     </Row>
                     <Row gutter={24}>
                         <Col span={24}>
-                            <PhoneInput label="Contact Number" name="phone"/>
+                            <PhoneInput label="Contact Number" name="phone" />
                         </Col>
                     </Row>
                     <Row gutter={24}>
