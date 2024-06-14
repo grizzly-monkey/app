@@ -22,12 +22,12 @@ function restModelCreator<T>(
 }
 
 export async function getToModel<T>(
-  Model: new (data: any) => T,
+  Model: new (data: T) => T,
   endpoint: string,
-  params?: Record<string, any>,
-  requestConfig?: Record<string, any>,
+  params?: Record<string, string>,
+  requestConfig?: Record<string, string>,
   isAuthenticated?: boolean
-): Promise<{ payload: T | T[]; metadata: Record<string, any> } | ErrorModel> {
+): Promise<{ payload: T | T[]; metadata: Record<string, string> } | ErrorModel> {
   const response = await HttpUtility.get(
     endpoint,
     params,
@@ -48,12 +48,12 @@ export async function delToModel<T>(
 }
 
 export async function postToModel<T>(
-  Model: new (data: any) => T,
+  Model: new (data: T) => T,
   endpoint: string,
-  data?: any,
-  requestConfig?: Record<string, any>,
+  data?: T,
+  requestConfig?: Record<string, string>,
   isAuthenticated?: boolean
-): Promise<{ payload: T | T[]; metadata: Record<string, any> } | ErrorModel> {
+): Promise<{ payload: T | T[]; metadata: Record<string, string> } | ErrorModel> {
   const response = await HttpUtility.post(
     endpoint,
     data,

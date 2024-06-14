@@ -1,12 +1,11 @@
 import { Card, TableProps, Avatar, Typography, Tag, Input, Flex } from "antd";
 import Table from "../../components/ui/table";
-import Button from "@/components/ui/button";
 import "./style.scss";
-import Modal from "@/components/ui/modal";
-import { useState } from "react";
-import CreateUserForm from "./createUserForm";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import UserSelectors from "@/redux/user/selectors";
+import AddUserButton from "./addUserButton";
+import { useEffect } from "react";
+import UserActions from "@/redux/user/actions";
 
 const { Search } = Input;
 const ColorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
@@ -101,19 +100,13 @@ const data: User[] = [
     }
 ]
 const UserManagement = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const dispatch = useDispatch()
     const users = useSelector(UserSelectors.selectUsers)
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
 
-    const handleOk = () => {
-        setIsModalOpen(false);
-    };
-
-    const handleCancel = () => {
-        setIsModalOpen(false);
-    };
+    useEffect(() => {
+        dispatch(UserActions.fetchUsers())
+    }, [])
+    
     return (
         <div >
             <Card
@@ -124,7 +117,7 @@ const UserManagement = () => {
                 extra={
                     <Flex gap={20}>
                         <Search placeholder="input search text"  style={{ width: '200%', height:'32px'}} />
-                        <Button label="Add User" style={{ padding: "0 0" }} onClick={showModal} />
+                        <AddUserButton/>
                     </Flex>
 
 
@@ -133,18 +126,7 @@ const UserManagement = () => {
                 <div className="table-responsive">
                     <Table columns={columns} dataSource={data} className="ant-border-space" />
                 </div>
-
             </Card>
-            <Modal
-                title="Add User"
-                open={isModalOpen}
-                onCancel={handleCancel}
-                onOk={handleOk}
-                width={800}
-            >
-                <CreateUserForm />
-            </Modal>
-
         </div>
     )
 }
