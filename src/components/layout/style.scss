@@ -277,3 +277,300 @@
   margin-right: 12px;
   font-size: 20px;
 }
+
+.ant-layout-content {
+    padding: 30px  20px 20px 0 !important;
+}@import "../../assets/styles/mixins.scss";
+
+.ant-layout {
+    background-color: #FAFAFA !important;
+}
+.ant-menu {
+    background-color: #FAFAFA !important;
+    border-inline-end: none !important;
+}
+.icon {
+    display: inline-flex;
+    min-width: 32px;
+    height: 32px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgb(0 0 0 / 12%);
+    color: #BFBFBF;
+    border-radius: 6px;
+    justify-content: center;
+    align-items: center;
+    margin-right: 11px;
+    vertical-align: middle;
+}
+
+.brand > img{
+  width: 70%;
+  vertical-align: middle;
+  margin-left: 3px;
+  position: sticky;
+  top: 0;
+  background-color: #FAFAFA;
+  z-index: 99;
+}
+
+.ant-menu-item-selected {
+    background-color: #fff !important;
+    box-shadow: 0 20px 27px rgb(0 0 0 / 5%);
+    border-radius: 10px !important;
+    margin-right: 10px !important;
+    .icon {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    background-color: $primary-light !important;
+    color: #fff !important;
+    border-radius: 6px;
+    justify-content: center;
+    align-items: center;
+    margin-right: 11px;
+    vertical-align: middle;
+    }
+}
+
+.ant-menu-sub {
+  width: 90% !important;
+  margin-left: auto !important;
+  background-color: transparent !important;
+}
+
+.ant-menu-sub > .ant-menu-item {
+    padding-left: 15px !important;
+}
+
+.ant-menu-item {
+    margin: 10px !important;
+    padding-top: 25px !important;
+    padding-bottom: 25px !important;
+    padding-left: 14px !important;
+}
+
+.ant-menu-submenu-title {
+    padding-top: 25px !important;
+    padding-bottom: 25px !important;
+    padding-left: 14px !important;
+}
+
+.ant-menu-submenu-popup {
+    background-color: #fff !important;
+}
+
+
+.menuTitle {
+    margin-top: -15px;
+    margin-left: 5px;
+}
+
+.farmTitle {
+    .ant-menu-submenu-title .ant-menu-item:first-child {
+        background-color: transparent !important;
+        margin-left: -9px !important;
+      }
+      
+      .ant-menu-submenu-title .ant-menu-item:first-child:hover {
+        background-color: transparent !important;
+      }
+    
+}
+.selectedFarmTitle {
+    .ant-menu-submenu-title {
+        background-color: #fff !important;
+        box-shadow: 0 20px 27px rgb(0 0 0 / 5%);
+        border-radius: 10px !important;
+        margin-right: 10px !important;
+        .icon {
+        display: inline-flex;
+        width: 32px;
+        height: 32px;
+        background-color: $primary-light !important;
+        color: #fff !important;
+        border-radius: 6px;
+        justify-content: center;
+        align-items: center;
+        margin-right: 11px;
+        vertical-align: middle;
+        }
+    }
+
+    .ant-menu-submenu-title:hover {
+        background-color: #E8E8E8 !important;
+    }
+}
+
+
+.topBar {
+    background-color: #FAFAFA !important;
+}
+
+.topBarProfile {
+    width: 45px;
+  height: 45px;
+  border-radius: 50px;
+  background-color: #3E3E3E;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  font-size: 20px;
+}
+
+.ant-layout-content {
+    padding: 30px  20px 20px 0 !important;
+}@import "../../assets/styles/mixins.scss";
+
+.ant-layout {
+    background-color: #FAFAFA !important;
+}
+.ant-menu {
+    background-color: #FAFAFA !important;
+    border-inline-end: none !important;
+}
+.icon {
+    display: inline-flex;
+    min-width: 32px;
+    height: 32px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgb(0 0 0 / 12%);
+    color: #BFBFBF;
+    border-radius: 6px;
+    justify-content: center;
+    align-items: center;
+    margin-right: 11px;
+    vertical-align: middle;
+}
+
+.brand > img{
+  width: 70%;
+  vertical-align: middle;
+  margin-left: 3px;
+  position: sticky;
+  top: 0;
+  background-color: #FAFAFA;
+  z-index: 99;
+}
+
+.ant-menu-item-selected {
+    background-color: #fff !important;
+    box-shadow: 0 20px 27px rgb(0 0 0 / 5%);
+    border-radius: 10px !important;
+    margin-right: 10px !important;
+    .icon {
+    display: inline-flex;
+    width: 32px;
+    height: 32px;
+    background-color: $primary-light !important;
+    color: #fff !important;
+    border-radius: 6px;
+    justify-content: center;
+    align-items: center;
+    margin-right: 11px;
+    vertical-align: middle;
+    }
+}
+
+.ant-menu-sub {
+  width: 90% !important;
+  margin-left: auto !important;
+  background-color: transparent !important;
+}
+
+.ant-menu-sub > .ant-menu-item {
+    padding-left: 15px !important;
+}
+
+.ant-menu-item {
+    margin: 10px !important;
+    padding-top: 25px !important;
+    padding-bottom: 25px !important;
+    padding-left: 14px !important;
+}
+
+.ant-menu-submenu-title {
+    padding-top: 25px !important;
+    padding-bottom: 25px !important;
+    padding-left: 14px !important;
+}
+
+.ant-menu-submenu-popup {
+    background-color: #fff !important;
+}
+
+
+.menuTitle {
+    margin-top: -15px;
+    margin-left: 5px;
+}
+
+.farmTitle {
+    .ant-menu-submenu-title .ant-menu-item:first-child {
+        background-color: transparent !important;
+        margin-left: -9px !important;
+      }
+      
+      .ant-menu-submenu-title .ant-menu-item:first-child:hover {
+        background-color: transparent !important;
+      }
+    
+}
+.selectedFarmTitle {
+    .ant-menu-submenu-title {
+        background-color: #fff !important;
+        box-shadow: 0 20px 27px rgb(0 0 0 / 5%);
+        border-radius: 10px !important;
+        margin-right: 10px !important;
+        .icon {
+        display: inline-flex;
+        width: 32px;
+        height: 32px;
+        background-color: $primary-light !important;
+        color: #fff !important;
+        border-radius: 6px;
+        justify-content: center;
+        align-items: center;
+        margin-right: 11px;
+        vertical-align: middle;
+        }
+    }
+
+    .ant-menu-submenu-title:hover {
+        background-color: #E8E8E8 !important;
+    }
+}
+
+
+.topBar {
+    background-color: #FAFAFA !important;
+}
+
+.topBarProfile {
+    width: 45px;
+  height: 45px;
+  border-radius: 50px;
+  background-color: #3E3E3E;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+  font-size: 20px;
+}
+
+.header-notifications-dropdown {
+    background: #fff;
+    box-shadow: 0 20px 27px rgb(0 0 0 / 5%);
+    border-radius: 12px;
+    min-width: 150px;
+    padding-left: 16px;
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+  }
+
+  .colorRed {
+    color: $red;
+  }

@@ -31,41 +31,43 @@ const Header = () => {
       case routePaths.workflow:
         return "Workflow";
         break;
+        case routePaths.userManagement:
+        return "Users";
+        break;
       default:
         return "Dashboard";
     }
   };
+
+  const data = [
+    {
+      title: <span>Profile</span> ,
+      avatar: <span style={{ fontSize:'18px'}}><FaUser /></span>,
+    },
+    {
+      title:<span className="colorRed">Logout</span> ,
+      avatar: <span className="colorRed" style={{fontSize:'18px'}}><RiLogoutBoxRLine /></span>,
+    },
+  ];
   const menu = (
-    <Menu onClick={(e) => console.log(e)}>
-      <Menu.Item key="profile">
-        <span
-          style={{
-            display: "flex",
-            alignContent: "center",
-            justifyContent: "center",
-            gap: "10px",
-          }}
-        >
-          <FaUser />
-          <p>Profile</p>
-        </span>
-      </Menu.Item>
-      <Menu.Item key="logout">
-        <span
-          style={{
-            display: "flex",
-            alignContent: "center",
-            justifyContent: "center",
-            gap: "10px",
-          }}
-        >
-          <RiLogoutBoxRLine />
-          <p>Logout</p>
-        </span>
-      </Menu.Item>
-    </Menu>
+    <List
+      min-width="100%"
+      className="header-notifications-dropdown"
+      itemLayout="horizontal"
+      dataSource={data}
+      renderItem={(item) => (
+        <List.Item>
+          <List.Item.Meta
+            avatar={item.avatar}
+            title={item.title}
+            description={item.description}
+          />
+        </List.Item>
+      )}
+    />
   );
 
+ 
   return (
     <div className="topBar">
       <div
@@ -116,7 +118,7 @@ const Header = () => {
           </span>
 
           <span style={{ fontSize: "10px" }}>
-            <Dropdown children={<DownOutlined />} overlay={menu}  />
+            <Dropdown children={<DownOutlined />} overlay={menu} trigger={["click"]} placement="bottomLeft" />
           </span>
         </div>
       </div>

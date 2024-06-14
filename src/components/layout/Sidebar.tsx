@@ -109,7 +109,7 @@ function Sidenav({ collapsed, toggleSidebar }) {
           </NavLink>
         </Menu.Item>
         <Menu.Item key="/users" className={routePaths.userManagement === location.pathname ? 'ant-menu-item-selected' :''}>
-          <NavLink to="/users" >
+          <NavLink to={routePaths.userManagement}>
             <div className={collapsed ? 'menuTitle' :''} style={{ display: 'flex', alignItems: 'center' }}>
               <span className="icon">
                 <FaUsers />
