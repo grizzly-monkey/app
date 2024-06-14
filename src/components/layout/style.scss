@@ -136,3 +136,18 @@
   margin-right: 12px;
   font-size: 20px;
 }
+
+.header-notifications-dropdown {
+    background: #fff;
+    box-shadow: 0 20px 27px rgb(0 0 0 / 5%);
+    border-radius: 12px;
+    min-width: 150px;
+    padding-left: 16px;
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+  }
+
+  .colorRed {
+    color: $red;
+  }
