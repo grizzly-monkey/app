@@ -1,10 +1,12 @@
-import { Card, TableProps, Avatar, Typography, Tag, Form, Row, Col, Select, Input, Flex } from "antd";
+import { Card, TableProps, Avatar, Typography, Tag, Input, Flex } from "antd";
 import Table from "../../components/ui/table";
 import Button from "@/components/ui/button";
 import "./style.scss";
 import Modal from "@/components/ui/modal";
 import { useState } from "react";
-import { Option } from "antd/es/mentions";
+import CreateUserForm from "./createUserForm";
+import { useSelector } from "react-redux";
+import UserSelectors from "@/redux/user/selectors";
 
 const { Search } = Input;
 const ColorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
@@ -15,14 +17,7 @@ interface User {
     roles: string[];
     contactNumber: string;
 }
-const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-        <Select style={{ width: 70 }}>
-            <Option value="91">+91</Option>
-            <Option value="87">+87</Option>
-        </Select>
-    </Form.Item>
-);
+
 const columns: TableProps<User>['columns'] = [
     {
         title: 'Name',
@@ -107,7 +102,7 @@ const data: User[] = [
 ]
 const UserManagement = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-
+    const users = useSelector(UserSelectors.selectUsers)
     const showModal = () => {
         setIsModalOpen(true);
     };
@@ -128,7 +123,7 @@ const UserManagement = () => {
                 className="criclebox tablespace"
                 extra={
                     <Flex gap={20}>
-                        <Search placeholder="input search text" style={{ width: '200%' }} />
+                        <Search placeholder="input search text"  style={{ width: '200%', height:'32px'}} />
                         <Button label="Add User" style={{ padding: "0 0" }} onClick={showModal} />
                     </Flex>
 
@@ -147,68 +142,7 @@ const UserManagement = () => {
                 onOk={handleOk}
                 width={800}
             >
-                <Form layout="vertical">
-                    <Row gutter={24}>
-                        <Col span={12}>
-                            <Form.Item label="First Name">
-                                <Input placeholder="first name" />
-                            </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                            <Form.Item label="Last Name">
-                                <Input placeholder="last name" />
-                            </Form.Item>
-                        </Col>
-                    </Row>
-                    <Row gutter={24}>
-                        <Col span={12}>
-                            <Form.Item
-                                name="phone"
-                                label="Phone Number"
-                                rules={[{ required: true, message: 'Please input your phone number!' }]}
-                            >
-                                <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
-                            </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                            <Form.Item label="Email">
-                                <Input placeholder="email" />
-                            </Form.Item>
-                        </Col>
-                    </Row>
-                    <Row gutter={24}>
-                        <Col span={12}>
-                            <Form.Item
-                                name="password"
-                                label="Password"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please enter your password!',
-                                    },
-                                ]}
-                                hasFeedback
-                            >
-                                <Input.Password placeholder="password" />
-                            </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                            <Form.Item
-                                name="roles"
-                                label="Roles"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please enter the roles!',
-                                    },
-                                ]}
-                                hasFeedback
-                            >
-                                
-                            </Form.Item>
-                        </Col>
-                    </Row>
-                </Form>
+                <CreateUserForm />
             </Modal>
 
         </div>

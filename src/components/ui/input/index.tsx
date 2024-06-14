@@ -1,4 +1,5 @@
 import { Input as AntdInput, Form, InputProps } from "antd";
+import "./style.scss";
 
 interface AntdInputProps extends InputProps {
   rules?: { required: true; message: string }[];
@@ -24,7 +25,7 @@ const Input = ({
       rules={rules}
       style={{ marginBottom: "20px" }}
     >
-      <AntdInput disabled={disabled} placeholder={placeholder} />
+      <AntdInput className="common-input" disabled={disabled} placeholder={placeholder} />
     </Form.Item>
   );
 };
