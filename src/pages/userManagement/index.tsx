@@ -1,83 +1,23 @@
-import { Card, TableProps, Avatar, Typography, Tag, Input, Flex } from "antd";
+import { Input, Flex } from "antd";
 import Table from "../../components/ui/table";
+import Card from "@/components/ui/card";
 import "./style.scss";
 import { useDispatch, useSelector } from "react-redux";
 import UserSelectors from "@/redux/user/selectors";
 import AddUserButton from "./addUserButton";
 import { useEffect, useState } from "react";
 import UserActions from "@/redux/user/actions";
+<<<<<<< Updated upstream
 import Sidebar from "./sidebar";
 import { use } from "i18next";
+=======
+import UserSidebar from "./sidebar";
+import columns from "./columns";
+import { User } from "./types";
+
+>>>>>>> Stashed changes
 
 const { Search } = Input;
-const ColorList = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'];
-interface User {
-    firstName: string;
-    lastName: string;
-    email: string;
-    roles: string[];
-    contactNumber: string;
-}
-
-const columns: TableProps<User>['columns'] = [
-    {
-        title: 'Name',
-        dataIndex: 'Name',
-        render: (_, record) => {
-            const backgroundColor = ColorList[Math.floor(Math.random() * ColorList.length)];
-            return <>
-                <Avatar shape="square" style={{ backgroundColor: backgroundColor, verticalAlign: 'middle' }}>
-                    {`${record.firstName[0]}${record.lastName[0]}`}
-                </Avatar>
-                <Typography.Text style={{ marginLeft: "10px" }}>
-                    {`${record.firstName} ${record.lastName}`}
-                </Typography.Text>
-            </>
-        },
-        sorter: (a, b) => a.firstName.length - b.firstName.length,
-        key: '1',
-    },
-    // {
-    //     title: 'Email',
-    //     dataIndex: 'email',
-    //     key: '2',
-    // },
-
-    {
-        title: 'Contact',
-        dataIndex: 'contactNumber',
-        key: '3',
-    },
-    {
-        title: 'Roles',
-        dataIndex: 'roles',
-        render: (roles) => <>
-            {roles.map((role: string) => {
-                let color 
-                switch (role) {
-                    case 'Admin':
-                        color = 'red';
-                        break;
-                    case 'User':
-                        color = 'green';
-                        break;
-                    default:
-                        color = 'blue';
-                        break;
-                }
-                return <Tag color={color} key={role}>
-                    {role}
-                </Tag>
-            }
-
-            )}
-        </>,
-        key: '4',
-    },
-
-
-]
-
 
 const UserManagement = () => {
     const [filteredUsers, setFilteredUsers] = useState<User[]>([])
@@ -93,9 +33,9 @@ const UserManagement = () => {
     
     }
 
-    const onSearch = (e: any) => {
+    const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        const filteredData = users.filter((user:any) => {
+        const filteredData = users.filter((user:User) => {
             return user.firstName.toLowerCase().includes(value.toLowerCase()) || user.lastName.toLowerCase().includes(value.toLowerCase())
         })
         setFilteredUsers(filteredData)
@@ -111,10 +51,14 @@ const UserManagement = () => {
     }, [users])
 
     return (
+<<<<<<< Updated upstream
         <div style={{position:'relative', height:'90vh'}}>
             <Sidebar />
+=======
+        <div style={{height:'100%',display:'flex'}}>
+>>>>>>> Stashed changes
             <Card
-                style={{ width: !selectedUser ? '100%' : 'calc( 100% - 378px)' }}
+                style={{ width: !selectedUser ? '100%' : 'calc( 100% - 350px)', height:'fit-content' ,paddingTop:'20px'}}
                 bordered={false}
                 title="Users"
                 className="criclebox tablespace"
@@ -129,10 +73,10 @@ const UserManagement = () => {
             >
                 <div className="table-responsive">
                     <Table columns={columns} dataSource={filteredUsers} className="ant-border-space" onRow={onRow}
-                    //  style={{ width: !selectedUser ? '100%' : 'calc( 100% - 378px)' }}
                     />
                 </div>
             </Card>
+            <UserSidebar />
         </div>
     )
 }

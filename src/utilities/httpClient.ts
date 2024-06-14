@@ -57,7 +57,7 @@ export function getAuthToken() {
   // if (token) return token;
   // const { idToken } = SessionSelectors.SelectToken(store.getState());
   // return idToken;
-  return "";
+  return "eyJraWQiOiJGWGI3MlNwV21HdjJjWHo3QmZkRHlIdTAyWk9mNGVYWEZacEFZcE1kZElFPSIsImFsZyI6IlJTMjU2In0.eyJjdXN0b206Y3JlYXRlZF9hdCI6IjE3MTQxMjIwNTE4MTgiLCJzdWIiOiI2MTUzMGRjYS03MDMxLTcwZGEtYjFkNS1kYjVkMWVjZjI5YzIiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuYXAtc291dGgtMS5hbWF6b25hd3MuY29tXC9hcC1zb3V0aC0xXzZleERyb0I1NCIsInVwZGF0ZWRfYXQiOjE3MTQxMjIwNTE4MTgsImF1dGhfdGltZSI6MTcxODAwNTE1NywiZXhwIjoxNzE4Mzc4NTc5LCJjdXN0b206cm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzE4Mzc0OTc5LCJqdGkiOiJiMjUzZjRiNS1lMjcyLTRkMTEtYmM1Ny01N2ZkZGIzY2ViMjAiLCJlbWFpbCI6ImthbWFsX2tpc2hvcmVAYXZvY2Fkb2xhYnMuaW4iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImFkZHJlc3MiOnsiZm9ybWF0dGVkIjoicHVuZSJ9LCJjdXN0b206b3JnYW5pc2F0aW9uTmFtZSI6IkF2b2NhZG8gTGFicyIsInBob25lX251bWJlcl92ZXJpZmllZCI6dHJ1ZSwiY3VzdG9tOmlzVmVyaWZpZWRCeUFkbWluIjoiMCIsImNvZ25pdG86dXNlcm5hbWUiOiI2MTUzMGRjYS03MDMxLTcwZGEtYjFkNS1kYjVkMWVjZjI5YzIiLCJnaXZlbl9uYW1lIjoia2FtYWwiLCJjdXN0b206b3JnYW5pc2F0aW9uSWQiOiJvcjUwY2MwYmRhIiwib3JpZ2luX2p0aSI6ImEwZDg4ODgxLTEzY2ItNGQ0OC1hZDgwLTQ2YWNjMDY1NjdlNiIsImF1ZCI6IjdkOWEwNzRubGt0OG5tbG91dW9udmk5MmQzIiwiZXZlbnRfaWQiOiI1NWJlYWM3Yy03MDJmLTQ2ZDktYjU0NC05NzVjZWY2NzI0NzMiLCJ0b2tlbl91c2UiOiJpZCIsInBob25lX251bWJlciI6Iis5MTcwNzA5NzAwNTAiLCJmYW1pbHlfbmFtZSI6Imtpc2hvciJ9.XInD7y3lMekzxML9N_zoj0b3qkj4T73Ak3KstGJf6bME2HBDDBBniNaPyiy5nCI35up3L0eTAr9x7vC83IbjWM_36T-z1Jf00WXXFL-wru9HUd0EmMZ3eZ4xHCgZN82MTNxzXCpDrcv-bdvfgv5fK8M56mVGLJtK0Pt89TR0ZhbYhGukvyYWhaAhGTdHXIBVT1L-gSN4uPOfRQsWbsUzQ3gd9Gxdqu2gywkXztWTKZKKk3yzLfZRbd0-ovvi0I_MsZCWSU-O7C10C5ffYR8blZYj4YzF323f0usOB45OSiuKVl5lfI01ApFJdR0GWclkwcH_6oKG6lTs8qKeP0J-ew";
 }
 
 function dofillInErrorWithDefaults(
@@ -107,6 +107,7 @@ async function doRequest(
         // auth
         ...(isAuthenticated && { Authorization: `Bearer ${getAuthToken()}` }),
         "Content-Type": "application/json",
+        "ACTIVE_ORGANISATION_ID":"or50cc0bda",
         ...config?.headers,
       },
     };
@@ -187,7 +188,7 @@ async function doRequest(
 
 export async function get(
   endpoint: string,
-  params?: Record<string, any>,
+  params?: Record<string, string>,
   requestConfig?: Config,
   isAuthenticated?: boolean
 ): Promise<any> {
