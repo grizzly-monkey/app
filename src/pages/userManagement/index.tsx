@@ -7,15 +7,9 @@ import UserSelectors from "@/redux/user/selectors";
 import AddUserButton from "./addUserButton";
 import { useEffect, useState } from "react";
 import UserActions from "@/redux/user/actions";
-<<<<<<< Updated upstream
-import Sidebar from "./sidebar";
-import { use } from "i18next";
-=======
 import UserSidebar from "./sidebar";
 import columns from "./columns";
 import { User } from "./types";
-
->>>>>>> Stashed changes
 
 const { Search } = Input;
 
@@ -51,12 +45,7 @@ const UserManagement = () => {
     }, [users])
 
     return (
-<<<<<<< Updated upstream
-        <div style={{position:'relative', height:'calc( 100vh - 85px)'}}>
-            <Sidebar />
-=======
         <div style={{height:'100%',display:'flex'}}>
->>>>>>> Stashed changes
             <Card
                 style={{ width: !selectedUser ? '100%' : 'calc( 100% - 350px)', height:'fit-content' ,paddingTop:'20px'}}
                 bordered={false}
