@@ -31,6 +31,9 @@ const Header = () => {
       case routePaths.workflow:
         return "Workflow";
         break;
+        case routePaths.userManagement:
+        return "Users";
+        break;
       default:
         return "Dashboard";
     }

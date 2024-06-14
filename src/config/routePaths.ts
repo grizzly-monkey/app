@@ -7,7 +7,8 @@ const routePaths = {
   reservoirs:'/reservoirs',
   inventory:'/inventory',
   tasks:'/tasks',
-  workflow:'/workflow'
+  workflow:'/workflow',
+  userManagement: "/users",
 };
 
 export default routePaths;
