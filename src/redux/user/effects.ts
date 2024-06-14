@@ -4,7 +4,6 @@ import api from "@/utilities/api";
 
 class UserEffects {
     static getUsers() {
-        console.log('getUsers');
        return getToModel(UserModel,api.USERS)
     }
 
