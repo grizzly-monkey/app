@@ -1,14 +1,51 @@
-import Button from "@/components/ui/button";
+import { useEffect } from "react";
 import "../style.scss";
+import Button from "@/components/common/button";
 import { Images } from "@/utilities/imagesPath";
-import Input from "@/components/ui/input";
-import Checkbox from "@/components/ui/checkbox";
+import Input from "@/components/common/input";
+import Checkbox from "@/components/common/checkbox";
 import { Link } from "react-router-dom";
 import routePaths from "@/config/routePaths";
-import PhoneInput from "@/components/ui/input/PhoneInput";
-import Form from "@/components/ui/form";
+import PhoneInput from "@/components/common/input/phoneInput";
+import Form, { useForm } from "@/components/common/form";
+import { useDispatch } from "react-redux";
+import SessionActions from "@/redux/session/actions";
+import { loginType } from "@/types/auth";
+import { useAppSelector } from "@/hooks/redux";
+import { makeSelectErrorModel } from "@/redux/error/errorSelector";
+import { removeByActionType } from "@/redux/error/errorAction";
+import { errorToast } from "@/utilities/toast";
+import { makeRequestingSelector } from "@/redux/requesting/requestingSelector";
+
+const selectLoading = makeRequestingSelector();
+const selectError = makeSelectErrorModel();
 
 const Login = () => {
+  const [form] = useForm();
+  const dispatch = useDispatch();
+
+  const error = useAppSelector((state) =>
+    selectError(state, SessionActions.REQUEST_LOGIN_FINISHED)
+  );
+  const loading = useAppSelector((state) =>
+    selectLoading(state, [SessionActions.REQUEST_LOGIN])
+  );
+
+  const onFinish = (payload: loginType) => {
+    dispatch(SessionActions.login(payload));
+  };
+
+  const clearError = () => {
+    dispatch(removeByActionType(SessionActions.REQUEST_LOGIN_FINISHED));
+  };
+
+  useEffect(() => {
+    if (error) {
+      errorToast(error.errors.map((item: any) => item.message));
+      clearError();
+    }
+  }, [error]);
+
   return (
     <div className="login_container">
       <div className="form_main_container">
@@ -23,15 +60,10 @@ const Login = () => {
             </div>
           </div>
 
-          <Form
-            // onFinish={onFinish}
-            // onFinishFailed={onFinishFailed}
-            layout="vertical"
-            className="row-col"
-          >
+          <Form form={form} onFinish={onFinish} layout="vertical">
             <PhoneInput
               label="Phone number"
-              name="phone"
+              name="phoneNumber"
               rules={[
                 {
                   required: true,
@@ -42,7 +74,7 @@ const Login = () => {
 
             <Input
               label="Password"
-              name="Password"
+              name="password"
               rules={[
                 {
                   required: true,
@@ -61,9 +93,9 @@ const Login = () => {
               </Link>
             </div>
             <Button
+              loading={loading}
               htmlType="submit"
               label="Sign in"
-              onClick={() => {}}
               type="primary"
             />
           </Form>

@@ -1,12 +1,41 @@
-import Button from "@/components/ui/button";
-import Input from "@/components/ui/input";
-import PhoneInput from "@/components/ui/input/PhoneInput";
+import Button from "@/components/common/button";
+import AlertError from "@/components/common/error/AlertError";
+import FullAlertError from "@/components/common/error/FullAlertError";
+import Form, { useForm } from "@/components/common/form";
+import Input from "@/components/common/input";
+import PhoneInput from "@/components/common/input/phoneInput";
 import routePaths from "@/config/routePaths";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import AccountActions from "@/redux/account/actions";
+import { makeSelectErrorModel } from "@/redux/error/errorSelector";
+import { makeRequestingSelector } from "@/redux/requesting/requestingSelector";
+import { registerType } from "@/types/auth";
 import { Images } from "@/utilities/imagesPath";
-import { Form } from "antd";
+import { REGEX } from "@/utilities/regex";
 import { Link } from "react-router-dom";
 
+const selectLoading = makeRequestingSelector();
+const selectError = makeSelectErrorModel();
+
 const SignUp = () => {
+  const [form] = useForm();
+  const dispatch = useAppDispatch();
+
+  const error = useAppSelector((state) =>
+    selectError(state, AccountActions.REQUEST_REGISTER_FINISHED)
+  );
+  const loading = useAppSelector((state) =>
+    selectLoading(state, [AccountActions.REQUEST_REGISTER])
+  );
+
+  const onFinish = (values: registerType) => {
+    const payload = { ...values };
+    payload.phone = `+${payload.phone}`;
+    delete payload.confirmPassword;
+
+    dispatch(AccountActions.register(payload));
+  };
+
   return (
     <div className="signUp_container">
       <div className="form_main_container">
@@ -24,15 +53,38 @@ const SignUp = () => {
             </div>
           </div>
 
-          <Form
-            // onFinish={onFinish}
-            // onFinishFailed={onFinishFailed}
-            layout="vertical"
-          >
+          <FullAlertError error={error} />
+
+          <AlertError error={error} />
+
+          <Form form={form} onFinish={onFinish} layout="vertical">
             <div className="input_row">
+              <PhoneInput
+                label="Phone number"
+                name="phone"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your phone number!",
+                  },
+                ]}
+              />
+
+              <Input
+                label="Organisation name"
+                name="organisationName"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your organisation name!",
+                  },
+                ]}
+                placeholder="Enter your organisation name"
+              />
+
               <Input
                 label="First name"
-                name="email"
+                name="firstName"
                 rules={[
                   {
                     required: true,
@@ -43,7 +95,7 @@ const SignUp = () => {
               />
               <Input
                 label="Last name"
-                name="email"
+                name="lastName"
                 rules={[
                   {
                     required: true,
@@ -53,68 +105,49 @@ const SignUp = () => {
                 placeholder="Enter your last name"
               />
 
-              <PhoneInput />
-
-              <Input
-                label="Email"
-                name="email"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your email!",
-                  },
-                ]}
-                placeholder="Enter your email"
-              />
-
               <Input
                 label="Password"
-                name="email"
+                name="password"
                 rules={[
                   {
                     required: true,
                     message: "Please input your password!",
+                  },
+                  {
+                    pattern: REGEX.PASSWORD_VALIDATION,
+                    message:
+                      "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
                   },
                 ]}
                 placeholder="Enter your password"
               />
               <Input
                 label="Confirm Password"
-                name="email"
+                name="confirmPassword"
                 rules={[
                   {
                     required: true,
                     message: "Please input your confirm password!",
                   },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue("password") === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject("Password don't match");
+                    },
+                  }),
                 ]}
                 placeholder="Enter your confirm password"
               />
             </div>
 
-            <Input
-              label="Organisation name"
-              name="email"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your organisation name!",
-                },
-              ]}
-              placeholder="Enter your organisation name"
+            <Button
+              loading={loading}
+              htmlType="submit"
+              label="Sign up"
+              type="primary"
             />
-            <Input
-              label="Address"
-              name="email"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your address!",
-                },
-              ]}
-              placeholder="Enter your address"
-            />
-
-            <Button label="Sign up" onClick={() => {}} type="primary" />
           </Form>
 
           <Link to={routePaths.login}>

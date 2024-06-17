@@ -1,7 +1,8 @@
 import { Input as AntdInput, Form, InputProps } from "antd";
+import { Rule } from "antd/es/form";
 
 interface AntdInputProps extends InputProps {
-  rules?: { required: true; message: string }[];
+  rules?: Rule[];
   name?: string;
   label?: string;
   placeholder?: string;
