@@ -8,6 +8,16 @@ export default class UserModel extends BaseModel {
 
   phone = null;
 
+  email = null;
+
+  address = null;
+
+  password = null;
+
+  role = null;
+
+  organisationName = null;
+  
   roles = null;
 
   constructor(data: Partial<UserModel>) {

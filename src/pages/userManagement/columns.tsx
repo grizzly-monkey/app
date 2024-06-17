@@ -8,13 +8,13 @@ const columns: TableProps<User>['columns'] = [
         title: 'Name',
         dataIndex: 'Name',
         render: (_, record) => {
-            const backgroundColor = getAlphabetColor(record.firstName[0]);
+            const backgroundColor = getAlphabetColor(record?.firstName[0]);
             return <>
                 <Avatar shape="square" style={{ backgroundColor: backgroundColor, verticalAlign: 'middle' }}>
-                    {`${record.firstName[0]}${record.lastName[0]}`}
+                    {`${record?.firstName[0]}${record.lastName[0]}`}
                 </Avatar>
                 <Typography.Text style={{ marginLeft: "10px" }}>
-                    {`${record.firstName} ${record.lastName}`}
+                    {`${record?.firstName} ${record?.lastName}`}
                 </Typography.Text>
             </>
         },
@@ -23,14 +23,26 @@ const columns: TableProps<User>['columns'] = [
     },
    
     {
-        title: 'Contact',
-        dataIndex: 'contactNumber',
+        title: 'Contact Number',
+        dataIndex: 'phone',
         key: '2',
     },
     {
         title: 'Roles',
         dataIndex: 'roles',
-        render: (roles) => <>
+        // render: (roles) => <>
+        //     {roles.map((role: string) => {
+        //         const color = getRoleColor(role)
+        //         return <Tag color={color} key={role}>
+        //             {role}
+        //         </Tag>
+        //     }
+
+        //     )}
+        // </>
+        render:(_, record)=>{
+            const roles = [record?.role];
+            return<>
             {roles.map((role: string) => {
                 const color = getRoleColor(role)
                 return <Tag color={color} key={role}>
@@ -39,7 +51,9 @@ const columns: TableProps<User>['columns'] = [
             }
 
             )}
-        </>,
+            </>
+        }
+        ,
         key: '3',
     },
 

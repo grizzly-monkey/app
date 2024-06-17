@@ -1,4 +1,5 @@
 import { createAction } from "@/utilities/actionUtility"
+import { CreateUser, User } from "../../pages/userManagement/types";
 
 const UserActions = {
     FETCH_USERS: 'FETCH_USERS',
@@ -14,11 +15,11 @@ const UserActions = {
         return createAction(this.FETCH_USERS);
     },
 
-    createUser(payload: any) {
+    createUser(payload: CreateUser) {
         return createAction(this.CREATE_USER, payload);
     },
 
-    selectUser(payload: any) {
+    selectUser(payload: User) {
         return createAction(this.SELECT_USER, payload);
     },
 

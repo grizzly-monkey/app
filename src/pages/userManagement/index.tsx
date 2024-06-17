@@ -10,6 +10,8 @@ import UserActions from "@/redux/user/actions";
 import UserSidebar from "./sidebar";
 import columns from "./columns";
 import { User } from "./types";
+import requestingSelector from "@/redux/requesting/requestingSelector";
+
 
 const { Search } = Input;
 
@@ -18,6 +20,9 @@ const UserManagement = () => {
     const dispatch = useDispatch()
     const users = useSelector(UserSelectors.selectUsers)
     const selectedUser = useSelector(UserSelectors.selectSelectedUser)
+    const loading = useSelector((state) =>
+    requestingSelector(state, [UserActions.FETCH_USERS], ""),
+)
     const onRow = (record: User) => {
         return {
             onClick: () => {
@@ -59,7 +64,7 @@ const UserManagement = () => {
                 }
             >
                 <div className="table-responsive">
-                    <Table columns={columns} dataSource={filteredUsers} className="ant-border-space" onRow={onRow}
+                    <Table columns={columns} dataSource={filteredUsers} className="ant-border-space" onRow={onRow} loading={loading}
                     />
                 </div>
             </Card>

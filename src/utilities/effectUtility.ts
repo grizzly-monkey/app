@@ -1,22 +1,22 @@
-import ErrorModel from "@/models/ErrorModel";
+import ErrorModel from "@/models/error/errorModel";
 import * as HttpUtility from "./httpClient";
 
-interface Response {
-  data: any;
-  headers: Record<string, any>;
+interface Response<T> {
+  data: T;
+  headers: Record<string, string>;
 }
 
 function restModelCreator<T>(
-  Model: new (data: any) => T,
-  response: Response | ErrorModel
-): { payload: T | T[]; metadata: Record<string, any> } | ErrorModel {
+  Model: new (data: T) => T,
+  response: Response<T> | ErrorModel
+): { payload: T | T[]; metadata: Record<string, string> } | ErrorModel {
   if (response instanceof ErrorModel) {
     return response;
   }
   return {
     payload: !Array.isArray(response.data)
       ? new Model(response.data)
-      : response.data.map((json: any) => new Model(json)),
+      : response.data.map((json: T) => new Model(json)),
     metadata: response.headers,
   };
 }

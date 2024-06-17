@@ -10,8 +10,6 @@ export const todosListNormalizeSchema = (data: normalizeData) =>
 export const todosListDenormalizeSchema = (data: normalizeData) => {
   if (!data) return null;
 
-  console.log("iss", data);
-
   const { result, entities } = data;
   if (result && entities) return denormalize(result, todosListSchema, entities);
   return [];

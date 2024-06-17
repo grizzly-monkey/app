@@ -1,10 +1,11 @@
 export interface User {
-    userId: number;
+    userId: string;
     firstName: string;
     lastName: string;
     email: string;
+    role: string;
     roles: string[];
-    contactNumber: string;
+    phone: string;
     createdBy: string;
     createdDate: string;
 }
@@ -14,5 +15,9 @@ export interface CreateUser {
     lastName: string;
     email: string;
     roles: string[];
-    contactNumber: string;
+    role: string;
+    address: string;
+    password: string;
+    phone: string;
+    organisationName: string;
 }
