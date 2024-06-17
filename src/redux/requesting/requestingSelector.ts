@@ -20,7 +20,7 @@ function selectRequesting(
 const requestingSelector = createSelector(
   (state: State) => state.requesting,
   (_, actionTypes: string[]) => actionTypes,
-  (_, __, scope: string ) => scope,
+  (_, __, scope: string = "") => scope,
   selectRequesting
 );
 export default requestingSelector;

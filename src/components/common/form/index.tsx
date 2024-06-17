@@ -12,4 +12,6 @@ const Form = (props: FormProps) => {
   );
 };
 
+export const useForm = AntdForm.useForm;
+
 export default Form;

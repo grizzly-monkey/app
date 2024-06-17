@@ -10,8 +10,9 @@ interface ButtonProps extends AntdButtonProps {
 const Button = (props: ButtonProps) => {
   return (
     <AntdButton
-      {...props}
+      iconPosition="end"
       type={props.type ? props.type : "primary"}
+      {...props}
       style={{
         width: "100%",
         padding: "22px 0",

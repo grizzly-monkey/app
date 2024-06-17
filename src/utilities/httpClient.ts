@@ -3,7 +3,7 @@ import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
 import logger from "./logger";
 import onError from "./onError";
-import ErrorModel from "@/models/ErrorModel";
+import ErrorModel from "@/models/error/errorModel";
 // import SessionSelectors from "../redux/session/sessionSelector";
 
 interface ErrorContext {
@@ -69,9 +69,7 @@ function dofillInErrorWithDefaults(
   model.exception = error.exception || "Error requesting data";
   model.errors = error.errors && error.errors.length ? error.errors : null;
   model.path = error.path || request.url;
-  model.traceId = error.traceId;
   model.timestamp = error.timestamp || new Date().getTime();
-  model.XMLResponse = error.xmlResponse ? error.xmlResponse : null;
   return model;
 }
 

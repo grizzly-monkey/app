@@ -1,8 +1,4 @@
-import Form from "@/components/ui/form";
-import Input from "@/components/ui/input";
-import PhoneInput from "@/components/ui/input/PhoneInput";
 import Modal from "@/components/ui/modal";
-import Button from "@/components/ui/button";
 import Select from "@/components/ui/select";
 import { Col, Row, Form as AntdForm } from "antd";
 import { useEffect, useState } from "react";
@@ -11,6 +7,10 @@ import UserActions from "@/redux/user/actions";
 import { roles } from "./utils";
 import { CreateUser } from "./types";
 import requestingSelector from "@/redux/requesting/requestingSelector";
+import Button from "@/components/common/button";
+import Form from "@/components/common/form";
+import Input from "@/components/common/input";
+import PhoneInput from "@/components/common/input/phoneInput";
 
 const AddUserButton = () => {
     const [prevLoading, setPrevLoading] = useState(false);

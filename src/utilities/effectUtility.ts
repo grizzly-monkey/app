@@ -1,4 +1,4 @@
-import ErrorModel from "@/models/ErrorModel";
+import ErrorModel from "@/models/error/errorModel";
 import * as HttpUtility from "./httpClient";
 
 interface Response<T> {

@@ -1,7 +1,7 @@
-import Button from "@/components/ui/button";
-import Form from "@/components/ui/form";
-import Input from "@/components/ui/input";
-import PhoneInput from "@/components/ui/input/PhoneInput";
+import Button from "@/components/common/button";
+import Form from "@/components/common/form";
+// import Input from "@/components/ui/input";
+import PhoneInput from "@/components/common/input/phoneInput";
 import routePaths from "@/config/routePaths";
 import { Images } from "@/utilities/imagesPath";
 // import { Form } from "antd";

@@ -1,12 +1,18 @@
 import { combineReducers, Action } from "redux";
 import todos from "./todos/reducer";
-import users from  "./user/reducer"
-import requestingReducer from "./requesting/requestingReducer";
+import session from "./session/reducer";
+import account from "./account/reducer";
+import error from "./error/errorReducer";
+import requesting from "./requesting/requestingReducer";
+import users from "./user/reducer";
 
 const appReducer = combineReducers({
   todos,
-  users,
-  requesting: requestingReducer,
+  session,
+  account,
+  error,
+  requesting,
+  users
 });
 
 const rootReducer = (
