@@ -8,8 +8,9 @@ import { IoIosNotifications } from "react-icons/io";
 import Dropdown from "../ui/dropdown";
 import { RiLogoutBoxRLine } from "react-icons/ri";
 import routePaths from "@/config/routePaths";
+import { IoMenu } from "react-icons/io5";
 
-const Header = () => {
+const Header = ({toggleSidebar}) => {
   const location = useLocation();
   const getTitle = () => {
     switch (location.pathname) {
@@ -70,25 +71,14 @@ const Header = () => {
  
   return (
     <div className="topBar">
-      <div
-        style={{
-          display: "flex",
-          padding: "20px",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <div>
+      <div className="header">
+        <div style={{display:'flex', alignItems:'center', gap:"20px"}}>
+          <span className="sideBarMenuTab">
+          <IoMenu onClick={toggleSidebar}/>
+          </span>
           <h3>{getTitle()}</h3>
         </div>
-        <div
-          style={{
-            display: "flex",
-            gap: "20px",
-            alignItems: "center",
-            justifyContent: "flex-end",
-          }}
-        >
+        <div className='headerRight'>
           <div style={{ display: "flex", alignItems: "center" }}>
             <span style={{ marginRight: "5px" }}>Dummy farm</span>
             <span style={{ fontSize: "10px" }}>
@@ -97,7 +87,7 @@ const Header = () => {
           </div>
 
           <div style={{ display: "flex", alignItems: "center" }}>
-            <span style={{ marginRight: "5px" }}>English</span>
+            <span style={{ marginRight: "5px" }}>En</span>
             <span style={{ fontSize: "10px" }}>
               <DownOutlined />
             </span>

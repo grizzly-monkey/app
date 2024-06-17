@@ -1,12 +1,35 @@
 @import "../../assets/styles/mixins.scss";
 
+
 .ant-layout {
     background-color: #FAFAFA !important;
 }
+.ant-drawer-body {
+    background-color: #FAFAFA !important;
+}
+.drawer-sidebar .ant-drawer-body {
+    padding: 0px;
+  }
+  
+  .drawer-sidebar
+    .ant-drawer-body
+    aside.ant-layout-sider.ant-layout-sider-light.sider-primary.ant-layout-sider-primary {
+    margin: 0px;
+  }
 .ant-menu {
     background-color: #FAFAFA !important;
     border-inline-end: none !important;
 }
+.ant-layout-sider {
+    height: '100vh' !important; 
+    overflow: 'auto' !important; 
+    display: 'flex' !important; 
+    flex-direction: 'column' !important; 
+    background-color: #FAFAFA !important;
+    padding-left:'20px' !important;
+    padding-right:'20px' !important;
+}
+
 .icon {
     display: inline-flex;
     min-width: 32px;
@@ -27,7 +50,7 @@
   margin-left: 3px;
   position: sticky;
   top: 0;
-  background-color: #FAFAFA;
+  background-color: #FAFAFA !important;
   z-index: 99;
 }
 
@@ -151,3 +174,21 @@
   .colorRed {
     color: $red;
   }
+
+  .sideBarMenuTab {
+    display: none;
+}
+
+.header {
+        display: flex;
+        padding: 20px;
+        align-items: center;
+        justify-content: space-between;
+}
+
+.headerRight {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        justify-content: flex-end;
+}

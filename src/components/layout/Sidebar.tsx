@@ -19,7 +19,7 @@ function Sidenav({ collapsed, toggleSidebar }) {
   const location = useLocation();
 
   return (
-    <div style={{ height: '100vh', overflow: 'auto', display: 'flex', flexDirection: 'column', backgroundColor:'#FAFAFA', paddingLeft:'20px', paddingRight:'20px' }}>
+    <div className="sideBar">
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }} className="brand">
         <img src={Images.LOGO} alt="Growloc" />
       </div>

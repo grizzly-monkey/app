@@ -1,5 +1,6 @@
 import Main from "./Main";
 import './style.scss'
+import './responsive.scss'
 
 
 const Layout = () => {
