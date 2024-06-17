@@ -11,6 +11,8 @@ export default class UserModel extends BaseModel {
 
     roles = null;
 
+    role = null;
+
     organisationId = null;
 
     createdBy = null

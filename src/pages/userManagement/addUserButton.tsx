@@ -5,18 +5,20 @@ import Modal from "@/components/ui/modal";
 import Button from "@/components/ui/button";
 import Select from "@/components/ui/select";
 import { Col, Row, Form as AntdForm } from "antd";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import UserActions from "@/redux/user/actions";
 import { roles } from "./utils";
 import { CreateUser } from "./types";
+import requestingSelector from "@/redux/requesting/requestingSelector";
 
 const AddUserButton = () => {
+    const [prevLoading, setPrevLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [form] = AntdForm.useForm();
-    //     const loading = useSelector((state) =>
-    //     requestingSelector(state, [UserActions.CREATE_USER],""),
-    //   )
+    const loading = useSelector((state) =>
+        requestingSelector(state, [UserActions.CREATE_USER], ""),
+    )
     const dispatch = useDispatch();
     const showModal = () => {
         setIsModalOpen(true);
@@ -24,13 +26,27 @@ const AddUserButton = () => {
 
     const handleOk = () => {
         form.validateFields().then((values: CreateUser) => {
+            values.address="address"
+            values.email="abc@gmail.com"
+            values.phone= `+${values.phone}`
+            values.password="Qwerty@123"
+            values.role="ADMIN"
+            values.organisationName="organisationName"
             dispatch(UserActions.createUser(values))
         });
     };
 
     const handleCancel = () => {
+        form.resetFields();
         setIsModalOpen(false);
     };
+
+    useEffect(() => {
+        if (!loading && prevLoading) {
+            handleCancel();
+        }
+        setPrevLoading(loading);
+    }, [loading]);
 
     return (
         <>
@@ -41,6 +57,9 @@ const AddUserButton = () => {
                 open={isModalOpen}
                 onCancel={handleCancel}
                 onOk={handleOk}
+                confirmLoading={loading}
+                okText="Add"
+                onClose={handleCancel}
             >
                 <Form form={form} layout="vertical">
                     <Row gutter={24}>

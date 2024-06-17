@@ -1,9 +1,12 @@
 import { combineReducers, Action } from "redux";
 import todos from "./todos/reducer";
 import users from  "./user/reducer"
+import requestingReducer from "./requesting/requestingReducer";
+
 const appReducer = combineReducers({
   todos,
-  users
+  users,
+  requesting: requestingReducer,
 });
 
 const rootReducer = (

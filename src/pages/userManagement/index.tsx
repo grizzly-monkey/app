@@ -7,15 +7,11 @@ import UserSelectors from "@/redux/user/selectors";
 import AddUserButton from "./addUserButton";
 import { useEffect, useState } from "react";
 import UserActions from "@/redux/user/actions";
-<<<<<<< Updated upstream
-import Sidebar from "./sidebar";
-import { use } from "i18next";
-=======
 import UserSidebar from "./sidebar";
 import columns from "./columns";
 import { User } from "./types";
+import requestingSelector from "@/redux/requesting/requestingSelector";
 
->>>>>>> Stashed changes
 
 const { Search } = Input;
 
@@ -24,6 +20,9 @@ const UserManagement = () => {
     const dispatch = useDispatch()
     const users = useSelector(UserSelectors.selectUsers)
     const selectedUser = useSelector(UserSelectors.selectSelectedUser)
+    const loading = useSelector((state) =>
+    requestingSelector(state, [UserActions.FETCH_USERS], ""),
+)
     const onRow = (record: User) => {
         return {
             onClick: () => {
@@ -51,12 +50,7 @@ const UserManagement = () => {
     }, [users])
 
     return (
-<<<<<<< Updated upstream
-        <div style={{position:'relative', height:'90vh'}}>
-            <Sidebar />
-=======
         <div style={{height:'100%',display:'flex'}}>
->>>>>>> Stashed changes
             <Card
                 style={{ width: !selectedUser ? '100%' : 'calc( 100% - 350px)', height:'fit-content' ,paddingTop:'20px'}}
                 bordered={false}
@@ -72,7 +66,7 @@ const UserManagement = () => {
                 }
             >
                 <div className="table-responsive">
-                    <Table columns={columns} dataSource={filteredUsers} className="ant-border-space" onRow={onRow}
+                    <Table columns={columns} dataSource={filteredUsers} className="ant-border-space" onRow={onRow} loading={loading}
                     />
                 </div>
             </Card>

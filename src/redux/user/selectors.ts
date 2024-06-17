@@ -1,6 +1,8 @@
+import { userDenormalizeSchema } from "./schema";
+
 class UserSelectors{
     public static selectUsers(state: any){
-        return state.users.entities;
+        return userDenormalizeSchema(state?.users?.users);
     }
 
     public static selectSelectedUser(state: any){

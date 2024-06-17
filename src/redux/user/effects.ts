@@ -7,7 +7,7 @@ class UserEffects {
        return getToModel(UserModel,api.USERS)
     }
 
-    static createUser(data: any) {
+    static createUser(data: UserModel) {
         return postToModel(UserModel, api.USERS, data);
     }
 }
