@@ -16,9 +16,15 @@ import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import { removeByActionType } from "@/redux/error/errorAction";
 import { errorToast } from "@/utilities/toast";
 import { makeRequestingSelector } from "@/redux/requesting/requestingSelector";
+import { IoEye, IoEyeOff } from "react-icons/io5";
 
 const selectLoading = makeRequestingSelector();
 const selectError = makeSelectErrorModel();
+
+const iconStyle = {
+  fontSize: 22,
+  cursor: "pointer",
+};
 
 const Login = () => {
   const [form] = useForm();
@@ -38,6 +44,11 @@ const Login = () => {
   const clearError = () => {
     dispatch(removeByActionType(SessionActions.REQUEST_LOGIN_FINISHED));
   };
+
+  function renderPasswordIcon() {
+    return (visible: boolean) =>
+      visible ? <IoEye style={iconStyle} /> : <IoEyeOff style={iconStyle} />;
+  }
 
   useEffect(() => {
     if (error) {
@@ -81,6 +92,8 @@ const Login = () => {
                   message: "Please input your password!",
                 },
               ]}
+              iconRender={renderPasswordIcon()}
+              isPasswordInput
               placeholder="Enter your password"
             />
 
