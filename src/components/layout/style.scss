@@ -3,6 +3,7 @@
 
 .ant-layout {
     background-color: #FAFAFA !important;
+    height: 100vh;
 }
 .ant-drawer-body {
     background-color: #FAFAFA !important;
@@ -139,6 +140,10 @@
 
     .ant-menu-submenu-title:hover {
         background-color: #E8E8E8 !important;
+    }
+
+    .ant-menu-item-selected{
+        box-shadow: none !important;
     }
 }
 

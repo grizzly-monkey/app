@@ -1,31 +1,28 @@
+import FarmCard from "./farmCard";
+import "./style.scss";
+import { Card, Flex } from "antd";
+import { GrRefresh } from "react-icons/gr";
+// import AddFarmButton from "./AddFarm";
+
 const Farm = () => {
   return (
-    <div
-      style={{
-        backgroundColor: "#fff",
-        marginRight: "20px",
-        borderRadius: "10px",
-        padding:'10px'
-      }}
-    >
-      <p className="heading1">Farm</p>
-      <br/>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed officia
-        numquam distinctio, quidem quisquam quos vero possimus temporibus
-        quibusdam maxime magni, perferendis eaque totam dolore, ut molestias.
-        Tempora, consequatur iure. Lorem ipsum, dolor sit amet consectetur
-        adipisicing elit. Sunt voluptatibus facilis soluta eos? Consectetur odit
-        laboriosam culpa recusandae mollitia at unde in, quis odio. Eligendi
-        nulla ad repellendus delectus fuga.
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed officia
-        numquam distinctio, quidem quisquam quos vero possimus temporibus
-        quibusdam maxime magni, perferendis eaque totam dolore, ut molestias.
-        Tempora, consequatur iure. Lorem ipsum, dolor sit amet consectetur
-        adipisicing elit. Sunt voluptatibus facilis soluta eos? Consectetur odit
-        laboriosam culpa recusandae mollitia at unde in, quis odio. Eligendi
-        nulla ad repellendus delectus fuga.
-      </p>
+    <div className="farm">
+      <Card
+        // style={{ width: !selectedUser ? '100%' : 'calc( 100% - 350px)', height:'fit-content' ,paddingTop:'20px'}}
+        bordered={false}
+        title="Farm"
+        style={{borderRadius: '10px'}}
+        // className="criclebox tablespace"
+        extra={
+          <Flex gap={20}>
+            <GrRefresh style={{ fontSize:'30px'}} />
+            {/* <AddFarmButton /> */}
+          </Flex>
+        }
+      >
+      <FarmCard />
+        
+      </Card>
     </div>
   );
 };

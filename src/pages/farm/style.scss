@@ -1,0 +1,29 @@
+@import "../../assets/styles/mixins.scss";
+
+.farm {
+        // background-color:#fff;
+        margin-right: 20px;
+        // border-radius: 10px;
+        // padding:10px;
+}
+
+.grid-container {
+    display: grid;
+    gap: 10px;
+    padding: 10px;
+}
+
+/* Responsive grid columns */
+.grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.grid-item {
+    background-color: #4CAF50;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 1.5em;
+    border-radius: 5px;
+    // margin: 20px;
+}
