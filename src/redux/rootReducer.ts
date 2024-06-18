@@ -4,6 +4,7 @@ import session from "./session/reducer";
 import account from "./account/reducer";
 import error from "./error/errorReducer";
 import requesting from "./requesting/requestingReducer";
+import users from "./user/reducer";
 
 const appReducer = combineReducers({
   todos,
@@ -11,6 +12,7 @@ const appReducer = combineReducers({
   account,
   error,
   requesting,
+  users
 });
 
 const rootReducer = (

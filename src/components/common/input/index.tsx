@@ -1,4 +1,5 @@
 import { Input as AntdInput, Form, InputProps } from "antd";
+import "./style.scss";
 import { Rule } from "antd/es/form";
 
 interface AntdInputProps extends InputProps {

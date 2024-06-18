@@ -1,4 +1,5 @@
 import Button from "@/components/common/button";
+import AlertError from "@/components/common/error/AlertError";
 import Form, { useForm } from "@/components/common/form";
 import Input from "@/components/common/input";
 import PhoneInput from "@/components/common/input/phoneInput";
@@ -9,10 +10,20 @@ import PasswordPolicyChecker, {
 import Tooltip from "@/components/common/tooltip";
 import { passwordPolicy } from "@/config/consts";
 import routePaths from "@/config/routePaths";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { makeSelectErrorModel } from "@/redux/error/errorSelector";
+import { makeRequestingSelector } from "@/redux/requesting/requestingSelector";
+import UserActions from "@/redux/user/actions";
+import UserSelectors from "@/redux/user/selectors";
+import { forgotPasswordType } from "@/types/auth";
 import { Images } from "@/utilities/imagesPath";
-import { useState } from "react";
+import { successToast } from "@/utilities/toast";
+import { useEffect, useState } from "react";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { Link } from "react-router-dom";
+
+const selectLoading = makeRequestingSelector();
+const selectError = makeSelectErrorModel();
 
 const iconStyle = {
   fontSize: 22,
@@ -22,13 +33,28 @@ const iconStyle = {
 const ForgotPassword = () => {
   const [phoneInputForm] = useForm();
   const [newPasswordForm] = useForm();
+  const dispatch = useAppDispatch();
 
-  const [isOTPSent, setIsOTPSent] = useState(false);
   const [policiesStatus, setPolicyStatus] = useState(
     getInitialPolicyStatus(passwordPolicy)
   );
   const [isPasswordHintActive, setPasswordHintActive] = useState(false);
   const [password, setPassword] = useState("");
+  const [remainingTime, setRemainingTime] = useState(0);
+
+  const isOTPSent = useAppSelector(UserSelectors.SelectResetOTPSent);
+  const sentOTPError = useAppSelector((state) =>
+    selectError(state, UserActions.REQUEST_RESET_PASSWORD_OTP_FINISHED)
+  );
+  const passwordResetError = useAppSelector((state) =>
+    selectError(state, UserActions.RESET_PASSWORD_FINISHED)
+  );
+  const sentOTPLoading = useAppSelector((state) =>
+    selectLoading(state, [UserActions.REQUEST_RESET_PASSWORD_OTP])
+  );
+  const passwordResetLoading = useAppSelector((state) =>
+    selectLoading(state, [UserActions.RESET_PASSWORD])
+  );
 
   const validatePassword = (value: string): Promise<void> => {
     const status = checkPolicyStatus(policiesStatus, password, passwordPolicy);
@@ -49,13 +75,36 @@ const ForgotPassword = () => {
   }
 
   const onPhoneInputFinish = (payload: any) => {
-    console.log(payload);
-    setIsOTPSent(true);
+    dispatch(UserActions.sendResetPasswordOTP(payload));
   };
 
-  const onNewPasswordFinish = (payload: any) => {
-    console.log(payload);
+  const onNewPasswordFinish = (values: forgotPasswordType) => {
+    const payload = {
+      ...values,
+      phoneNumber: phoneInputForm.getFieldValue("phoneNumber"),
+    };
+
+    dispatch(UserActions.resetPasswordWithOTP(payload));
   };
+
+  useEffect(() => {
+    if (isOTPSent && !sentOTPError) {
+      successToast("OTP sent successfully!!");
+      setRemainingTime(30);
+    }
+  }, [isOTPSent, sentOTPError]);
+
+  useEffect(() => {
+    let interval: any;
+    if (remainingTime > 0) {
+      interval = setInterval(() => {
+        setRemainingTime((prevTime) => prevTime - 1);
+      }, 1000);
+    }
+    return () => {
+      clearInterval(interval);
+    };
+  }, [remainingTime]);
 
   return (
     <div className="login_container">
@@ -73,7 +122,10 @@ const ForgotPassword = () => {
             </div>
           </div>
 
-          {!isOTPSent ? (
+          <AlertError error={sentOTPError} />
+          <AlertError error={passwordResetError} />
+
+          {!isOTPSent || sentOTPError ? (
             <Form form={phoneInputForm} onFinish={onPhoneInputFinish}>
               <PhoneInput
                 label="Phone number"
@@ -86,7 +138,12 @@ const ForgotPassword = () => {
                 ]}
               />
 
-              <Button label="Reset Password" htmlType="submit" type="primary" />
+              <Button
+                label="Reset Password"
+                loading={sentOTPLoading}
+                htmlType="submit"
+                type="primary"
+              />
             </Form>
           ) : (
             <Form form={newPasswordForm} onFinish={onNewPasswordFinish}>
@@ -96,12 +153,38 @@ const ForgotPassword = () => {
                 maxLength={6}
                 rules={[
                   {
+                    required: true,
+                    message: "Please input your password!",
+                  },
+                  {
                     pattern: /^(?:\d*)$/,
                     message: "OTP should contain just number",
                   },
                 ]}
                 placeholder="Enter your OTP"
               />
+
+              {remainingTime !== 0 ? (
+                <p className="not_a_memeber_text resend_otp_container">
+                  Resend OTP in{" "}
+                  <span className="register_text">{remainingTime} seconds</span>
+                </p>
+              ) : (
+                <p className="not_a_memeber_text resend_otp_container">
+                  Don't receive the OTP?{" "}
+                  <span
+                    className="register_text cursor_pointer"
+                    onClick={() =>
+                      onPhoneInputFinish({
+                        phoneNumber:
+                          phoneInputForm.getFieldValue("phoneNumber"),
+                      })
+                    }
+                  >
+                    RESEND OTP
+                  </span>
+                </p>
+              )}
 
               <Tooltip
                 overlayInnerStyle={{ backgroundColor: "white", width: "250px" }}
@@ -162,7 +245,12 @@ const ForgotPassword = () => {
                 placeholder="Enter your confirm password"
               />
 
-              <Button label="Reset Password" htmlType="submit" type="primary" />
+              <Button
+                loading={passwordResetLoading}
+                label="Reset Password"
+                htmlType="submit"
+                type="primary"
+              />
             </Form>
           )}
           <Link to={routePaths.login}>

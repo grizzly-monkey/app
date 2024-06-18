@@ -1,33 +1,33 @@
 import ErrorModel from "@/models/error/errorModel";
 import * as HttpUtility from "./httpClient";
 
-interface Response {
-  data: any;
-  headers: Record<string, any>;
+interface Response<T> {
+  data: T;
+  headers: Record<string, string>;
 }
 
 function restModelCreator<T>(
-  Model: new (data: any) => T,
-  response: Response | ErrorModel
-): { payload: T | T[]; metadata: Record<string, any> } | ErrorModel {
+  Model: new (data: T) => T,
+  response: Response<T> | ErrorModel
+): { payload: T | T[]; metadata: Record<string, string> } | ErrorModel {
   if (response instanceof ErrorModel) {
     return response;
   }
   return {
     payload: !Array.isArray(response.data)
       ? new Model(response.data)
-      : response.data.map((json: any) => new Model(json)),
+      : response.data.map((json: T) => new Model(json)),
     metadata: response.headers,
   };
 }
 
 export async function getToModel<T>(
-  Model: new (data: any) => T,
+  Model: new (data: T) => T,
   endpoint: string,
-  params?: Record<string, any>,
-  requestConfig?: Record<string, any>,
+  params?: Record<string, string>,
+  requestConfig?: Record<string, string>,
   isAuthenticated?: boolean
-): Promise<{ payload: T | T[]; metadata: Record<string, any> } | ErrorModel> {
+): Promise<{ payload: T | T[]; metadata: Record<string, string> } | ErrorModel> {
   const response = await HttpUtility.get(
     endpoint,
     params,
@@ -48,12 +48,12 @@ export async function delToModel<T>(
 }
 
 export async function postToModel<T>(
-  Model: new (data: any) => T,
+  Model: new (data: T) => T,
   endpoint: string,
-  data?: any,
-  requestConfig?: Record<string, any>,
+  data?: T,
+  requestConfig?: Record<string, string>,
   isAuthenticated?: boolean
-): Promise<{ payload: T | T[]; metadata: Record<string, any> } | ErrorModel> {
+): Promise<{ payload: T | T[]; metadata: Record<string, string> } | ErrorModel> {
   const response = await HttpUtility.post(
     endpoint,
     data,

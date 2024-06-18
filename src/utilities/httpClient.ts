@@ -4,6 +4,8 @@ import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import logger from "./logger";
 import onError from "./onError";
 import ErrorModel from "@/models/error/errorModel";
+import SessionSelectors from "@/redux/session/selectors";
+import { store } from "@/redux/store";
 // import SessionSelectors from "../redux/session/sessionSelector";
 
 interface ErrorContext {
@@ -53,11 +55,8 @@ const RequestMethod = {
 };
 
 export function getAuthToken() {
-  // const token = SessionSelectors.SelectShareToken(store.getState());
-  // if (token) return token;
-  // const { idToken } = SessionSelectors.SelectToken(store.getState());
-  // return idToken;
-  return "";
+  const { idToken } = SessionSelectors.SelectToken(store.getState());
+  return idToken;
 }
 
 function dofillInErrorWithDefaults(
@@ -105,6 +104,7 @@ async function doRequest(
         // auth
         ...(isAuthenticated && { Authorization: `Bearer ${getAuthToken()}` }),
         "Content-Type": "application/json",
+        ACTIVE_ORGANISATION_ID: "or50cc0bda",
         ...config?.headers,
       },
     };
@@ -185,7 +185,7 @@ async function doRequest(
 
 export async function get(
   endpoint: string,
-  params?: Record<string, any>,
+  params?: Record<string, string>,
   requestConfig?: Config,
   isAuthenticated?: boolean
 ): Promise<any> {

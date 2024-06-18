@@ -1,5 +1,6 @@
 const routePaths = {
   login: "/login",
+  userManagement: "/users",
   signUp: "/signUp",
   forgotPassword: "/forgot-password",
 };

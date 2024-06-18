@@ -22,11 +22,14 @@
   outline: 0 !important;
   background-color: #ffffff !important;
 }
-
 .common-input {
-  border-radius: 6px;
-  font-weight: 500;
-  color: $gray-6;
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+  color: $gray-6 !important;
   height: 45px !important;
-  border: 1px solid $gray-4;
+  border: 1px solid $gray-4 !important;
+}
+
+.ant-form-item-label {
+  font-weight: 600;
 }

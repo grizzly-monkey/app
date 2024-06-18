@@ -1,7 +1,7 @@
 import { getKeyForAction } from "@/utilities/actionUtility";
 import { createSelector } from "@reduxjs/toolkit";
 
-type requesting = { [key: string]: any };
+type requesting = { [key: string]: boolean };
 
 interface State {
   requesting: requesting;

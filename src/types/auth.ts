@@ -10,3 +10,11 @@ export type registerType = {
   password: string;
   confirmPassword?: string;
 };
+export type sendOTPType = {
+  phone: string;
+};
+export type forgotPasswordType = {
+  phoneNumber: string;
+  otp: string;
+  password: string;
+};
