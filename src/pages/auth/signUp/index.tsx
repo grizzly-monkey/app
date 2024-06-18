@@ -1,12 +1,86 @@
-import Button from "@/components/ui/button";
-import Input from "@/components/ui/input";
-import PhoneInput from "@/components/ui/input/PhoneInput";
+import Button from "@/components/common/button";
+import AlertError from "@/components/common/error/AlertError";
+import Form, { useForm } from "@/components/common/form";
+import Input from "@/components/common/input";
+import PhoneInput from "@/components/common/input/phoneInput";
+import PasswordPolicyChecker, {
+  checkPolicyStatus,
+  getInitialPolicyStatus,
+} from "@/components/common/passwordPolicyChecker";
+import Tooltip from "@/components/common/tooltip";
+import { passwordPolicy } from "@/config/consts";
 import routePaths from "@/config/routePaths";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import AccountActions from "@/redux/account/actions";
+import { removeByActionType } from "@/redux/error/errorAction";
+import { makeSelectErrorModel } from "@/redux/error/errorSelector";
+import { makeRequestingSelector } from "@/redux/requesting/requestingSelector";
+import { registerType } from "@/types/auth";
+import { getKeyForAction } from "@/utilities/actionUtility";
 import { Images } from "@/utilities/imagesPath";
-import { Form } from "antd";
+import { useEffect, useState } from "react";
+import { IoEye, IoEyeOff } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
+const selectLoading = makeRequestingSelector();
+const selectError = makeSelectErrorModel();
+
+const iconStyle = {
+  fontSize: 22,
+  cursor: "pointer",
+};
+
 const SignUp = () => {
+  const [form] = useForm();
+  const dispatch = useAppDispatch();
+
+  const [policiesStatus, setPolicyStatus] = useState(
+    getInitialPolicyStatus(passwordPolicy)
+  );
+  const [isPasswordHintActive, setPasswordHintActive] = useState(false);
+  const [password, setPassword] = useState("");
+
+  const error = useAppSelector((state) =>
+    selectError(state, AccountActions.REQUEST_REGISTER_FINISHED)
+  );
+  const loading = useAppSelector((state) =>
+    selectLoading(state, [AccountActions.REQUEST_REGISTER])
+  );
+
+  const onFinish = (values: registerType) => {
+    const payload = { ...values };
+    payload.phone = `+${payload.phone}`;
+    delete payload.confirmPassword;
+
+    dispatch(AccountActions.register(payload));
+  };
+
+  const validatePassword = (value: string): Promise<void> => {
+    const status = checkPolicyStatus(policiesStatus, password, passwordPolicy);
+    const isPasswordValid = Object.values(status).every((val) => val);
+    setPolicyStatus(status);
+    return new Promise((resolve, reject) => {
+      if (!value || value.length === 0 || isPasswordValid) {
+        resolve();
+      } else {
+        reject(new Error("Password does not agree to the policy"));
+      }
+    });
+  };
+
+  function renderPasswordIcon() {
+    return (visible: boolean) =>
+      visible ? <IoEye style={iconStyle} /> : <IoEyeOff style={iconStyle} />;
+  }
+
+  useEffect(() => {
+    return () => {
+      if (error) {
+        dispatch(removeByActionType(getKeyForAction(error?.actionType)));
+      }
+    };
+  }, []);
+
   return (
     <div className="signUp_container">
       <div className="form_main_container">
@@ -24,15 +98,36 @@ const SignUp = () => {
             </div>
           </div>
 
-          <Form
-            // onFinish={onFinish}
-            // onFinishFailed={onFinishFailed}
-            layout="vertical"
-          >
+          <AlertError error={error} />
+
+          <Form form={form} onFinish={onFinish} layout="vertical">
             <div className="input_row">
+              <PhoneInput
+                label="Phone number"
+                name="phone"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your phone number!",
+                  },
+                ]}
+              />
+
+              <Input
+                label="Organisation name"
+                name="organisationName"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your organisation name!",
+                  },
+                ]}
+                placeholder="Enter your organisation name"
+              />
+
               <Input
                 label="First name"
-                name="email"
+                name="firstName"
                 rules={[
                   {
                     required: true,
@@ -43,7 +138,7 @@ const SignUp = () => {
               />
               <Input
                 label="Last name"
-                name="email"
+                name="lastName"
                 rules={[
                   {
                     required: true,
@@ -53,68 +148,72 @@ const SignUp = () => {
                 placeholder="Enter your last name"
               />
 
-              <PhoneInput />
-
-              <Input
-                label="Email"
-                name="email"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your email!",
-                  },
-                ]}
-                placeholder="Enter your email"
-              />
-
-              <Input
-                label="Password"
-                name="email"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your password!",
-                  },
-                ]}
-                placeholder="Enter your password"
-              />
+              <Tooltip
+                overlayInnerStyle={{ backgroundColor: "white", width: "250px" }}
+                destroyTooltipOnHide={false}
+                open={isPasswordHintActive}
+                onOpenChange={setPasswordHintActive}
+                title={
+                  <PasswordPolicyChecker
+                    password={password}
+                    policy={passwordPolicy}
+                  />
+                }
+                placement="right"
+              >
+                <Input
+                  label="Password"
+                  name="password"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your password!",
+                    },
+                    { validator: (_, value) => validatePassword(value) },
+                  ]}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                  onFocus={() => {
+                    setPasswordHintActive(true);
+                  }}
+                  onBlur={() => {
+                    setPasswordHintActive(false);
+                  }}
+                  iconRender={renderPasswordIcon()}
+                  isPasswordInput
+                  placeholder="Enter your password"
+                />
+              </Tooltip>
               <Input
                 label="Confirm Password"
-                name="email"
+                name="confirmPassword"
                 rules={[
                   {
                     required: true,
                     message: "Please input your confirm password!",
                   },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue("password") === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject("Password don't match");
+                    },
+                  }),
                 ]}
+                iconRender={renderPasswordIcon()}
+                isPasswordInput
                 placeholder="Enter your confirm password"
               />
             </div>
 
-            <Input
-              label="Organisation name"
-              name="email"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your organisation name!",
-                },
-              ]}
-              placeholder="Enter your organisation name"
+            <Button
+              loading={loading}
+              htmlType="submit"
+              label="Sign up"
+              type="primary"
             />
-            <Input
-              label="Address"
-              name="email"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your address!",
-                },
-              ]}
-              placeholder="Enter your address"
-            />
-
-            <Button label="Sign up" onClick={() => {}} type="primary" />
           </Form>
 
           <Link to={routePaths.login}>

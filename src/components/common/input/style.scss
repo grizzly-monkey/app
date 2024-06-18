@@ -1,3 +1,5 @@
+@import "../../../assets/styles/mixins.scss";
+
 .phone_input_main_container {
   display: flex;
   flex-direction: column;
@@ -19,4 +21,15 @@
   box-shadow: 0 0 0 2px rgba(4, 13, 19, 0.53) !important;
   outline: 0 !important;
   background-color: #ffffff !important;
+}
+.common-input {
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+  color: $gray-6 !important;
+  height: 45px !important;
+  border: 1px solid $gray-4 !important;
+}
+
+.ant-form-item-label {
+  font-weight: 600;
 }

@@ -1,5 +1,6 @@
 const routePaths = {
   login: "/login",
+  userManagement: "/users",
   signUp: "/signUp",
   forgotPassword: "/forgot-password",
   farm:'/farm',
@@ -8,7 +9,6 @@ const routePaths = {
   inventory:'/inventory',
   tasks:'/tasks',
   workflow:'/workflow',
-  userManagement: "/users",
 };
 
 export default routePaths;

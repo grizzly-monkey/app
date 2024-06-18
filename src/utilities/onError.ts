@@ -1,5 +1,5 @@
 // import { store } from "../redux/store";
-import ErrorModel from "@/models/ErrorModel";
+import ErrorModel from "@/models/error/errorModel";
 import { createNotification, createErrorNotification } from "./notifications";
 // import SessionActions from "../redux/session/actions";
 

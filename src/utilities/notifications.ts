@@ -1,4 +1,4 @@
-import ErrorModel from "@/models/ErrorModel";
+import ErrorModel from "@/models/error/errorModel";
 import { notification } from "antd";
 import { cancel } from "redux-saga/effects";
 

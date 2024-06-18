@@ -1,4 +1,4 @@
-import ErrorDetail from "./ErrorDetail";
+import ErrorDetail from "./errorDetail";
 
 export default class ErrorModel {
   errors = [ErrorDetail];
@@ -10,10 +10,6 @@ export default class ErrorModel {
   code = null;
 
   timestamp = 0;
-
-  traceId = null;
-
-  XMLResponse = null;
 
   actionType = "";
 

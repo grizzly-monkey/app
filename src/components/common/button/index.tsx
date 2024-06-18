@@ -4,14 +4,15 @@ import { ButtonProps as AntdButtonProps } from "antd/es/button/button";
 interface ButtonProps extends AntdButtonProps {
   label: string;
   style?: React.CSSProperties;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const Button = (props: ButtonProps) => {
   return (
     <AntdButton
-      {...props}
+      iconPosition="end"
       type={props.type ? props.type : "primary"}
+      {...props}
       style={{
         width: "100%",
         padding: "22px 0",

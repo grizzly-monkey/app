@@ -54,15 +54,6 @@
   color: $gray-6;
 }
 
-.ant-input {
-  border-radius: 6px;
-  font-weight: 500;
-  color: $gray-6;
-}
-.ant-input {
-  height: 45px;
-  border: 1px solid $gray-4;
-}
 .ant-form-item-label {
   font-weight: 600;
 }
@@ -72,10 +63,14 @@ a {
   color: inherit;
 }
 
-.ant-btn span {
-  color: white;
+.text-success {
+  color: $success;
 }
 
-.ant-form-item-required::before {
-  content: "" !important;
+.text-danger {
+  color: $danger;
+}
+
+.cursor_pointer {
+  cursor: pointer;
 }
