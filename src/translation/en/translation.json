@@ -1,5 +1,19 @@
 {
-  "line1": "Successfully login",
-  "line2": "Space exploration is a study of the cosmos. There are many aspects of the universe that we do not fully understand.",
-  "line3": "Astronauts visit space and report back to us on their experiences there."
+  "global.name": "Name",
+  "global.add": "Add",
+  "global.firstName": "First Name",
+  "global.lastName": "Last Name",
+  "global.contactNumber": "Contact Number",
+  "global.roles": "Roles",
+  "global.users": "Users",
+  "userManagement.addUser": "Add User",
+  "userManagement.addUserModal.firstNamePlaceholder": "Enter  first name",
+  "userManagement.addUserModal.firstNameError": "Please input  first name",
+  "userManagement.addUserModal.lastNamePlaceholder": "Enter last name",
+  "userManagement.addUserModal.lastNameError": "Please input last name",
+  "userManagement.addUserModal.phonePlaceholder": "Enter phone number",
+  "userManagement.addUserModal.phoneError": "Please input phone number",
+  "userManagement.addUserModal.rolePlaceholder": "Select roles",
+  "userManagement.addUserModal.roleError": "Please select roles",
+  "userManagement.searchUserPlaceholder": "Search user"
 }

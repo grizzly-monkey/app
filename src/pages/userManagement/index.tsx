@@ -11,6 +11,7 @@ import UserSidebar from "./sidebar";
 import columns from "./columns";
 import { User } from "./types";
 import requestingSelector from "@/redux/requesting/requestingSelector";
+import { getTranslation } from "@/translation/i18n";
 
 
 const { Search } = Input;
@@ -21,20 +22,20 @@ const UserManagement = () => {
     const users = useSelector(UserSelectors.selectUsers)
     const selectedUser = useSelector(UserSelectors.selectSelectedUser)
     const loading = useSelector((state) =>
-    requestingSelector(state, [UserActions.FETCH_USERS], ""),
-)
+        requestingSelector(state, [UserActions.FETCH_USERS], ""),
+    )
     const onRow = (record: User) => {
         return {
             onClick: () => {
                 dispatch(UserActions.selectUser(record))
             }
         }
-    
+
     }
 
     const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        const filteredData = users.filter((user:User) => {
+        const filteredData = users.filter((user: User) => {
             return user.firstName.toLowerCase().includes(value.toLowerCase()) || user.lastName.toLowerCase().includes(value.toLowerCase())
         })
         setFilteredUsers(filteredData)
@@ -44,29 +45,33 @@ const UserManagement = () => {
     useEffect(() => {
         dispatch(UserActions.fetchUsers())
     }, [])
-    
+
     useEffect(() => {
         setFilteredUsers(users)
     }, [users])
 
     return (
-        <div style={{height:'100%',display:'flex'}}>
+        <div style={{ height: '100%', display: 'flex' }}>
             <Card
-                style={{ width: !selectedUser ? '100%' : 'calc( 100% - 350px)', height:'fit-content' ,paddingTop:'20px'}}
+                style={{ width: !selectedUser ? '100%' : 'calc( 100% - 350px)', height: 'fit-content', paddingTop: '20px' }}
                 bordered={false}
-                title="Users"
+                title={getTranslation("global.users")}
                 className="criclebox tablespace"
                 extra={
                     <Flex gap={20}>
-                        <Search placeholder="input search text"  style={{ width: '200%', height:'32px'}} onChange={onSearch}/>
-                        <AddUserButton/>
+                        <Search placeholder={getTranslation("userManagement.searchUserPlaceholder")}
+                            style={{ width: '200%', height: '32px' }}
+                            onChange={onSearch} />
+                        <AddUserButton />
                     </Flex>
-
-
                 }
             >
                 <div className="table-responsive">
-                    <Table columns={columns} dataSource={filteredUsers} className="ant-border-space" onRow={onRow} loading={loading}
+                    <Table columns={columns}
+                        dataSource={filteredUsers}
+                        className="ant-border-space"
+                        onRow={onRow}
+                        loading={loading}
                     />
                 </div>
             </Card>
