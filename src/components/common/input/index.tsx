@@ -8,6 +8,8 @@ interface AntdInputProps extends InputProps {
   label?: string;
   placeholder?: string;
   className?: string;
+  iconRender?: any;
+  isPasswordInput?: any;
 }
 
 const Input = ({
@@ -17,7 +19,17 @@ const Input = ({
   placeholder,
   className,
   disabled,
+  value,
+  onChange,
+  onFocus,
+  onBlur,
+  iconRender,
+  isPasswordInput,
+  maxLength,
+  type,
 }: AntdInputProps) => {
+  const RenderInput = isPasswordInput ? AntdInput.Password : AntdInput;
+
   return (
     <Form.Item
       name={name}
@@ -26,7 +38,18 @@ const Input = ({
       rules={rules}
       style={{ marginBottom: "20px" }}
     >
-      <AntdInput className="common-input" disabled={disabled} placeholder={placeholder} />
+      <RenderInput
+        value={value}
+        onChange={onChange}
+        disabled={disabled}
+        placeholder={placeholder}
+        maxLength={maxLength}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        iconRender={iconRender}
+        type={type}
+        className="common-input"
+      />
     </Form.Item>
   );
 };

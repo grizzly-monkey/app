@@ -54,9 +54,23 @@
   color: $gray-6;
 }
 
-
+.ant-form-item-label {
+  font-weight: 600;
+}
 
 a {
   text-decoration: none;
   color: inherit;
+}
+
+.text-success {
+  color: $success;
+}
+
+.text-danger {
+  color: $danger;
+}
+
+.cursor_pointer {
+  cursor: pointer;
 }

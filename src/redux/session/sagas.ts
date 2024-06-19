@@ -1,11 +1,12 @@
-import { all, call, cancel, put, takeEvery } from "redux-saga/effects";
-import SessionActions from "./actions";
+import ErrorModel from "@/models/error/errorModel";
+import { router } from "@/routes";
 import { SagaAction } from "@/types/redux";
-import SessionEffects from "./effects";
 import { runEffect } from "@/utilities/actionUtility";
 import { CognitoUser } from "amazon-cognito-identity-js";
+import { all, call, cancel, put, takeEvery } from "redux-saga/effects";
+import SessionActions from "./actions";
+import SessionEffects from "./effects";
 import UserPool from "./UserPool";
-import ErrorModel from "@/models/error/errorModel";
 
 export function getCognitoUser(phoneNumber: string) {
   return new CognitoUser({
@@ -21,7 +22,7 @@ export function getCognitoUser(phoneNumber: string) {
 }
 
 function* REQUEST_LOGIN(action: SagaAction): Generator {
-  const cognitoUserObject: any = getCognitoUser(
+  const cognitoUserObject: CognitoUser = getCognitoUser(
     `+${action.payload.phoneNumber}`
   );
   yield put(SessionActions.setCognitoUserObj(cognitoUserObject));
@@ -38,6 +39,8 @@ function* REQUEST_LOGIN(action: SagaAction): Generator {
   if (result instanceof ErrorModel) yield cancel();
 
   yield put(SessionActions.setUserTokens(result));
+
+  router.navigate("/users");
 }
 
 export default function* rootSaga(): Generator {

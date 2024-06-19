@@ -1,5 +1,5 @@
 import ErrorModel from "@/models/error/errorModel";
-import { AuthenticationDetails } from "amazon-cognito-identity-js";
+import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
 import ErrorDetail from "../../models/error/errorDetail";
 import CognitoSessionModel from "./models/login/CognitoSessionModel";
 
@@ -37,7 +37,7 @@ export function getCallbacks(resolve: (value: any) => void): Callbacks {
 
 export default class SessionEffects {
   static requestLogin(
-    user: any,
+    user: CognitoUser,
     phoneNumber: string,
     password: string
   ): Promise<any> {

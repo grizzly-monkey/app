@@ -1,6 +1,7 @@
 import { loginType } from "@/types/auth";
 import { createAction } from "@/utilities/actionUtility";
 import CognitoSessionModel from "./models/login/CognitoSessionModel";
+import { CognitoUser } from "amazon-cognito-identity-js";
 
 const SessionActions = {
   REQUEST_LOGIN: "session/REQUEST_LOGIN",
@@ -11,7 +12,7 @@ const SessionActions = {
   login: (values: loginType) =>
     createAction(SessionActions.REQUEST_LOGIN, values),
 
-  setCognitoUserObj: (cognitoUserObject: any) =>
+  setCognitoUserObj: (cognitoUserObject: CognitoUser) =>
     createAction(SessionActions.SET_COGNITO_USER_OBJ, { cognitoUserObject }),
 
   setUserTokens: (token: CognitoSessionModel) =>

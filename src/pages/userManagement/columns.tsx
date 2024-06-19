@@ -1,12 +1,13 @@
 import { TableProps, Avatar, Typography, Tag } from "antd";
 import { getAlphabetColor, getRoleColor } from "./utils";
 import { User } from "./types";
+import { getTranslation } from "@/translation/i18n";
 
 
 const columns: TableProps<User>['columns'] = [
     {
-        title: 'Name',
-        dataIndex: 'Name',
+        title: getTranslation('global.name'),
+        dataIndex: 'name',
         render: (_, record) => {
             const backgroundColor = getAlphabetColor(record?.firstName[0]);
             return <>
@@ -23,12 +24,12 @@ const columns: TableProps<User>['columns'] = [
     },
    
     {
-        title: 'Contact Number',
+        title: getTranslation('global.contactNumber'),
         dataIndex: 'phone',
         key: '2',
     },
     {
-        title: 'Roles',
+        title: getTranslation('global.roles'),
         dataIndex: 'roles',
         // render: (roles) => <>
         //     {roles.map((role: string) => {

@@ -1,25 +1,44 @@
 import Button from "@/components/common/button";
 import AlertError from "@/components/common/error/AlertError";
-import FullAlertError from "@/components/common/error/FullAlertError";
 import Form, { useForm } from "@/components/common/form";
 import Input from "@/components/common/input";
 import PhoneInput from "@/components/common/input/phoneInput";
+import PasswordPolicyChecker, {
+  checkPolicyStatus,
+  getInitialPolicyStatus,
+} from "@/components/common/passwordPolicyChecker";
+import Tooltip from "@/components/common/tooltip";
+import { passwordPolicy } from "@/config/consts";
 import routePaths from "@/config/routePaths";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import AccountActions from "@/redux/account/actions";
+import { removeByActionType } from "@/redux/error/errorAction";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import { makeRequestingSelector } from "@/redux/requesting/requestingSelector";
 import { registerType } from "@/types/auth";
+import { getKeyForAction } from "@/utilities/actionUtility";
 import { Images } from "@/utilities/imagesPath";
-import { REGEX } from "@/utilities/regex";
+import { useEffect, useState } from "react";
+import { IoEye, IoEyeOff } from "react-icons/io5";
 import { Link } from "react-router-dom";
 
 const selectLoading = makeRequestingSelector();
 const selectError = makeSelectErrorModel();
 
+const iconStyle = {
+  fontSize: 22,
+  cursor: "pointer",
+};
+
 const SignUp = () => {
   const [form] = useForm();
   const dispatch = useAppDispatch();
+
+  const [policiesStatus, setPolicyStatus] = useState(
+    getInitialPolicyStatus(passwordPolicy)
+  );
+  const [isPasswordHintActive, setPasswordHintActive] = useState(false);
+  const [password, setPassword] = useState("");
 
   const error = useAppSelector((state) =>
     selectError(state, AccountActions.REQUEST_REGISTER_FINISHED)
@@ -35,6 +54,32 @@ const SignUp = () => {
 
     dispatch(AccountActions.register(payload));
   };
+
+  const validatePassword = (value: string): Promise<void> => {
+    const status = checkPolicyStatus(policiesStatus, password, passwordPolicy);
+    const isPasswordValid = Object.values(status).every((val) => val);
+    setPolicyStatus(status);
+    return new Promise((resolve, reject) => {
+      if (!value || value.length === 0 || isPasswordValid) {
+        resolve();
+      } else {
+        reject(new Error("Password does not agree to the policy"));
+      }
+    });
+  };
+
+  function renderPasswordIcon() {
+    return (visible: boolean) =>
+      visible ? <IoEye style={iconStyle} /> : <IoEyeOff style={iconStyle} />;
+  }
+
+  useEffect(() => {
+    return () => {
+      if (error) {
+        dispatch(removeByActionType(getKeyForAction(error?.actionType)));
+      }
+    };
+  }, []);
 
   return (
     <div className="signUp_container">
@@ -52,8 +97,6 @@ const SignUp = () => {
               </p>
             </div>
           </div>
-
-          <FullAlertError error={error} />
 
           <AlertError error={error} />
 
@@ -105,22 +148,43 @@ const SignUp = () => {
                 placeholder="Enter your last name"
               />
 
-              <Input
-                label="Password"
-                name="password"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your password!",
-                  },
-                  {
-                    pattern: REGEX.PASSWORD_VALIDATION,
-                    message:
-                      "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
-                  },
-                ]}
-                placeholder="Enter your password"
-              />
+              <Tooltip
+                overlayInnerStyle={{ backgroundColor: "white", width: "250px" }}
+                destroyTooltipOnHide={false}
+                open={isPasswordHintActive}
+                onOpenChange={setPasswordHintActive}
+                title={
+                  <PasswordPolicyChecker
+                    password={password}
+                    policy={passwordPolicy}
+                  />
+                }
+                placement="right"
+              >
+                <Input
+                  label="Password"
+                  name="password"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please input your password!",
+                    },
+                    { validator: (_, value) => validatePassword(value) },
+                  ]}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                  onFocus={() => {
+                    setPasswordHintActive(true);
+                  }}
+                  onBlur={() => {
+                    setPasswordHintActive(false);
+                  }}
+                  iconRender={renderPasswordIcon()}
+                  isPasswordInput
+                  placeholder="Enter your password"
+                />
+              </Tooltip>
               <Input
                 label="Confirm Password"
                 name="confirmPassword"
@@ -138,6 +202,8 @@ const SignUp = () => {
                     },
                   }),
                 ]}
+                iconRender={renderPasswordIcon()}
+                isPasswordInput
                 placeholder="Enter your confirm password"
               />
             </div>

@@ -5,7 +5,7 @@ import translationEnglish from "./en/translation.json";
 
 const resources = {
   en: {
-    home: translationEnglish,
+    translation: translationEnglish,
   },
 };
 
@@ -13,5 +13,9 @@ i18next.use(initReactI18next).init({
   resources,
   lng: "en",
 });
+
+export const getTranslation = (key: string) => {
+  return i18next.t(key);
+};
 
 export default i18next;

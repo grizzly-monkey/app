@@ -14,7 +14,7 @@ import Inventory from "./pages/inventory";
 import Tasks from "./pages/tasks";
 import Workflow from "./pages/workflow";
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,

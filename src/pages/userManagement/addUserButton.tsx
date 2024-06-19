@@ -11,6 +11,7 @@ import Button from "@/components/common/button";
 import Form from "@/components/common/form";
 import Input from "@/components/common/input";
 import PhoneInput from "@/components/common/input/phoneInput";
+import { getTranslation } from "@/translation/i18n";
 
 const AddUserButton = () => {
     const [prevLoading, setPrevLoading] = useState(false);
@@ -50,66 +51,75 @@ const AddUserButton = () => {
 
     return (
         <>
-            <Button label="Add User" style={{ padding: "0 0" }} onClick={showModal} />
+            <Button label={getTranslation("userManagement.addUser")} style={{ padding: "0 0" }} onClick={showModal} />
             <Modal
                 style={{ padding: "20px 30px" }}
-                title="Add User"
+                title={getTranslation("userManagement.addUser")}
                 open={isModalOpen}
                 onCancel={handleCancel}
                 onOk={handleOk}
                 confirmLoading={loading}
-                okText="Add"
+                okText={getTranslation("global.add")}
                 onClose={handleCancel}
             >
                 <Form form={form} layout="vertical">
                     <Row gutter={24}>
                         <Col span={24}>
                             <Input
-                                label="First name"
+                                label={getTranslation("global.firstName")}
                                 name="firstName"
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Please input your first name",
+                                        message: getTranslation("userManagement.addUserModal.firstNameError"),
                                     },
                                 ]}
-                                placeholder="Enter your first name"
+                                placeholder={getTranslation("userManagement.addUserModal.firstNamePlaceholder")}
                             />
                         </Col>
                     </Row>
                     <Row gutter={24}>
                         <Col span={24}>
                             <Input
-                                label="Last name"
+                                label={getTranslation("global.lastName")}
                                 name="lastName"
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Please input your last name!",
+                                        message: getTranslation("userManagement.addUserModal.lastNameError"),
                                     },
                                 ]}
-                                placeholder="Enter your last name"
+                                placeholder={getTranslation("userManagement.addUserModal.lastNamePlaceholder")}
                             />
                         </Col>
                     </Row>
                     <Row gutter={24}>
                         <Col span={24}>
-                            <PhoneInput label="Contact Number" name="phone" />
+                            <PhoneInput 
+                            label={getTranslation("global.contactNumber")} 
+                            name="phone"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: getTranslation("userManagement.addUserModal.phoneError"),
+                                },
+                            ]}
+                             />
                         </Col>
                     </Row>
                     <Row gutter={24}>
                         <Col span={24}>
                             <AntdForm.Item
-                                label="Roles"
+                                label={getTranslation("global.roles")}
                                 name="roles"
                                 rules={[
                                     {
                                         required: true,
-                                        message: "Please select roles",
+                                        message: getTranslation("userManagement.addUserModal.rolesError"),
                                     },
                                 ]}
                             >
-                                <Select placeholder="Select Role" options={roles} mode="multiple" />
+                                <Select placeholder={getTranslation("userManagement.addUserModal.rolePlaceholder")} options={roles} mode="multiple" />
                             </AntdForm.Item>
                         </Col>
                     </Row>
