@@ -9,6 +9,11 @@ class UserSelectors {
   public static selectSelectedUser(state: any) {
     return state.users.selectedUser;
   }
+  
+  public static selectUpdatedUser(state: any) {
+    return state.users.updatedUser;
+  
+  }
 
   static SelectResetOTPSent = (state: RootState) =>
     !!state?.users?.passwordResetOTPSent;
