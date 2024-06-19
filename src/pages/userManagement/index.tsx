@@ -1,4 +1,4 @@
-import { Input, Flex } from "antd";
+import { Input, Flex, Spin } from "antd";
 import Table from "../../components/ui/table";
 import Card from "@/components/ui/card";
 import "./style.scss";
@@ -12,6 +12,7 @@ import columns from "./columns";
 import { User } from "./types";
 import requestingSelector from "@/redux/requesting/requestingSelector";
 import { getTranslation } from "@/translation/i18n";
+import { LoadingOutlined } from '@ant-design/icons';
 
 
 const { Search } = Input;
@@ -43,7 +44,7 @@ const UserManagement = () => {
     }
 
     useEffect(() => {
-        dispatch(UserActions.fetchUsers())
+        if(!users || users.length === 0) dispatch(UserActions.fetchUsers())
     }, [])
 
     useEffect(() => {
@@ -71,7 +72,7 @@ const UserManagement = () => {
                         dataSource={filteredUsers}
                         className="ant-border-space"
                         onRow={onRow}
-                        loading={loading}
+                        loading={{ spinning: loading, size: "large" ,indicator: <Spin indicator={<LoadingOutlined spin />}/>}}
                     />
                 </div>
             </Card>

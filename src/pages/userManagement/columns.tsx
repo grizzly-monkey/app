@@ -6,7 +6,7 @@ import { getTranslation } from "@/translation/i18n";
 
 const columns: TableProps<User>['columns'] = [
     {
-        title: getTranslation('userManagement.name'),
+        title: getTranslation('global.name'),
         dataIndex: 'name',
         render: (_, record) => {
             const backgroundColor = getAlphabetColor(record?.firstName[0]);
