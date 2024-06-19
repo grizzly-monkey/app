@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import path from "path";
 import react from "@vitejs/plugin-react";
 import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
+import EnvironmentPlugin from "vite-plugin-environment";
 
 const manifestForPlugin: Partial<VitePWAOptions> = {
   registerType: "prompt",
@@ -46,7 +47,7 @@ const manifestForPlugin: Partial<VitePWAOptions> = {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), VitePWA(manifestForPlugin)],
+  plugins: [react(), VitePWA(manifestForPlugin), EnvironmentPlugin("all")],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src/"),
