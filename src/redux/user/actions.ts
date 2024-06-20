@@ -16,6 +16,14 @@ const UserActions = {
     "users/REQUEST_RESET_PASSWORD_OTP_FINISHED",
   RESET_PASSWORD: "users/RESET_PASSWORD",
   RESET_PASSWORD_FINISHED: "users/RESET_PASSWORD_FINISHED",
+  UPDATE_USER_FIRST_NAME: "users/UPDATE_USER_FIRST_NAME",
+  UPDATE_USER_FIRST_NAME_FINISHED: "users/UPDATE_USER_FIRST_NAME_FINISHED",
+  UPDATE_USER_LAST_NAME: "users/UPDATE_USER_LAST_NAME",
+  UPDATE_USER_LAST_NAME_FINISHED: "users/UPDATE_USER_LAST_NAME_FINISHED",
+  UPDATE_USER_ROLES: "users/UPDATE_USER_ROLES",
+  UPDATE_USER_ROLES_FINISHED: "users/UPDATE_USER_ROLES_FINISHED",
+  DELETE_USER: "users/DELETE_USER",
+  DELETE_USER_FINISHED: "users/DELETE_USER_FINISHED",
 
   fetchUsers() {
     return createAction(this.FETCH_USERS);
@@ -39,6 +47,22 @@ const UserActions = {
 
   resetPasswordWithOTP(payload: forgotPasswordType) {
     return createAction(this.RESET_PASSWORD, payload);
+  },
+
+  updateUserFirstName(payload: any) {
+    return createAction(this.UPDATE_USER_FIRST_NAME, payload);
+  },
+
+  updateUserLastName(payload: any) {
+    return createAction(this.UPDATE_USER_LAST_NAME, payload);
+  },
+
+  updateUserRoles(payload: any) {
+    return createAction(this.UPDATE_USER_ROLES, payload);
+  },
+
+  deleteUser(payload: any) {
+    return createAction(this.DELETE_USER, payload);
   },
 };
 

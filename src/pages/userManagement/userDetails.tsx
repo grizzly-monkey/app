@@ -2,7 +2,10 @@ import CustomEdit from "@/components/common/CustomEditable/CustomEdit";
 import Form from "@/components/common/form";
 import UserSelectors from "@/redux/user/selectors";
 import { FormInstance } from "antd";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { roles } from "./utils";
+import requestingSelector from "@/redux/requesting/requestingSelector";
+import UserActions from "@/redux/user/actions";
 
 interface userDetailsProps {
     toggleField: Function;
@@ -10,8 +13,29 @@ interface userDetailsProps {
     form: FormInstance
 }
 
+
 const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
+    const dispatch = useDispatch();
     const selectedUser = useSelector(UserSelectors.selectSelectedUser)
+
+    const firstNameUdating = useSelector((state)=>requestingSelector(state,[UserActions.UPDATE_USER_FIRST_NAME]))
+    const lastNameUdating = useSelector((state)=>requestingSelector(state,[UserActions.UPDATE_USER_LAST_NAME]))
+    const rolesUdating = useSelector((state)=>requestingSelector(state,[UserActions.UPDATE_USER_ROLES]))
+
+    const updateFirstName =()=>{
+        const firstName = form.getFieldValue([`${selectedUser?.userId}`, 'firstName'])
+        dispatch(UserActions.updateUserFirstName({id:selectedUser?.userId, data:{firstName}}))
+    }
+
+    const updateLastName =()=>{
+        const lastName = form.getFieldValue([`${selectedUser?.userId}`, 'lastName'])
+        dispatch(UserActions.updateUserLastName({id:selectedUser?.userId, data:{lastName}}))
+    }
+
+    const updateRoles =()=>{
+        const roles = form.getFieldValue([`${selectedUser?.userId}`, 'roles'])
+        dispatch(UserActions.updateUserRoles({id:selectedUser?.userId, data:{roles}}))
+    }
 
     return (
         <Form form={form}>
@@ -28,14 +52,14 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
                                 <CustomEdit
                                     form={form}
                                     name="firstName"
-                                    onSubmit={(value) => console.log("customEdit", value)}
+                                    onSubmit={updateFirstName}
                                     isActive={field.firstName}
-                                    loading={false}
+                                    loading={firstNameUdating}
                                     value={selectedUser?.firstName}
                                     setSubmitDisable={(value) => console.log(value)}
                                     onCancel={() => toggleField('firstName', false)}
                                     setActive={() => toggleField('firstName', true)}
-                                    userDefineField={{ field: "firstName" }}
+                                    userDefineField={{ fieldId: selectedUser.userId}}
 
                                 >
                                     {selectedUser?.firstName}
@@ -49,10 +73,10 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
                             <td>
                             <CustomEdit
                                     form={form}
-                                    name="firstName"
-                                    onSubmit={(value) => console.log("customEdit", value)}
+                                    name="lastName"
+                                    onSubmit={updateLastName}
                                     isActive={field.lastName}
-                                    loading={false}
+                                    loading={lastNameUdating}
                                     value={selectedUser?.firstName}
                                     setSubmitDisable={(value) => console.log(value)}
                                     onCancel={() => toggleField('lastName', false)}
@@ -81,15 +105,16 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
                             <td>
                                 <CustomEdit
                                     form={form}
-                                    name="role"
-                                    onSubmit={(value) => console.log("customEdit", value)}
+                                    name="roles"
+                                    onSubmit={updateRoles}
                                     isActive={field.roles}
-                                    loading={false}
-                                    value={selectedUser?.role}
+                                    loading={rolesUdating}
+                                    value={[{ label: selectedUser?.role, value: selectedUser?.role}]}
                                     setSubmitDisable={(value) => console.log(value)}
                                     onCancel={() => toggleField('roles', false)}
                                     setActive={() => toggleField('roles', true)}
-                                    userDefineField={{ field: "input" }}
+                                    userDefineField={{ options: roles}}
+                                    type="multiple"
                                 >
                                     {selectedUser?.role}
                                 </CustomEdit>

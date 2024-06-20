@@ -23,7 +23,7 @@ interface AlertErrorProps {
   error: errorModel;
 }
 
-const FullAlertError = ({ error }: AlertErrorProps) => {
+const FullAlertError = ({ error }: any) => {
   if (!error || !error?.errors) return null;
 
   const dispatch = useAppDispatch();
