@@ -1,6 +1,6 @@
-import { takeEvery, all, call, put, select, cancel } from "redux-saga/effects";
+import { takeEvery, all, call, put, cancel } from "redux-saga/effects";
 import UserActions from "./actions";
-import { runEffect } from "@/utilities/actionUtility";
+import { createAction, runEffect } from "@/utilities/actionUtility";
 import UserEffects from "./effects";
 import { SagaAction } from "@/types/redux";
 import UserModel from "./models/createModels/userModel";
@@ -8,7 +8,6 @@ import removeEmpty from "@/utilities/objectUtility";
 import { CognitoUser } from "amazon-cognito-identity-js";
 import { getCognitoUser } from "../session/sagas";
 import SessionActions from "../session/actions";
-import SessionSelectors from "../session/selectors";
 import { resultHasError } from "@/utilities/onError";
 import { successToast } from "@/utilities/toast";
 import { router } from "@/routes";
@@ -57,6 +56,10 @@ function* RESET_PASSWORD(action: SagaAction): Generator {
   );
 
   if (resultHasError(result)) yield cancel();
+
+  yield put(
+    createAction(UserActions.REQUEST_RESET_PASSWORD_OTP_FINISHED, false)
+  );
 
   successToast("Password updated successfully!!");
   router.navigate("/login");

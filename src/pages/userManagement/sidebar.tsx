@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SideBar from "@/components/ui/sidebar";
 import UserSelectors from "@/redux/user/selectors";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Dropdown, Flex, Popconfirm, Space, theme } from "antd";
+import { Divider, Dropdown, Flex, Popconfirm, Space, theme, Form as AntdForm } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import UserActions from "@/redux/user/actions";
 import { BsThreeDots } from "react-icons/bs";
@@ -11,23 +11,40 @@ import { useState } from "react";
 import Button from "@/components/common/button";
 import "./style.scss";
 import { getTranslation } from "@/translation/i18n";
+import CustomEdit from "@/components/common/CustomEditable/CustomEdit";
+import Form from "@/components/common/form";
+import UserDetails from "./userDetails";
 
 const { useToken } = theme;
 
 const UserSidebar = () => {
+    const initial ={
+        firstName: false,
+        lastName: false,
+        roles: false,
+    }
+    const [field, setField] = useState(initial)
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const { token } = useToken();
-
+    const [form] = AntdForm.useForm();
     const contentStyle: React.CSSProperties = {
         backgroundColor: token.colorBgElevated,
         borderRadius: token.borderRadiusLG,
         boxShadow: token.boxShadowSecondary,
     };
     const selectedUser = useSelector(UserSelectors.selectSelectedUser)
+    const updatedUser = useSelector(UserSelectors.selectUpdatedUser)
     const dispatch = useDispatch();
     const closeSidebar = () => {
         dispatch(UserActions.unSelectUser())
     }
+    const toggleField = (key:string, value:boolean) => setField({ ...field, [key]: value })
+
+    useEffect(() => {
+        if (updatedUser?.lastName) toggleField('firstName', false)
+        if (updatedUser?.lastName) toggleField('lastName', false)
+        if (updatedUser?.roles) toggleField('role', false)
+    }, [updatedUser])
 
     return (
         <SideBar isOpen={!!selectedUser} >
@@ -48,7 +65,7 @@ const UserSidebar = () => {
                                             okText={getTranslation("global.yes")}
                                             cancelText={getTranslation("global.cancel")}
                                             onCancel={() => setIsMenuOpen(false)}
-                                            
+
                                         >
                                             <Button icon={<DeleteOutlined />} type="primary" label={getTranslation("global.delete")}
                                                 style={{ padding: "0px 15px" }} danger />
@@ -63,42 +80,7 @@ const UserSidebar = () => {
                     </Flex>
                 </div>
                 <Divider />
-                <div className="user-details-sidebar" style={{ width: '100%' }}>
-                    <table>
-                        <tbody>
-                            <tr >
-                                <td>
-                                    <strong>
-                                        First Name
-                                    </strong>
-                                </td>
-                                <td>{selectedUser?.firstName}</td>
-                            </tr>
-                            <tr>
-                                <td><strong>
-                                    Last Name
-                                </strong></td>
-                                <td>{selectedUser?.lastName}</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <strong>
-                                        Contact Number
-                                    </strong>
-                                </td>
-                                <td>{selectedUser?.phone}</td>
-                            </tr>
-                            <tr >
-                                <td>
-                                    <strong>
-                                        Roles
-                                    </strong>
-                                </td>
-                                <td>{selectedUser?.role}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <UserDetails toggleField={toggleField} field={field} form={form} />
             </div>
         </SideBar>
     );

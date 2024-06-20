@@ -1,5 +1,5 @@
-import BaseReducer from "@/utilities/baseReducer";
 import SessionActions from "./actions";
+import BaseReducer from "@/utilities/baseReducer";
 
 export const initialState = {
   cognitoUserObject: null,
