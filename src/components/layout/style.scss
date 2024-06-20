@@ -3,7 +3,8 @@
 
 .ant-layout {
     background-color: #FAFAFA !important;
-    height: 100vh;
+    min-height: 100vh;
+    max-height: fit-content;
 }
 .ant-drawer-body {
     background-color: #FAFAFA !important;

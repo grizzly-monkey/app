@@ -13,6 +13,7 @@ import Reservoirs from "./pages/reservoirs";
 import Inventory from "./pages/inventory";
 import Tasks from "./pages/tasks";
 import Workflow from "./pages/workflow";
+import CreateFarm from "./pages/farm/CreateFarm";
 
 export const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ export const router = createBrowserRouter([
       {
         path: routePaths.workflow,
         element: <Workflow />,
+      },
+      {
+        path: routePaths.farmCreate,
+        element: <CreateFarm />,
       },
     ],
   },

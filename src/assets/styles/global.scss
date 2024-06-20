@@ -74,3 +74,11 @@ a {
 .cursor_pointer {
   cursor: pointer;
 }
+
+.btn-success {
+  background-color: $primary-extra-light;
+}
+
+.btn-success:hover {
+  background-color: $primary-extra-light !important;
+}

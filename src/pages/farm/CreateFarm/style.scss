@@ -1,0 +1,43 @@
+@import "../../../assets/styles/mixins.scss";
+
+.createForm {
+    height: 75vh;
+    display: grid;
+    grid-template-columns: 25% 75%;
+    // grid-template-columns: 0.2fr 0.1fr 1fr;
+    padding: 2rem 3rem;
+    gap:30px;
+    max-height: auto;
+    :global(.ant-tabs-nav-list) {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+    }
+    :global(.ant-tabs-tab) {
+      font-size: 20px !important;
+    }
+  }
+
+.ant-steps-item-container{
+    display: flex;
+  align-items: center;
+}
+
+.addForm {
+  // width: 900px;
+  // margin-left: auto;
+  
+}
+.stepperVertical {
+  display: 100%;
+}
+.stepperHorizontal {
+  display: none;
+}
+
+.reservoir {
+  margin-top: 10px;
+  // height: 500px;
+  height: calc(100vh - 400px);
+  overflow: auto;
+}

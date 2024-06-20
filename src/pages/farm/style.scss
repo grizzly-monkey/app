@@ -1,10 +1,7 @@
 @import "../../assets/styles/mixins.scss";
 
 .farm {
-        // background-color:#fff;
         margin-right: 20px;
-        // border-radius: 10px;
-        // padding:10px;
 }
 
 .grid-container {
@@ -13,17 +10,20 @@
     padding: 10px;
 }
 
-/* Responsive grid columns */
 .grid-container {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 }
 
 .grid-item {
-    background-color: #4CAF50;
     color: white;
-    padding: 20px;
-    text-align: center;
+    padding: 10px;
     font-size: 1.5em;
     border-radius: 5px;
-    // margin: 20px;
+}
+
+.activeTag {
+padding: 2px 10px;
+  background-color: green;
+  color: white;
+  border-radius: 20px;
 }
