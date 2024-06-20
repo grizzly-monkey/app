@@ -1,4 +1,4 @@
-import { getToModel, postToModel } from "@/utilities/effectUtility";
+import { delToModel, getToModel, patchToModel, postToModel } from "@/utilities/effectUtility";
 import UserModel from "./models/getModels/userModel";
 import api from "@/utilities/api";
 import { getErrorInstanceFromCognitoError } from "../session/effects";
@@ -40,6 +40,14 @@ class UserEffects {
         },
       });
     });
+  }
+
+  static updateUser({ id, data }: { id: string; data: UserModel }) {
+    return patchToModel(UserModel, `${api.USERS}/${id}`, data);
+  }
+
+  static deleteUser(id: string) {
+    return delToModel(UserModel,`${api.USERS}/${id}`);
   }
 }
 

@@ -22,9 +22,9 @@ export const userDefineFieldType = {
 }
 
 interface CustomEditProps {
-  onSubmit: (args:any) => void;
+  onSubmit: (args: any) => void;
   onCancel: () => void;
-  onChange?: (args:any) => void;
+  onChange?: (args: any) => void;
   setActive: () => void;
   isActive: boolean;
   loading: boolean;
@@ -42,11 +42,11 @@ interface CustomEditProps {
   error?: any;
   customValidator?: () => void;
   disabled?: boolean;
-  tooltip?: ReactNode;
+  tooltip?: React.FC;
   isFullWidth?: boolean;
   tagRender?: ReactNode;
   isHidden?: boolean;
-  setSubmitDisable: (arg:boolean) => void;
+  setSubmitDisable: (arg: boolean) => void;
   isSubmitDisable?: boolean;
   bottomMarginLevel?: number;
 }
@@ -78,8 +78,8 @@ const CustomEdit = ({
   bottomMarginLevel = 4,
   isSubmitDisable,
   setSubmitDisable,
-}:CustomEditProps) => {
-  const cancelButtonRef =  React.useRef<HTMLButtonElement | null>(null);
+}: CustomEditProps) => {
+  const cancelButtonRef = React.useRef<HTMLButtonElement | null>(null);
   const [valueChanged, setValueChanged] = React.useState(false)
   const isLabel = !!label
   let presetType, defaultValues
@@ -97,7 +97,7 @@ const CustomEdit = ({
 
   const [emails, setEmails] = useState([])
 
-  const _onSubmit = (e:any) => {
+  const _onSubmit = (e: any) => {
     e.preventDefault()
     if (userDefineField.emailInput) {
       onSubmit(emails)
@@ -181,6 +181,7 @@ const CustomEdit = ({
           <form
             onBlur={_onSubmit}
             className={`pl-0 d-flex  ${isFullWidth ? styles.fillWidth : ''}`}
+            style={{ display: 'flex' }}
           >
             <div className="flex-grow-1 " style={{ minWidth: 0, cursor: 'text' }}>
               <UserDefineFields
@@ -202,11 +203,11 @@ const CustomEdit = ({
                 card
                 // tagRender={tagRender}
                 form={form}
-                // customValidator={customValidator}
+              // customValidator={customValidator}
               />
             </div>
             <div className="pr-0" style={{ height: '33px', display: 'flex', alignItems: 'center' }}>
-              <div className="d-flex align-items-center ">
+              <div className="d-flex align-items-center " style={{ display: 'flex', alignItems: 'center' }}>
                 <div className="mx-1">
                   <Button
                     type="primary"
@@ -281,7 +282,7 @@ CustomEdit.defaultProps = {
   tagRender: null,
   isHidden: false,
   isSubmitDisable: false,
-  setSubmitDisable: () => {},
+  setSubmitDisable: () => { },
 }
 
 export default CustomEdit

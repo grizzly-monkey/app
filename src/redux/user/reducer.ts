@@ -5,7 +5,7 @@ import userNormalizeSchema, { addNormalizeUser } from "./schema";
 const initialState = {
   users: {},
   passwordResetOTPSent: null,
-  selectedUser: {},
+  selectedUser: null,
   updatedUser: {},
 };
 

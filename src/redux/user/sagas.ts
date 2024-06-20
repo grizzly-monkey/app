@@ -11,6 +11,7 @@ import SessionActions from "../session/actions";
 import { resultHasError } from "@/utilities/onError";
 import { successToast } from "@/utilities/toast";
 import { router } from "@/routes";
+import { t } from "i18next";
 
 function* FETCH_USERS(action: SagaAction) {
   yield call(runEffect, action, UserEffects.getUsers);
@@ -65,6 +66,19 @@ function* RESET_PASSWORD(action: SagaAction): Generator {
   router.navigate("/login");
 }
 
+function* PATCH_USER(action: SagaAction) {
+  yield call(runEffect, action, UserEffects.updateUser, {
+    id: action.payload.id,
+    data: action.payload.data,
+  });
+}
+
+function* DELETE_USER(action: SagaAction) {
+  yield call(runEffect, action, UserEffects.deleteUser, action.payload);
+}
+
+
+
 export default function* userSaga() {
   yield all([
     takeEvery(UserActions.FETCH_USERS, FETCH_USERS),
@@ -74,5 +88,9 @@ export default function* userSaga() {
       REQUEST_RESET_PASSWORD_OTP
     ),
     takeEvery(UserActions.RESET_PASSWORD, RESET_PASSWORD),
+    takeEvery(UserActions.UPDATE_USER_FIRST_NAME, PATCH_USER),
+    takeEvery(UserActions.UPDATE_USER_LAST_NAME, PATCH_USER),
+    takeEvery(UserActions.UPDATE_USER_ROLES, PATCH_USER),
+    takeEvery(UserActions.DELETE_USER, DELETE_USER),
   ]);
 }
