@@ -110,9 +110,9 @@ const AddPolyhouses = () => {
                   <Col span={24}>
                     <Tabs defaultActiveKey="1">
                       <TabPane tab="Configure zones" key="1">
-                        <AddZones />
+                        <AddZones form={form} />
                       </TabPane>
-                      <TabPane tab="Configure nursery" key="2">
+                      <TabPane tab="Configure nurseries" key="2">
                         <AddNursery />
                       </TabPane>
                     </Tabs>

@@ -20,9 +20,9 @@ const CreateFarm = () => {
         style={{ borderRadius: "10px", marginRight: "20px" }}
       >
         <div className="createForm">
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div className="stepper">
             <Stepper current={current} setCurrent={setCurrent} />
-            <Divider type="vertical" style={{ height: "100%" }} />
+            {/* <Divider type="vertical" style={{ height: "100%" }} /> */}
           </div>
 
           <div
@@ -37,17 +37,8 @@ const CreateFarm = () => {
                 [stepper[stepperNames.FARM_CREATION]]: <AddForm />,
                 [stepper[stepperNames.RESERVOIRS]]: <AddReservoirs />,
                 [stepper[stepperNames.POLYHOUSES]]: <AddPolyhouses />,
-                // [stepper[stepperNames.COMPLETED]]: <Complete />,
               }[current]
             }
-            {/* <StepperNavigation
-              disabled={isStepperDisabled}
-              setDisabled={setIsStepperDisabled}
-              current={current}
-              setCurrent={setCurrent}
-              form={form}
-              setTabError={setTabError}
-            /> */}
 
             <StepperNavigation current={current} setCurrent={setCurrent} />
           </div>

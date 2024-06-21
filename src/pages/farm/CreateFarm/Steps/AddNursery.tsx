@@ -3,43 +3,41 @@ import { Col, Row, Card } from "antd";
 import Input from "@/components/common/input";
 import { MdDelete } from "react-icons/md";
 import Button from "@/components/common/button";
+import Modal from "@/components/ui/modal";
 
 const AddNursery = () => {
-  const [nurseries, setNurseries] = useState([{ key: 0 }]);
-
-  const addNursery = () => {
-    setNurseries([...nurseries, { key: nurseries.length }]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleCancel = () => {
+    // form.resetFields();
+    setIsModalOpen(false);
   };
 
-  const deleteNursery = (key) => {
-    setNurseries(nurseries.filter((nursery) => nursery.key !== key));
-  };
   return (
     <div>
       <div style={{ width: "150px", marginLeft: "auto" }}>
-        <Button label="Add nursery" onClick={addNursery} />
+        <Button
+          label="Add nursery"
+          onClick={() => {
+            setIsModalOpen(!isModalOpen);
+          }}
+        />
       </div>
-      <div>
-        {nurseries.map((nursery, index) => (
-          <div key={nursery.key}>
-            <Card
-              bordered={false}
-              title={`#${index + 1}`}
-              style={{ borderRadius: "10px" }}
-              extra={
-                <div
-                  style={{
-                    color: "red",
-                    fontSize: "25px",
-                    cursor: "pointer",
-                  }}
-                >
-                  <MdDelete onClick={() => deleteNursery(nursery.key)} />
-                </div>
-              }
-            >
-              <Row gutter={24}>
-                <Col span={12}>
+
+      <Modal
+        title="Add nusery"
+        open={isModalOpen}
+        onCancel={handleCancel}
+        className="modal"
+        // onOk={handleOk}
+        // confirmLoading={loading}
+        okText="Add"
+        onClose={handleCancel}
+      >
+        <div>
+          <div>
+            <Card bordered={false} style={{ borderRadius: "10px" }}>
+              <Row gutter={[16, 16]}>
+                <Col xs={24} sm={12}>
                   <Input
                     label={`Nursery name`}
                     name={`name`}
@@ -52,7 +50,7 @@ const AddNursery = () => {
                     placeholder="Enter nursery name"
                   />
                 </Col>
-                <Col span={12}>
+                <Col xs={24} sm={12}>
                   <Input
                     label={`Nursery type`}
                     name={`type`}
@@ -65,9 +63,8 @@ const AddNursery = () => {
                     placeholder="Enter nursery type"
                   />
                 </Col>
-              </Row>
-              <Row gutter={24}>
-                <Col span={12}>
+
+                <Col xs={24} sm={12}>
                   <Input
                     label="Nursery area (in sq meters)"
                     name={`area`}
@@ -80,7 +77,7 @@ const AddNursery = () => {
                     placeholder="Enter nursery area (in sq meters)"
                   />
                 </Col>
-                <Col span={12}>
+                <Col xs={24} sm={12}>
                   <Input
                     label="Nursery germination type"
                     name={`germinationType`}
@@ -93,10 +90,8 @@ const AddNursery = () => {
                     placeholder="Enter nursery germination type"
                   />
                 </Col>
-              </Row>
 
-              <Row gutter={24}>
-                <Col span={12}>
+                <Col xs={24} sm={12}>
                   <Input
                     label="Nursery germination area (in sq meters)"
                     name={`germinationArea`}
@@ -110,7 +105,7 @@ const AddNursery = () => {
                     placeholder="Enter nursery germination area (in sq meters)"
                   />
                 </Col>
-                <Col span={12}>
+                <Col xs={24} sm={12}>
                   <Input
                     label="Seed count"
                     name={`seedCount`}
@@ -123,10 +118,7 @@ const AddNursery = () => {
                     placeholder="Enter seed count"
                   />
                 </Col>
-              </Row>
-
-              <Row gutter={24}>
-                <Col span={12}>
+                <Col xs={24} sm={12}>
                   <Input
                     label="Watering type"
                     name={`wateringType`}
@@ -139,7 +131,7 @@ const AddNursery = () => {
                     placeholder="Enter watering type"
                   />
                 </Col>
-                <Col span={12}>
+                <Col xs={24} sm={12}>
                   <Input
                     label="Watering schedule"
                     name={`wateringSchedule`}
@@ -153,10 +145,26 @@ const AddNursery = () => {
                   />
                 </Col>
               </Row>
+
+              {/* <Row gutter={24}>
+                 
+                  
+                </Row>
+                <Row gutter={24}>
+                 
+                </Row>
+
+                <Row gutter={24}>
+                
+                </Row>
+
+                <Row gutter={24}>
+                
+                </Row> */}
             </Card>
           </div>
-        ))}
-      </div>
+        </div>
+      </Modal>
     </div>
   );
 };

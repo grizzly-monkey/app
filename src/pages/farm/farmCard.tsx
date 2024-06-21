@@ -55,6 +55,8 @@ const FarmCard = () => {
 
                 // boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
                 boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+
+                // boxShadow: "0 20px 27px rgb(0 0 0 / 5%)",
               }}
             >
               <div>
@@ -63,7 +65,9 @@ const FarmCard = () => {
                     { label: "Farm Area", value: <span>{card.area}</span> },
                     {
                       label: "Cultivable Area",
-                      value: <span>{card.cultivableArea}</span>,
+                      value: (
+                        <span style={{ flex: "2" }}>{card.cultivableArea}</span>
+                      ),
                     },
                     {
                       label: "Device status",

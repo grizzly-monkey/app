@@ -25,7 +25,7 @@ const Stepper = ({ current, setCurrent }) => {
         icon={<FaRegUser />}
       />
       <Step
-        title="Polyhouse"
+        title="Polyhouses"
         description={<span>Configure polyhouse, zone, nursery</span>}
         icon={<FaRegUser />}
       />
