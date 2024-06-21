@@ -9,108 +9,135 @@ import UserActions from "@/redux/user/actions";
 import Fields from "@/utilities/fields/field";
 
 interface userDetailsProps {
-    toggleField: Function;
-    field: Record<string, boolean>;
-    form: FormInstance
+  toggleField: Function;
+  field: Record<string, boolean>;
+  form: FormInstance;
 }
 
-
 const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
-    const dispatch = useDispatch();
-    const selectedUser = useSelector(UserSelectors.selectSelectedUser)
+  const dispatch = useDispatch();
+  const selectedUser = useSelector(UserSelectors.selectSelectedUser);
 
-    // const firstNameUdating = useSelector((state) => requestingSelector(state, [UserActions.UPDATE_USER_FIRST_NAME]))
-    // const lastNameUdating = useSelector((state) => requestingSelector(state, [UserActions.UPDATE_USER_LAST_NAME]))
-    // const rolesUdating = useSelector((state) => requestingSelector(state, [UserActions.UPDATE_USER_ROLES]))
+  // const firstNameUdating = useSelector((state) => requestingSelector(state, [UserActions.UPDATE_USER_FIRST_NAME]))
+  // const lastNameUdating = useSelector((state) => requestingSelector(state, [UserActions.UPDATE_USER_LAST_NAME]))
+  // const rolesUdating = useSelector((state) => requestingSelector(state, [UserActions.UPDATE_USER_ROLES]))
 
-    const updateFirstName = () => {
-        const firstName = form.getFieldValue([`${selectedUser?.userId}`, 'firstName'])
-        dispatch(UserActions.updateUserFirstName({ id: selectedUser?.userId, data: { firstName } }))
-    }
+  const updateFirstName = () => {
+    const firstName = form.getFieldValue([
+      `${selectedUser?.userId}`,
+      "firstName",
+    ]);
+    dispatch(
+      UserActions.updateUserFirstName({
+        id: selectedUser?.userId,
+        data: { firstName },
+      })
+    );
+  };
 
-    const updateLastName = () => {
-        const lastName = form.getFieldValue([`${selectedUser?.userId}`, 'lastName'])
-        dispatch(UserActions.updateUserLastName({ id: selectedUser?.userId, data: { lastName } }))
-    }
+  const updateLastName = () => {
+    const lastName = form.getFieldValue([
+      `${selectedUser?.userId}`,
+      "lastName",
+    ]);
+    dispatch(
+      UserActions.updateUserLastName({
+        id: selectedUser?.userId,
+        data: { lastName },
+      })
+    );
+  };
 
-    const updateRoles = () => {
-        const roles = form.getFieldValue([`${selectedUser?.userId}`, 'roles'])
-        dispatch(UserActions.updateUserRoles({ id: selectedUser?.userId, data: { roles } }))
-    }
+  const updateRoles = () => {
+    const roles = form.getFieldValue([`${selectedUser?.userId}`, "roles"]);
+    dispatch(
+      UserActions.updateUserRoles({ id: selectedUser?.userId, data: { roles } })
+    );
+  };
 
-    return (
-        <Form form={form}>
-            <div className="user-details-sidebar" style={{ width: '100%' }}>
-                <Fields
-                    info={[{
-                        label: 'First Name',
-                        value: <div style={{height:'40px'}}>
-                            <CustomEdit
-                                form={form}
-                                name="firstName"
-                                onSubmit={updateFirstName}
-                                isActive={field.firstName}
-                                loading={false}
-                                value={selectedUser?.firstName}
-                                setSubmitDisable={(value) => console.log(value)}
-                                onCancel={() => toggleField('firstName', false)}
-                                setActive={() => toggleField('firstName', true)}
-                                userDefineField={{ fieldId: selectedUser.userId }}
-
-                            >
-                                {selectedUser?.firstName}
-                            </CustomEdit>
-                        </div>
-                    },
-                    {
-                        label: 'Last Name',
-                        value: <div style={{height:'40px'}}>
-                        <CustomEdit
-                            form={form}
-                            name="lastName"
-                            onSubmit={updateLastName}
-                            isActive={field.lastName}
-                            loading={false}
-                            value={selectedUser?.firstName}
-                            setSubmitDisable={(value) => console.log(value)}
-                            onCancel={() => toggleField('lastName', false)}
-                            setActive={() => toggleField('lastName', true)}
-                            userDefineField={{ fieldId: selectedUser.userId }}
-
-                        >
-                            {selectedUser?.lastName}
-                        </CustomEdit>
-                        </div>
-                    },
-                    {
-                        label: 'Contact Number',
-                        value: <div style={{height:'40px'}}>
-                            {selectedUser?.phone}
-                            </div> 
-                    },
-                    {
-                        label: 'Roles',
-                        value: <div style={{height:'40px'}}>
-                        <CustomEdit
-                            form={form}
-                            name="roles"
-                            onSubmit={updateRoles}
-                            isActive={field.roles}
-                            loading={false}
-                            value={[{ label: selectedUser?.role, value: selectedUser?.role }]}
-                            setSubmitDisable={(value) => console.log(value)}
-                            onCancel={() => toggleField('roles', false)}
-                            setActive={() => toggleField('roles', true)}
-                            userDefineField={{ fieldId: selectedUser?.userId, options: roles }}
-                            type="multiple"
-                        >
-                            {selectedUser?.role}
-                        </CustomEdit>
-                        </div>
-                    }
+  return (
+    <Form form={form}>
+      <div className="user-details-sidebar" style={{ width: "100%" }}>
+        <Fields
+          info={[
+            {
+              label: "First Name",
+              value: (
+                <div style={{ height: "40px" }}>
+                  <CustomEdit
+                    form={form}
+                    name="firstName"
+                    onSubmit={updateFirstName}
+                    isActive={field.firstName}
+                    loading={false}
+                    value={selectedUser?.firstName}
+                    setSubmitDisable={(value) => console.log(value)}
+                    onCancel={() => toggleField("firstName", false)}
+                    setActive={() => toggleField("firstName", true)}
+                    userDefineField={{ fieldId: selectedUser?.userId }}
+                  >
+                    {selectedUser?.firstName}
+                  </CustomEdit>
+                </div>
+              ),
+            },
+            {
+              label: "Last Name",
+              value: (
+                <div style={{ height: "40px" }}>
+                  <CustomEdit
+                    form={form}
+                    name="lastName"
+                    onSubmit={updateLastName}
+                    isActive={field.lastName}
+                    loading={false}
+                    value={selectedUser?.firstName}
+                    setSubmitDisable={(value) => console.log(value)}
+                    onCancel={() => toggleField("lastName", false)}
+                    setActive={() => toggleField("lastName", true)}
+                    userDefineField={{ fieldId: selectedUser?.userId }}
+                  >
+                    {selectedUser?.lastName}
+                  </CustomEdit>
+                </div>
+              ),
+            },
+            {
+              label: "Contact Number",
+              value: (
+                <div style={{ height: "40px" }}>{selectedUser?.phone}</div>
+              ),
+            },
+            {
+              label: "Roles",
+              value: (
+                <div style={{ height: "40px" }}>
+                  <CustomEdit
+                    form={form}
+                    name="roles"
+                    onSubmit={updateRoles}
+                    isActive={field.roles}
+                    loading={false}
+                    value={[
+                      { label: selectedUser?.role, value: selectedUser?.role },
                     ]}
-                />
-                {/* <table>
+                    setSubmitDisable={(value) => console.log(value)}
+                    onCancel={() => toggleField("roles", false)}
+                    setActive={() => toggleField("roles", true)}
+                    userDefineField={{
+                      fieldId: selectedUser?.userId,
+                      options: roles,
+                    }}
+                    type="multiple"
+                  >
+                    {selectedUser?.role}
+                  </CustomEdit>
+                </div>
+              ),
+            },
+          ]}
+        />
+        {/* <table>
                     <tbody>
                         <tr >
                             <td>
@@ -178,9 +205,9 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
                         </tr>
                     </tbody>
                 </table> */}
-            </div>
-        </Form>
-    );
-}
+      </div>
+    </Form>
+  );
+};
 
 export default UserDetails;
