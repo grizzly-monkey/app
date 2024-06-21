@@ -4,7 +4,7 @@ import UserSelectors from "@/redux/user/selectors";
 import { FormInstance } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { roles } from "./utils";
-import requestingSelector from "@/redux/requesting/requestingSelector";
+// import requestingSelector from "@/redux/requesting/requestingSelector";
 import UserActions from "@/redux/user/actions";
 import Fields from "@/utilities/fields/field";
 
@@ -19,9 +19,9 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
     const dispatch = useDispatch();
     const selectedUser = useSelector(UserSelectors.selectSelectedUser)
 
-    const firstNameUdating = useSelector((state) => requestingSelector(state, [UserActions.UPDATE_USER_FIRST_NAME]))
-    const lastNameUdating = useSelector((state) => requestingSelector(state, [UserActions.UPDATE_USER_LAST_NAME]))
-    const rolesUdating = useSelector((state) => requestingSelector(state, [UserActions.UPDATE_USER_ROLES]))
+    // const firstNameUdating = useSelector((state) => requestingSelector(state, [UserActions.UPDATE_USER_FIRST_NAME]))
+    // const lastNameUdating = useSelector((state) => requestingSelector(state, [UserActions.UPDATE_USER_LAST_NAME]))
+    // const rolesUdating = useSelector((state) => requestingSelector(state, [UserActions.UPDATE_USER_ROLES]))
 
     const updateFirstName = () => {
         const firstName = form.getFieldValue([`${selectedUser?.userId}`, 'firstName'])
@@ -50,7 +50,7 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
                                 name="firstName"
                                 onSubmit={updateFirstName}
                                 isActive={field.firstName}
-                                loading={firstNameUdating}
+                                loading={false}
                                 value={selectedUser?.firstName}
                                 setSubmitDisable={(value) => console.log(value)}
                                 onCancel={() => toggleField('firstName', false)}
@@ -70,7 +70,7 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
                             name="lastName"
                             onSubmit={updateLastName}
                             isActive={field.lastName}
-                            loading={lastNameUdating}
+                            loading={false}
                             value={selectedUser?.firstName}
                             setSubmitDisable={(value) => console.log(value)}
                             onCancel={() => toggleField('lastName', false)}
@@ -96,7 +96,7 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
                             name="roles"
                             onSubmit={updateRoles}
                             isActive={field.roles}
-                            loading={rolesUdating}
+                            loading={false}
                             value={[{ label: selectedUser?.role, value: selectedUser?.role }]}
                             setSubmitDisable={(value) => console.log(value)}
                             onCancel={() => toggleField('roles', false)}

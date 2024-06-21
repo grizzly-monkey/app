@@ -20,5 +20,4 @@ export default {
     "\\.(css|scss)$": "identity-obj-proxy",
   },
   transformIgnorePatterns: ["<rootDir>/node_modules"],
-  setupFilesAfterEnv: ['<rootDir>/src/__ tests __/demo.test.tsx'],
 };

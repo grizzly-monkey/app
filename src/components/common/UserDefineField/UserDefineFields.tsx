@@ -1,6 +1,6 @@
 import React, { JSXElementConstructor, ReactElement, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Input, InputNumber, Select, Radio, AutoComplete, Tag, Form } from 'antd'
+import { Input, InputNumber, Select, Radio, Tag } from 'antd'
 import dayjs from 'dayjs'
 
 import DatePicker from '../DatePicker'
@@ -9,16 +9,16 @@ import style from './userDefineField.module.scss'
 import weekday from 'dayjs/plugin/weekday'
 import localeData from 'dayjs/plugin/localeData'
 import { getTranslation } from '@/translation/i18n'
-import FormItem from 'antd/es/form/FormItem'
 import { CustomTagProps } from 'rc-select/lib/BaseSelect'
+import { Form } from "antd";
 
 dayjs.extend(weekday)
 dayjs.extend(localeData)
 
-const itemLayout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 14 },
-}
+// const itemLayout = {
+//   labelCol: { span: 8 },
+//   wrapperCol: { span: 14 },
+// }
 
 export const userDefineFieldType = {
   INT: 'int',
@@ -317,7 +317,7 @@ const UserDefineFields = ({
   }
   return (
     <>
-      <FormItem
+      <Form.Item
         label={!card ? 'Value' : null}
         // labelCol={!card ? itemLayout.labelCol : null}
         // wrapperCol={!card ? itemLayout.wrapperCol : null}
@@ -328,7 +328,7 @@ const UserDefineFields = ({
           ...(rules || []),
           validation,
           {
-            validator(rule, value) {
+            validator(_, value) {
               let flag = 0
               if (field.type === userDefineFieldType.ARRAY_INT) {
                 if (Array.isArray(value)) {
@@ -353,7 +353,7 @@ const UserDefineFields = ({
         ]}
       >
         {component}
-      </FormItem>
+        </Form.Item>
     </>
   )
 }

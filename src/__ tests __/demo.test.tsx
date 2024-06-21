@@ -1,91 +1,42 @@
 // import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Login from '@/pages/auth/login';
-// import { Provider } from 'react-redux';
-// import { store } from '@/redux/store';
+import { FormInstance } from 'antd';
+import UserDetails from '@/pages/userManagement/userDetails';
+import UserSelectors from '@/redux/user/selectors';
+
+
+jest.mock("@/redux/user/actions",()=>({
+    updateUserFirstName : jest.fn(),
+    updateUserLastName : jest.fn(),
+    updateUserRoles : jest.fn()
+}))
+
+
+jest.mock("react-redux",()=>({
+    useDispatch:()=>jest.fn()
+}))
+
+
 
 describe('AddUserForm Component', () => {
-    test('renders the form correctly', () => {
-        render(
-           
-                <Login />
-           
-            );
-            expect(screen.getByTestId('first-name-input')).toBeInTheDocument()
+    // beforeEach(()=>{
+    //     UserSelectors.selectSelectedUser.mockReturnValue({ userId: '1', firstName: 'John', lastName: 'Doe', phone: '1234567890', role: 'Admin' })
+    // })
+    it('should render user details form with correct initial values', () => {
+        const toggleField = jest.fn();
+        const field = { firstName: false, lastName: false, roles: false };
+        const form = { getFieldValue: jest.fn().mockReturnValue('') } as unknown as FormInstance;
+        UserSelectors.selectSelectedUser = jest.fn().mockReturnValue({ userId: '1', firstName: 'John', lastName: 'Doe', phone: '1234567890', role: 'Admin' });
+        const { getByText } = render(<UserDetails toggleField={toggleField} field={field} form={form} />);
+    
+        expect(getByText('First Name')).toBeInTheDocument();
+        expect(getByText('John')).toBeInTheDocument();
+        expect(getByText('Last Name')).toBeInTheDocument();
+        expect(getByText('Doe')).toBeInTheDocument();
+        expect(getByText('Contact Number')).toBeInTheDocument();
+        expect(getByText('1234567890')).toBeInTheDocument();
+        expect(getByText('Roles')).toBeInTheDocument();
+        expect(getByText('Admin')).toBeInTheDocument();
     });
-
-    //   test('input fields accept text', () => {
-    //     render(<AddUserForm />);
-    //     const firstNameInput = screen.getByLabelText(/First Name/i);
-    //     const lastNameInput = screen.getByLabelText(/Last Name/i);
-    //     const contactNumberInput = screen.getByLabelText(/Contact Number/i);
-
-    //     fireEvent.change(firstNameInput, { target: { value: 'John' } });
-    //     fireEvent.change(lastNameInput, { target: { value: 'Doe' } });
-    //     fireEvent.change(contactNumberInput, { target: { value: '1234567890' } });
-
-    //     expect(firstNameInput.value).toBe('John');
-    //     expect(lastNameInput.value).toBe('Doe');
-    //     expect(contactNumberInput.value).toBe('1234567890');
-    //   });
-
-    //   test('role dropdown works', () => {
-    //     render(<AddUserForm />);
-    //     const rolesDropdown = screen.getByLabelText(/Roles/i);
-    //     fireEvent.change(rolesDropdown, { target: { value: 'Admin' } });
-    //     expect(rolesDropdown.value).toBe('Admin');
-    //   });
-
-    //   test('form submission with all fields filled', async () => {
-    //     render(<AddUserForm />);
-    //     fireEvent.change(screen.getByLabelText(/First Name/i), { target: { value: 'John' } });
-    //     fireEvent.change(screen.getByLabelText(/Last Name/i), { target: { value: 'Doe' } });
-    //     fireEvent.change(screen.getByLabelText(/Contact Number/i), { target: { value: '1234567890' } });
-    //     fireEvent.change(screen.getByLabelText(/Roles/i), { target: { value: 'Admin' } });
-
-    //     fireEvent.click(screen.getByText(/Add/i));
-
-    //     await waitFor(() => {
-    //       // Mock function or assertion to check form submission
-    //       // For example, checking if a mock function was called
-    //     });
-    //   });
-
-    //   test('form submission with missing fields', async () => {
-    //     render(<AddUserForm />);
-    //     fireEvent.change(screen.getByLabelText(/First Name/i), { target: { value: '' } });
-    //     fireEvent.change(screen.getByLabelText(/Last Name/i), { target: { value: '' } });
-
-    //     fireEvent.click(screen.getByText(/Add/i));
-
-    //     await waitFor(() => {
-    //       expect(screen.getByText(/First Name is required/i)).toBeInTheDocument();
-    //       expect(screen.getByText(/Last Name is required/i)).toBeInTheDocument();
-    //     });
-    //   });
-
-    //   test('validation messages for required fields', async () => {
-    //     render(<AddUserForm />);
-    //     fireEvent.click(screen.getByText(/Add/i));
-    //     await waitFor(() => {
-    //       expect(screen.getByText(/First Name is required/i)).toBeInTheDocument();
-    //       expect(screen.getByText(/Last Name is required/i)).toBeInTheDocument();
-    //       expect(screen.getByText(/Contact Number is required/i)).toBeInTheDocument();
-    //     });
-    //   });
-
-    //   test('cancel button works', () => {
-    //     const handleCancel = jest.fn();
-    //     render(<AddUserForm onCancel={handleCancel} />);
-    //     fireEvent.click(screen.getByText(/Cancel/i));
-    //     expect(handleCancel).toHaveBeenCalled();
-    //   });
-
-    //   test('country code dropdown functionality', () => {
-    //     render(<AddUserForm />);
-    //     const countryCodeDropdown = screen.getByLabelText(/Country Code/i);
-    //     fireEvent.change(countryCodeDropdown, { target: { value: '+1' } });
-    //     expect(countryCodeDropdown.value).toBe('+1');
-    //   });
 });
