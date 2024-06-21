@@ -1,4 +1,4 @@
-import { takeEvery, all, call, put, cancel } from "redux-saga/effects";
+import { takeEvery, all, call, put, cancel, select } from "redux-saga/effects";
 import UserActions from "./actions";
 import { createAction, runEffect } from "@/utilities/actionUtility";
 import UserEffects from "./effects";
@@ -11,7 +11,7 @@ import SessionActions from "../session/actions";
 import { resultHasError } from "@/utilities/onError";
 import { successToast } from "@/utilities/toast";
 import { router } from "@/routes";
-import { t } from "i18next";
+import UserSelectors from "./selectors";
 
 function* FETCH_USERS(action: SagaAction) {
   yield call(runEffect, action, UserEffects.getUsers);
@@ -73,8 +73,15 @@ function* PATCH_USER(action: SagaAction) {
   });
 }
 
-function* DELETE_USER(action: SagaAction) {
-  yield call(runEffect, action, UserEffects.deleteUser, action.payload);
+function* DELETE_USER(action: SagaAction): Generator {
+  const result: any = yield call(runEffect, action, UserEffects.deleteUser, action.payload);
+  if (resultHasError(result)) yield cancel();
+  successToast("User deleted successfully!!");
+  const users: any = yield select(UserSelectors.selectNormalizedUsers)
+  const userIds = users.result.filter((userId: string) => userId !== action.payload)
+  const { [action.payload]: _, ...newUsers } = users?.entities?.users
+  yield put(UserActions.updateUsersLocally({ result: userIds, entities:{users: newUsers} }))
+  yield put(UserActions.unSelectUser())
 }
 
 

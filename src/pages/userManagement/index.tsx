@@ -12,8 +12,6 @@ import columns from "./columns";
 import { User } from "./types";
 import requestingSelector from "@/redux/requesting/requestingSelector";
 import { getTranslation } from "@/translation/i18n";
-import { LoadingOutlined } from '@ant-design/icons';
-
 
 const { Search } = Input;
 
@@ -72,7 +70,7 @@ const UserManagement = () => {
                         dataSource={filteredUsers}
                         className="ant-border-space"
                         onRow={onRow}
-                        loading={{ spinning: loading, size: "large" ,indicator: <Spin indicator={<LoadingOutlined spin />}/>}}
+                        loading={loading}
                     />
                 </div>
             </Card>

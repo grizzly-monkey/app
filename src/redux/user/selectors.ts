@@ -6,6 +6,10 @@ class UserSelectors {
     return userDenormalizeSchema(state?.users?.users);
   }
 
+  public static selectNormalizedUsers(state: any) {
+    return state?.users?.users;
+  }
+
   public static selectSelectedUser(state: any) {
     return state.users.selectedUser;
   }

@@ -180,7 +180,7 @@ const CustomEdit = ({
         <>
           <form
             onBlur={_onSubmit}
-            className={`pl-0 d-flex  ${isFullWidth ? styles.fillWidth : ''}`}
+            className={` ${isFullWidth ? styles.fillWidth : ''}`}
             style={{ display: 'flex' }}
           >
             <div className="flex-grow-1 " style={{ minWidth: 0, cursor: 'text' }}>

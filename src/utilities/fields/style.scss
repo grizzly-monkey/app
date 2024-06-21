@@ -1,0 +1,14 @@
+.info-item {
+    margin-bottom: 10px;
+    display: flex;
+  }
+  
+  .value {
+    font-weight: bold;
+    flex: 1;
+  }
+  
+  .label {
+    color: #333;
+    flex: 1;
+  }

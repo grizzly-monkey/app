@@ -84,6 +84,7 @@ const Login = () => {
             />
 
             <Input
+            data-testid="first-name-input"
               label="Password"
               name="password"
               rules={[
