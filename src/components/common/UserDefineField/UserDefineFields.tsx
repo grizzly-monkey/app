@@ -44,11 +44,13 @@ interface UserDefinedFieldsProps {
   tagRender?: tagRenderType,
   rules?: any[]
   validatorDependencies?: any
+  inputDataTestId?: string
 }
 
 export const getComponent = (fields: any, placeholder: any, tagRender: tagRenderType) => {
   let customComponent = (
     <Input
+      data-testid = {fields.inputDataTestId}
       autoFocus
       onChange={fields?.onChange}
       className={style.setHeight}

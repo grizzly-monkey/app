@@ -74,7 +74,8 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
                     setSubmitDisable={(value) => console.log(value)}
                     onCancel={() => toggleField("firstName", false)}
                     setActive={() => toggleField("firstName", true)}
-                    userDefineField={{ fieldId: selectedUser?.userId }}
+                    userDefineField={{ fieldId: selectedUser?.userId , inputDataTestId: "first-name-input"}}
+                    containerDataTestId="first-name-container"
                   >
                     {selectedUser?.firstName}
                   </CustomEdit>

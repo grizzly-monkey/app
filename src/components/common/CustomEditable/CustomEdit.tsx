@@ -49,6 +49,8 @@ interface CustomEditProps {
   setSubmitDisable: (arg: boolean) => void;
   isSubmitDisable?: boolean;
   bottomMarginLevel?: number;
+  containerDataTestId?: string;
+  inputDataTestId?: string;
 }
 
 const CustomEdit = ({
@@ -75,6 +77,8 @@ const CustomEdit = ({
   bottomMarginLevel = 4,
   isSubmitDisable,
   setSubmitDisable,
+  containerDataTestId,
+
 }: CustomEditProps) => {
   const cancelButtonRef = React.useRef<HTMLButtonElement | null>(null);
   const [valueChanged, setValueChanged] = React.useState(false)
@@ -136,6 +140,7 @@ const CustomEdit = ({
     <>
       {!isActive ? (
         <div
+          data-testid={containerDataTestId}
           className={classNames({
             'editable-trigger': true,
             [`${style.grid} mb-${bottomMarginLevel}`]: isLabel,
@@ -195,6 +200,7 @@ const CustomEdit = ({
                   escapeValidation: userDefineField?.escapeValidation,
                   emailInput: userDefineField?.emailInput,
                   setEmails: setEmails,
+                  inputDataTestId: userDefineField.inputDataTestId,
                 }}
                 placeholder={placeholder || ''}
                 card
@@ -263,23 +269,6 @@ CustomEdit.propTypes = {
   isSubmitDisable: PropTypes.bool,
 }
 
-CustomEdit.defaultProps = {
-  disabled: false,
-  tooltip: null,
-  preset: false,
-  type: 'string',
-  label: '',
-  isEmpty: false,
-  emptyLabel: '',
-  children: null,
-  placeholder: '',
-  customValidator: () => Promise.resolve(),
-  onChange: null,
-  isFullWidth: null,
-  tagRender: null,
-  isHidden: false,
-  isSubmitDisable: false,
-  setSubmitDisable: () => { },
-}
+
 
 export default CustomEdit
