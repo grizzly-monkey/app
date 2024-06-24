@@ -7,6 +7,7 @@ import routePaths from "./config/routePaths";
 import UserManagement from "./pages/userManagement";
 import SignUp from "./pages/auth/signUp";
 import ForgotPassword from "./pages/auth/forgotPassword";
+import Organization from "./pages/organization";
 
 export const router = createBrowserRouter([
   {
@@ -14,8 +15,8 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: "/",
-        element: <Login />,
+        path: routePaths.organization,
+        element: <Organization />,
       },
     ],
   },

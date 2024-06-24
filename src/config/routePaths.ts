@@ -3,6 +3,7 @@ const routePaths = {
   userManagement: "/users",
   signUp: "/signUp",
   forgotPassword: "/forgot-password",
+  organization: "/organization",
 };
 
 export default routePaths;

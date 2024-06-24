@@ -3,7 +3,7 @@ export default {
   testEnvironment: "jest-environment-jsdom",
   transform: {
     "^.+\\.tsx?$": "ts-jest",
-    ".+\\.(css|scss|png|jpg|ttf|woff|woff2|svg)$": "jest-transform-stub",
+    ".+\\.(css|scss|png|jpg|ttf|woff|woff2|svg|jpeg)$": "jest-transform-stub",
   },
   moduleFileExtensions: [
     "scss",
@@ -20,4 +20,5 @@ export default {
     "\\.(css|scss)$": "identity-obj-proxy",
   },
   transformIgnorePatterns: ["<rootDir>/node_modules"],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
 };
