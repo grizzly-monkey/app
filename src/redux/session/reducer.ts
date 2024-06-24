@@ -4,6 +4,7 @@ import BaseReducer from "@/utilities/baseReducer";
 export const initialState = {
   cognitoUserObject: null,
   token: null,
+  accountApprovalStatus: null,
 };
 
 export default BaseReducer(
@@ -15,6 +16,9 @@ export default BaseReducer(
     },
     [SessionActions.SET_USER_TOKENS](state, action) {
       return { ...state, token: action.payload.token };
+    },
+    [SessionActions.ACCOUNT_APPROVAL_STATUS](state, action) {
+      return { ...state, accountApprovalStatus: action.payload };
     },
   },
   false

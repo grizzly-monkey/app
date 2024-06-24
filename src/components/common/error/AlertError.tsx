@@ -2,13 +2,14 @@ import { errorDetail, errorModel } from "@/types/error";
 import { Alert } from "antd";
 
 interface AlertErrorProps {
-  error: errorModel;
+  error?: errorModel;
+  message?: string;
 }
 
-const AlertError = ({ error }: AlertErrorProps) => {
-  if (!error) return null;
+const AlertError = ({ error, message }: AlertErrorProps) => {
+  if (!error && !message) return null;
 
-  if (error?.errors) {
+  if (!message && error?.errors) {
     return error.errors.map(
       (err: errorDetail) =>
         err.message && (
@@ -25,7 +26,9 @@ const AlertError = ({ error }: AlertErrorProps) => {
 
   return (
     <Alert
-      message="There was an error while processing your request."
+      message={
+        message ? message : "There was an error while processing your request."
+      }
       type="error"
       closable
       style={{ marginBottom: "20px" }}

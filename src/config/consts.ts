@@ -9,3 +9,5 @@ export const passwordPolicy = {
   numbers: true,
   symbols: true,
 };
+
+export const TOKEN_EXPIRE_TIME = 3600;

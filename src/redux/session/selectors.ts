@@ -5,6 +5,8 @@ class SessionSelectors {
     state.session.cognitoUserObject;
 
   static SelectToken = (state: RootState) => state.session.token;
+  static SelectAccountApprovalStatus = (state: RootState) =>
+    state.session.accountApprovalStatus;
 }
 
 export default SessionSelectors;

@@ -6,7 +6,7 @@ import { SagaAction } from "@/types/redux";
 import UserModel from "./models/createModels/userModel";
 import removeEmpty from "@/utilities/objectUtility";
 import { CognitoUser } from "amazon-cognito-identity-js";
-import { getCognitoUser } from "../session/sagas";
+import { getCognitoUserObject } from "../session/sagas";
 import SessionActions from "../session/actions";
 import { resultHasError } from "@/utilities/onError";
 import { successToast } from "@/utilities/toast";
@@ -28,7 +28,7 @@ function* CREATE_USER(action: SagaAction) {
 }
 
 function* REQUEST_RESET_PASSWORD_OTP(action: SagaAction) {
-  const cognitoUserObject: CognitoUser = getCognitoUser(
+  const cognitoUserObject: CognitoUser = getCognitoUserObject(
     `+${action.payload.phoneNumber}`
   );
 
@@ -43,7 +43,7 @@ function* REQUEST_RESET_PASSWORD_OTP(action: SagaAction) {
 }
 
 function* RESET_PASSWORD(action: SagaAction): Generator {
-  const cognitoUserObject: CognitoUser = getCognitoUser(
+  const cognitoUserObject: CognitoUser = getCognitoUserObject(
     `+${action.payload.phoneNumber}`
   );
 
