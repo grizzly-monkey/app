@@ -19,6 +19,7 @@ import { IoEye, IoEyeOff } from "react-icons/io5";
 import AlertError from "@/components/common/error/AlertError";
 import { useAppDispatch } from "@/hooks/redux";
 import SessionSelectors from "@/redux/session/selectors";
+import { SessionActionTypes } from "@/redux/session/actionTypes";
 
 const selectLoading = makeRequestingSelector();
 const selectError = makeSelectErrorModel();
@@ -33,10 +34,10 @@ const Login = () => {
   const dispatch = useAppDispatch();
 
   const error = useAppSelector((state) =>
-    selectError(state, SessionActions.REQUEST_LOGIN_FINISHED)
+    selectError(state, SessionActionTypes.REQUEST_LOGIN_FINISHED)
   );
   const loading = useAppSelector((state) =>
-    selectLoading(state, [SessionActions.REQUEST_LOGIN])
+    selectLoading(state, [SessionActionTypes.REQUEST_LOGIN])
   );
   const accountApprovalStatus = useAppSelector(
     SessionSelectors.SelectAccountApprovalStatus
@@ -47,7 +48,7 @@ const Login = () => {
   };
 
   const clearError = () => {
-    dispatch(removeByActionType(SessionActions.REQUEST_LOGIN_FINISHED));
+    dispatch(removeByActionType(SessionActionTypes.REQUEST_LOGIN_FINISHED));
   };
 
   function renderPasswordIcon() {

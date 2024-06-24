@@ -7,7 +7,6 @@ import UserModel from "./models/createModels/userModel";
 import removeEmpty from "@/utilities/objectUtility";
 import { CognitoUser } from "amazon-cognito-identity-js";
 import { getCognitoUserObject } from "../session/sagas";
-import SessionActions from "../session/actions";
 import { resultHasError } from "@/utilities/onError";
 import { successToast } from "@/utilities/toast";
 import { router } from "@/routes";
@@ -30,8 +29,6 @@ function* REQUEST_RESET_PASSWORD_OTP(action: SagaAction) {
   const cognitoUserObject: CognitoUser = getCognitoUserObject(
     `+${action.payload.phoneNumber}`
   );
-
-  yield put(SessionActions.setCognitoUserObj(cognitoUserObject));
 
   yield call(
     runEffect,

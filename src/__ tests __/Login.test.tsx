@@ -13,6 +13,18 @@ import SessionActions from "@/redux/session/actions";
 import { MemoryRouter } from "react-router-dom";
 import "@testing-library/jest-dom";
 
+jest.mock("../utilities/actionUtility", () => ({
+  getKeyForAction: jest.fn(
+    (actionType, scope) => `${scope ? `[scope:${scope}]` : ""}${actionType}`
+  ),
+  createAction: jest.fn((type, payload, error, meta) => ({
+    type,
+    payload,
+    error,
+    meta,
+  })),
+}));
+
 const mockStore = configureStore([]);
 
 describe("LoginForm", () => {

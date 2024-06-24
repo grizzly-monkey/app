@@ -1,8 +1,7 @@
-import SessionActions from "./actions";
 import BaseReducer from "@/utilities/baseReducer";
+import { SessionActionTypes } from "./actionTypes";
 
 export const initialState = {
-  cognitoUserObject: null,
   token: null,
   accountApprovalStatus: null,
 };
@@ -10,14 +9,10 @@ export const initialState = {
 export default BaseReducer(
   initialState,
   {
-    [SessionActions.SET_COGNITO_USER_OBJ](state, action) {
-      const cognitoUserObject = { ...action.payload.cognitoUserObject };
-      return { ...state, cognitoUserObject };
-    },
-    [SessionActions.SET_USER_TOKENS](state, action) {
+    [SessionActionTypes.SET_USER_TOKENS](state, action) {
       return { ...state, token: action.payload.token };
     },
-    [SessionActions.ACCOUNT_APPROVAL_STATUS](state, action) {
+    [SessionActionTypes.ACCOUNT_APPROVAL_STATUS](state, action) {
       return { ...state, accountApprovalStatus: action.payload };
     },
   },
