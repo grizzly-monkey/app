@@ -1,14 +1,12 @@
-import { takeEvery, all, call, put, select, cancel } from "redux-saga/effects";
+import { takeEvery, all, call, put, cancel } from "redux-saga/effects";
 import UserActions from "./actions";
-import { runEffect } from "@/utilities/actionUtility";
+import { createAction, runEffect } from "@/utilities/actionUtility";
 import UserEffects from "./effects";
 import { SagaAction } from "@/types/redux";
 import UserModel from "./models/createModels/userModel";
 import removeEmpty from "@/utilities/objectUtility";
 import { CognitoUser } from "amazon-cognito-identity-js";
-import { getCognitoUser } from "../session/sagas";
-import SessionActions from "../session/actions";
-import SessionSelectors from "../session/selectors";
+import { getCognitoUserObject } from "../session/sagas";
 import { resultHasError } from "@/utilities/onError";
 import { successToast } from "@/utilities/toast";
 import { router } from "@/routes";
@@ -28,11 +26,9 @@ function* CREATE_USER(action: SagaAction) {
 }
 
 function* REQUEST_RESET_PASSWORD_OTP(action: SagaAction) {
-  const cognitoUserObject: CognitoUser = getCognitoUser(
+  const cognitoUserObject: CognitoUser = getCognitoUserObject(
     `+${action.payload.phoneNumber}`
   );
-
-  yield put(SessionActions.setCognitoUserObj(cognitoUserObject));
 
   yield call(
     runEffect,
@@ -43,7 +39,7 @@ function* REQUEST_RESET_PASSWORD_OTP(action: SagaAction) {
 }
 
 function* RESET_PASSWORD(action: SagaAction): Generator {
-  const cognitoUserObject: CognitoUser = getCognitoUser(
+  const cognitoUserObject: CognitoUser = getCognitoUserObject(
     `+${action.payload.phoneNumber}`
   );
 
@@ -57,6 +53,10 @@ function* RESET_PASSWORD(action: SagaAction): Generator {
   );
 
   if (resultHasError(result)) yield cancel();
+
+  yield put(
+    createAction(UserActions.REQUEST_RESET_PASSWORD_OTP_FINISHED, false)
+  );
 
   successToast("Password updated successfully!!");
   router.navigate("/login");

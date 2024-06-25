@@ -17,7 +17,7 @@
 
 .heading1 {
   font-size: 24px;
-  line-height: 30px;
+  line-height: 35px;
   font-weight: 600;
   color: $black;
   text-transform: capitalize;
@@ -81,4 +81,14 @@ a {
 
 .btn-success:hover {
   background-color: $primary-extra-light !important;
+}
+.image {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+button:disabled {
+  background: $primary !important;
+  color: white !important;
 }

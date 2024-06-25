@@ -14,6 +14,7 @@ import Inventory from "./pages/inventory";
 import Tasks from "./pages/tasks";
 import Workflow from "./pages/workflow";
 import CreateFarm from "./pages/farm/CreateFarm";
+import Organization from "./pages/organization";
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Dashboard />,
+      },
+      {
+        path: routePaths.organization,
+        element: <Organization />,
       },
       {
         path: routePaths.userManagement,

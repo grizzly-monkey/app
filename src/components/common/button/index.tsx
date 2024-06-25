@@ -3,6 +3,7 @@ import { ButtonProps as AntdButtonProps } from "antd/es/button/button";
 
 interface ButtonProps extends AntdButtonProps {
   label: string;
+  loading: boolean;
   style?: React.CSSProperties;
   onClick?: () => void;
 }
@@ -12,6 +13,7 @@ const Button = (props: ButtonProps) => {
     <AntdButton
       iconPosition="end"
       type={props.type ? props.type : "primary"}
+      disabled={props.loading}
       {...props}
       style={{
         width: "100%",

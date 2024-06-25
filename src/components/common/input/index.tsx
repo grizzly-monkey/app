@@ -8,6 +8,7 @@ interface AntdInputProps extends InputProps {
   label?: string;
   placeholder?: string;
   className?: string;
+  testId?: string;
   iconRender?: any;
   isPasswordInput?: any;
 }
@@ -27,6 +28,7 @@ const Input = ({
   isPasswordInput,
   maxLength,
   type,
+  testId,
 }: AntdInputProps) => {
   const RenderInput = isPasswordInput ? AntdInput.Password : AntdInput;
 
@@ -49,6 +51,7 @@ const Input = ({
         iconRender={iconRender}
         type={type}
         className="common-input"
+        data-testid={testId}
       />
     </Form.Item>
   );
