@@ -20,7 +20,6 @@ const PhoneInput = (props: PhoneProps) => {
       <ReactPhoneInput
         country="in"
         inputClass="phone_input_container"
-        placeholder="Test"
         inputProps={{
           "data-testid": "phone-number-input",
         }}

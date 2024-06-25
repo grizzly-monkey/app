@@ -5,18 +5,6 @@ import { setupDefaultStore } from "./utils/setupTests";
 import { renderWithProvider } from "./utils/testUtils";
 import SessionActions from "@/redux/session/actions";
 
-jest.mock("../utilities/actionUtility", () => ({
-  getKeyForAction: jest.fn(
-    (actionType, scope) => `${scope ? `[scope:${scope}]` : ""}${actionType}`
-  ),
-  createAction: jest.fn((type, payload, error, meta) => ({
-    type,
-    payload,
-    error,
-    meta,
-  })),
-}));
-
 describe("Login Page", () => {
   let store: any;
 
@@ -107,25 +95,4 @@ describe("Login Page", () => {
 
     expect(screen.getByText("Account not approved")).toBeInTheDocument();
   });
-
-  // test("should not submit the form with invalid phone number format", async () => {
-  //   renderWithProvider(<Login />, { store });
-
-  //   fireEvent.change(screen.getByTestId("phone-number-input"), {
-  //     target: { value: "1234567890" },
-  //   });
-  //   fireEvent.change(screen.getByTestId("password-input"), {
-  //     target: { value: "password" },
-  //   });
-
-  //   fireEvent.click(screen.getByText("Sign in"));
-
-  //   // Assuming you have some validation for phone number format
-  //   expect(
-  //     await screen.findByText("Invalid phone number format")
-  //   ).toBeInTheDocument();
-  //   expect(store.dispatch).not.toHaveBeenCalledWith(
-  //     SessionActions.login({ phoneNumber: "abc123", password: "password" })
-  //   );
-  // });
 });
