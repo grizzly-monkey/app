@@ -5,6 +5,7 @@ import account from "./account/reducer";
 import error from "./error/errorReducer";
 import requesting from "./requesting/requestingReducer";
 import users from "./user/reducer";
+import farms from './farm/reducer'
 
 const appReducer = combineReducers({
   todos,
@@ -12,7 +13,8 @@ const appReducer = combineReducers({
   account,
   error,
   requesting,
-  users
+  users,
+  farms
 });
 
 const rootReducer = (

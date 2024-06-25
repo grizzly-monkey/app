@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Col, Row, Form as AntdForm, Card } from "antd";
+import { Col, Row } from "antd";
 import Button from "@/components/common/button";
 import Form from "@/components/common/form";
 import Input from "@/components/common/input";
+import Card from "@/components/ui/card";
 import { MdDelete } from "react-icons/md";
 
-const AddReservoirs = () => {
-  const [form] = AntdForm.useForm();
+const AddReservoirs = ({ form }) => {
   const [reservoirs, setReservoirs] = useState([{ key: 0 }]);
 
   const addReservoir = () => {
@@ -59,8 +59,8 @@ const AddReservoirs = () => {
                     />
                   </Col>
                 </Row>
-                <Row gutter={24}>
-                  <Col span={12}>
+                <Row gutter={[16, 16]}>
+                  <Col xs={24} sm={12}>
                     <Input
                       label="Reservoir capacity (in liter)"
                       name={`reservoirCapacity`}
@@ -73,7 +73,20 @@ const AddReservoirs = () => {
                       placeholder="Enter reservoir capacity (in liter)"
                     />
                   </Col>
-                  <Col span={12}>
+                  <Col xs={24} sm={12}>
+                    <Input
+                      label="PH reservoir capacity (in liter)"
+                      name={`phReservoirCapacity`}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input PH reservoir capacity",
+                        },
+                      ]}
+                      placeholder="Enter PH reservoir capacity (in liter)"
+                    />
+                  </Col>
+                  <Col xs={24} sm={12}>
                     <Input
                       label="Nutrient water reservoir capacity (in liter)"
                       name={`nutrientWaterReservoirCapacity`}
@@ -87,22 +100,7 @@ const AddReservoirs = () => {
                       placeholder="Enter nutrient water reservoir capacity (in liter)"
                     />
                   </Col>
-                </Row>
-                <Row gutter={24}>
-                  <Col span={12}>
-                    <Input
-                      label="PH reservoir capacity (in liter)"
-                      name={`phReservoirCapacity`}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Please input PH reservoir capacity",
-                        },
-                      ]}
-                      placeholder="Enter PH reservoir capacity (in liter)"
-                    />
-                  </Col>
-                  <Col span={12}>
+                  <Col xs={24} sm={12}>
                     <Input
                       label="Stock nutrient solution capacity (in liter)"
                       name={`stockNutrientSolutionCapacity`}

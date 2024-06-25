@@ -5,9 +5,17 @@ import { GrRefresh } from "react-icons/gr";
 import Button from "@/components/common/button";
 import { useNavigate } from "react-router-dom";
 import routePaths from "@/config/routePaths";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import FarmActions from "@/redux/farm/action";
 
 const Farm = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(FarmActions.fetchFarms());
+  });
+
   return (
     <div className="farm">
       <Card

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Divider } from "antd";
+import { Form as AntdForm } from "antd";
 import "./style.scss";
 import { GrRefresh } from "react-icons/gr";
 import Button from "@/components/common/button";
@@ -9,8 +9,10 @@ import AddForm from "./Steps/AddForm";
 import AddReservoirs from "./Steps/AddReservoirs";
 import AddPolyhouses from "./Steps/AddPolyhouses";
 import StepperNavigation from "./StepperNavigation";
+import Card from "@/components/ui/card";
 
 const CreateFarm = () => {
+  const [form] = AntdForm.useForm();
   const [current, setCurrent] = useState(0);
   return (
     <div>
@@ -22,7 +24,6 @@ const CreateFarm = () => {
         <div className="createForm">
           <div className="stepper">
             <Stepper current={current} setCurrent={setCurrent} />
-            {/* <Divider type="vertical" style={{ height: "100%" }} /> */}
           </div>
 
           <div
@@ -34,13 +35,21 @@ const CreateFarm = () => {
           >
             {
               {
-                [stepper[stepperNames.FARM_CREATION]]: <AddForm />,
-                [stepper[stepperNames.RESERVOIRS]]: <AddReservoirs />,
-                [stepper[stepperNames.POLYHOUSES]]: <AddPolyhouses />,
+                [stepper[stepperNames.FARM_CREATION]]: <AddForm form={form} />,
+                [stepper[stepperNames.RESERVOIRS]]: (
+                  <AddReservoirs form={form} />
+                ),
+                [stepper[stepperNames.POLYHOUSES]]: (
+                  <AddPolyhouses form={form} />
+                ),
               }[current]
             }
 
-            <StepperNavigation current={current} setCurrent={setCurrent} />
+            <StepperNavigation
+              current={current}
+              setCurrent={setCurrent}
+              form={form}
+            />
           </div>
         </div>
       </Card>

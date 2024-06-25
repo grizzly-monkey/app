@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Col, Row, Form as AntdForm, Card, Collapse, Tabs } from "antd";
+import { Col, Row, Collapse, Tabs } from "antd";
 import Button from "@/components/common/button";
 import Form from "@/components/common/form";
 import Input from "@/components/common/input";
+import Card from "@/components/ui/card";
 import { MdDelete } from "react-icons/md";
 import AddZones from "./AddZones";
 import AddNursery from "./AddNursery";
@@ -11,7 +12,6 @@ const { Panel } = Collapse;
 const { TabPane } = Tabs;
 
 const AddPolyhouses = () => {
-  const [form] = AntdForm.useForm();
   const [polyhouses, setPolyhouses] = useState([{ key: 0 }]);
 
   const addPolyhouse = () => {
@@ -62,8 +62,8 @@ const AddPolyhouses = () => {
                     />
                   </Col>
                 </Row>
-                <Row gutter={24}>
-                  <Col span={12}>
+                <Row gutter={[16, 16]}>
+                  <Col xs={24} sm={12}>
                     <Input
                       label="Structure expected life"
                       name={`structureExpectedLife`}
@@ -76,7 +76,7 @@ const AddPolyhouses = () => {
                       placeholder="Enter structure expected life"
                     />
                   </Col>
-                  <Col span={12}>
+                  <Col xs={24} sm={12}>
                     <Input
                       label="Plastic expected life"
                       name={`plasticExpectedLife`}
@@ -92,28 +92,13 @@ const AddPolyhouses = () => {
                 </Row>
 
                 <Row gutter={24}>
-                  {/* <Col span={12}>
-                    <Collapse>
-                      <Panel header="Configure zones" key="1">
-                        <AddZones />
-                      </Panel>
-                    </Collapse>
-                  </Col>
-                  <Col span={12}>
-                    <Collapse>
-                      <Panel header="Configure nursery" key="1">
-                        <AddNursery />
-                      </Panel>
-                    </Collapse>
-                  </Col> */}
-
                   <Col span={24}>
                     <Tabs defaultActiveKey="1">
                       <TabPane tab="Configure zones" key="1">
                         <AddZones form={form} />
                       </TabPane>
                       <TabPane tab="Configure nurseries" key="2">
-                        <AddNursery />
+                        <AddNursery form={form} />
                       </TabPane>
                     </Tabs>
                   </Col>

@@ -4,8 +4,11 @@ import Button from "@/components/common/button";
 import { useNavigate } from "react-router-dom";
 import { stepper, stepperNames } from "./const";
 import routePaths from "@/config/routePaths";
+import { useDispatch } from "react-redux";
+import FarmActions from "@/redux/farm/action";
 
-const StepperNavigation = ({ current, setCurrent }) => {
+const StepperNavigation = ({ current, setCurrent, form }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const nextStep = () => {
@@ -15,6 +18,26 @@ const StepperNavigation = ({ current, setCurrent }) => {
 
   const goBack = () => {
     navigate(routePaths.farm);
+  };
+
+  // useEffect(() => {
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition((position) => {
+  //       // const lat = position.coords.latitude;
+  //       // const lng = position.coords.longitude;
+  //       console.log("position", position);
+  //     });
+  //   } else {
+  //     console.log("no geo locator");
+  //   }
+  // }, []);
+
+  const farmCreate = () => {
+    form
+      .validateFields()
+      .then(() => dispatch(FarmActions.addFarm(form.getFieldsValue())))
+      .catch(() => {});
+    console.log("fram creation", form.getFieldsValue());
   };
 
   return (
@@ -28,7 +51,7 @@ const StepperNavigation = ({ current, setCurrent }) => {
       {current === stepper[stepperNames.FARM_CREATION] && (
         <div style={{ width: "150px", display: "flex", gap: "10px" }}>
           <Button label="Cancel" onClick={{ goBack }} />
-          <Button className="btn-success" label="Create" onClick={nextStep} />
+          <Button className="btn-success" label="Create" onClick={farmCreate} />
         </div>
       )}
 
