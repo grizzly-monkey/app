@@ -80,3 +80,8 @@ a {
   width: 100%;
   object-fit: cover;
 }
+
+button:disabled {
+  background: $primary !important;
+  color: white !important;
+}

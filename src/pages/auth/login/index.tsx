@@ -14,12 +14,10 @@ import { useAppSelector } from "@/hooks/redux";
 import { removeByActionType } from "@/redux/error/errorAction";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import { makeRequestingSelector } from "@/redux/requesting/requestingSelector";
-import { errorToast } from "@/utilities/toast";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import AlertError from "@/components/common/error/AlertError";
 import { useAppDispatch } from "@/hooks/redux";
 import SessionSelectors from "@/redux/session/selectors";
-import { SessionActionTypes } from "@/redux/session/actionTypes";
 
 const selectLoading = makeRequestingSelector();
 const selectError = makeSelectErrorModel();
@@ -34,10 +32,10 @@ const Login = () => {
   const dispatch = useAppDispatch();
 
   const error = useAppSelector((state) =>
-    selectError(state, SessionActionTypes.REQUEST_LOGIN_FINISHED)
+    selectError(state, SessionActions.REQUEST_LOGIN_FINISHED)
   );
   const loading = useAppSelector((state) =>
-    selectLoading(state, [SessionActionTypes.REQUEST_LOGIN])
+    selectLoading(state, [SessionActions.REQUEST_LOGIN])
   );
   const accountApprovalStatus = useAppSelector(
     SessionSelectors.SelectAccountApprovalStatus
@@ -48,7 +46,7 @@ const Login = () => {
   };
 
   const clearError = () => {
-    dispatch(removeByActionType(SessionActionTypes.REQUEST_LOGIN_FINISHED));
+    dispatch(removeByActionType(SessionActions.REQUEST_LOGIN_FINISHED));
   };
 
   function renderPasswordIcon() {
@@ -57,15 +55,9 @@ const Login = () => {
   }
 
   useEffect(() => {
-    if (error) {
-      errorToast(error.errors.map((item: any) => item.message));
-      clearError();
-    }
-  }, [error]);
-
-  useEffect(() => {
     return () => {
       dispatch(SessionActions.setAccountApprovalStatus(""));
+      clearError();
     };
   }, []);
 
@@ -86,6 +78,8 @@ const Login = () => {
           {accountApprovalStatus && (
             <AlertError message={accountApprovalStatus} />
           )}
+
+          <AlertError error={error} />
 
           <Form form={form} onFinish={onFinish} layout="vertical">
             <PhoneInput

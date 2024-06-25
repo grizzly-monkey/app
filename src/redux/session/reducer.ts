@@ -1,5 +1,5 @@
 import BaseReducer from "@/utilities/baseReducer";
-import { SessionActionTypes } from "./actionTypes";
+import SessionActions from "./actions";
 
 export const initialState = {
   token: null,
@@ -9,10 +9,10 @@ export const initialState = {
 export default BaseReducer(
   initialState,
   {
-    [SessionActionTypes.SET_USER_TOKENS](state, action) {
+    [SessionActions.SET_USER_TOKENS](state, action) {
       return { ...state, token: action.payload.token };
     },
-    [SessionActionTypes.ACCOUNT_APPROVAL_STATUS](state, action) {
+    [SessionActions.ACCOUNT_APPROVAL_STATUS](state, action) {
       return { ...state, accountApprovalStatus: action.payload };
     },
   },

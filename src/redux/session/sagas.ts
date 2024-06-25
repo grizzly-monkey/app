@@ -15,7 +15,6 @@ import SessionActions from "./actions";
 import SessionEffects from "./effects";
 import UserPool from "./UserPool";
 import CognitoSessionModel from "./models/login/CognitoSessionModel";
-import { SessionActionTypes } from "./actionTypes";
 
 export function getCognitoUserObject(phoneNumber: string) {
   return new CognitoUser({
@@ -121,9 +120,9 @@ function* INIT() {
 }
 
 function* LOGINFLOW() {
-  yield takeEvery(SessionActionTypes.REQUEST_LOGIN, REQUEST_LOGIN);
+  yield takeEvery(SessionActions.REQUEST_LOGIN, REQUEST_LOGIN);
   yield takeEvery(
-    SessionActionTypes.REQUEST_REFRESH_TOKEN_SILENTLY,
+    SessionActions.REQUEST_REFRESH_TOKEN_SILENTLY,
     REFRESH_TOKEN_SILENTLY
   );
 }
