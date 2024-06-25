@@ -17,7 +17,7 @@
   "userManagement.addUserModal.lastNameError": "Please input last name",
   "userManagement.addUserModal.phonePlaceholder": "Enter phone number",
   "userManagement.addUserModal.phoneError": "Please input phone number",
-  "userManagement.addUserModal.rolePlaceholder": "Select roles",
-  "userManagement.addUserModal.roleError": "Please select roles",
+  "userManagement.addUserModal.rolesPlaceholder": "Select roles",
+  "userManagement.addUserModal.rolesError": "Please select roles",
   "userManagement.searchUserPlaceholder": "Search user"
 }

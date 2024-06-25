@@ -180,8 +180,8 @@ const CustomEdit = ({
         </div>
       ) : (
         <>
-          <form
-            onBlur={_onSubmit}
+          <div
+            onBlur={()=>{onCancel()}}
             className={` ${isFullWidth ? styles.fillWidth : ''}`}
             style={{ display: 'flex' }}
           >
@@ -233,7 +233,7 @@ const CustomEdit = ({
                 </div>
               </div>
             </div>
-          </form>
+          </div>
         </>
       )}
     </>

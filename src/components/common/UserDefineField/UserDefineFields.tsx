@@ -64,9 +64,10 @@ export const getComponent = (fields: any, placeholder: any, tagRender: tagRender
   if (fields.type === userDefineFieldType.ARRAY_FLOAT) {
     customComponent = (
       <Select
+        data-testid = {fields.inputDataTestId}
         autoFocus
         allowClear
-        dropdownMatchSelectWidth={false}
+        popupMatchSelectWidth={false}
         onChange={fields?.onChange}
         placeholder={placeholder}
         mode="tags"
@@ -80,10 +81,11 @@ export const getComponent = (fields: any, placeholder: any, tagRender: tagRender
   if (fields.type === userDefineFieldType.ARRAY_INT) {
     customComponent = (
       <Select
+        data-testid = {fields.inputDataTestId}
         autoFocus
         allowClear
         onChange={fields?.onChange}
-        dropdownMatchSelectWidth={false}
+        popupMatchSelectWidth={false}
         placeholder={placeholder}
         mode="tags"
         tagRender={tagRender}
@@ -96,8 +98,9 @@ export const getComponent = (fields: any, placeholder: any, tagRender: tagRender
   if (fields.type === userDefineFieldType.ARRAY_STRING) {
     customComponent = (
       <Select
+        data-testid = {fields.inputDataTestId}
         allowClear
-        dropdownMatchSelectWidth={false}
+        popupMatchSelectWidth={false}
         autoFocus
         onChange={fields?.onChange}
         placeholder={placeholder}
@@ -111,7 +114,7 @@ export const getComponent = (fields: any, placeholder: any, tagRender: tagRender
   }
   if (fields.type === userDefineFieldType.BOOL) {
     customComponent = (
-      <Radio.Group  onChange={fields?.onChange}>
+      <Radio.Group onChange={fields?.onChange}>
         <Radio value>
           {getTranslation('global.yes')}
         </Radio>
@@ -158,7 +161,7 @@ export const getComponent = (fields: any, placeholder: any, tagRender: tagRender
   return { customComponent, validator }
 }
 
-export const getPresetType = (type: any) => {
+export const getPresetType = (type:any) => {
   let presetType
   if (type === userDefineFieldType.ARRAY_STRING || type === userDefineFieldType.STRING) {
     presetType = userDefineFieldType.ARRAY_STRING
@@ -250,10 +253,11 @@ const UserDefineFields = ({
     if (field.type.includes('array')) mode = 'multiple'
     component = (
       <Select
+        data-testid = {field.inputDataTestId}
         autoFocus
         allowClear
         style={{ maxWidth: '100%' }}
-        dropdownMatchSelectWidth={false}
+        popupMatchSelectWidth={false}
         mode={mode}
         onChange={field?.onChange}
         showSearch={!!field?.searchable}
@@ -268,9 +272,10 @@ const UserDefineFields = ({
       : (field.listOfValues || []).map((value: any) => ({ label: value, value }))
     component = (
       <Select
+        data-testid = {field.inputDataTestId}
         autoFocus
         allowClear
-        dropdownMatchSelectWidth={false}
+        popupMatchSelectWidth={false}
         onChange={field?.onChange}
         mode={field.type}
         tagRender={tagRender}

@@ -34,6 +34,8 @@ const AddUserButton = () => {
             values.role="ADMIN"
             values.organisationName="organisationName"
             dispatch(UserActions.createUser(values))
+        }).catch((error) => {
+            console.log(error);
         });
     };
 
@@ -53,6 +55,8 @@ const AddUserButton = () => {
         <>
             <Button label={getTranslation("userManagement.addUser")} style={{ padding: "0 0" }} onClick={showModal} />
             <Modal
+                data-testid="add-user-modal"
+                destroyOnClose={true}
                 style={{ padding: "20px 30px" }}
                 title={getTranslation("userManagement.addUser")}
                 open={isModalOpen}
@@ -119,7 +123,7 @@ const AddUserButton = () => {
                                     },
                                 ]}
                             >
-                                <Select placeholder={getTranslation("userManagement.addUserModal.rolePlaceholder")} options={roles} mode="multiple" />
+                                <Select placeholder={getTranslation("userManagement.addUserModal.rolesPlaceholder")} options={roles} mode="multiple" />
                             </AntdForm.Item>
                         </Col>
                     </Row>
