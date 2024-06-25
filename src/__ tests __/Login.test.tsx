@@ -39,7 +39,6 @@ describe("Login Page", () => {
     renderWithProvider(<Login />, { store });
 
     fireEvent.click(screen.getByText("Sign in"));
-
     expect(
       await screen.findByText("Please input your phone number!")
     ).toBeInTheDocument();
