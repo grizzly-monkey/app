@@ -1,73 +1,132 @@
-// import React from "react";
-// import {
-//   render,
-//   screen,
-//   fireEvent,
-//   RenderOptions,
-//   act,
-// } from "@testing-library/react";
-// import { Provider } from "react-redux";
-// import configureStore from "redux-mock-store";
-// import Login from "@/pages/auth/login";
-// import SessionActions from "@/redux/session/actions";
-// import { MemoryRouter } from "react-router-dom";
-// import "@testing-library/jest-dom";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
+import Login from "@/pages/auth/login";
+import "@testing-library/jest-dom";
+import { setupDefaultStore } from "./utils/setupTests";
+import { renderWithProvider } from "./utils/testUtils";
+import SessionActions from "@/redux/session/actions";
 
-// const mockStore = configureStore([]);
+jest.mock("../utilities/actionUtility", () => ({
+  getKeyForAction: jest.fn(
+    (actionType, scope) => `${scope ? `[scope:${scope}]` : ""}${actionType}`
+  ),
+  createAction: jest.fn((type, payload, error, meta) => ({
+    type,
+    payload,
+    error,
+    meta,
+  })),
+}));
 
-// describe("LoginForm", () => {
-//   let store: any;
+describe("Login Page", () => {
+  let store: any;
 
-//   beforeEach(() => {
-//     store = mockStore({
-//       session: {},
-//       requesting: {},
-//       error: {},
-//     });
-//     store.dispatch = jest.fn();
-//   });
+  beforeEach(() => {
+    store = setupDefaultStore();
+  });
 
-//   const renderWithProvider = (
-//     ui: React.ReactElement,
-//     { store, ...renderOptions }: { store: any } & Omit<RenderOptions, "queries">
-//   ) => {
-//     function Wrapper({ children }: { children: React.ReactNode }) {
-//       return (
-//         <Provider store={store}>
-//           <MemoryRouter>{children}</MemoryRouter>
-//         </Provider>
-//       );
-//     }
-//     return render(ui, { wrapper: Wrapper, ...renderOptions });
-//   };
+  test("should render the login form", () => {
+    renderWithProvider(<Login />, { store });
 
-//   test("renders login form", () => {
-//     renderWithProvider(<Login />, { store });
+    expect(screen.getByText("Welcome Back!")).toBeInTheDocument();
+    expect(screen.getByText("Please Sign in to continue")).toBeInTheDocument();
+    expect(screen.getByText("Phone number")).toBeInTheDocument();
+    expect(screen.getByText("Password")).toBeInTheDocument();
+    expect(screen.getByText("Remember me")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Sign in" })).toBeInTheDocument();
+  });
 
-//     expect(screen.getByPlaceholderText("Test")).toBeInTheDocument();
-//     expect(screen.getByTestId("phone-number-input")).toBeInTheDocument();
-//     expect(screen.getByTestId("password-input")).toBeInTheDocument();
-//     expect(
-//       screen.getByRole("button", { name: /Sign in/i })
-//     ).toBeInTheDocument();
-//   });
+  test("should display error messages when inputs are empty and form is submitted", async () => {
+    renderWithProvider(<Login />, { store });
 
-//   test("dispatches loginRequest action on form submit", async () => {
-//     renderWithProvider(<Login />, { store });
+    fireEvent.click(screen.getByText("Sign in"));
 
-//     await act(async () => {
-//       fireEvent.change(screen.getByTestId("phone-number-input"), {
-//         target: { value: "1234567890" },
-//       });
-//       fireEvent.change(screen.getByTestId("password-input"), {
-//         target: { value: "password" },
-//       });
-//       fireEvent.click(screen.getByRole("button", { name: /Sign in/i }));
-//     });
+    expect(
+      await screen.findByText("Please input your phone number!")
+    ).toBeInTheDocument();
+    expect(
+      await screen.findByText("Please input your password!")
+    ).toBeInTheDocument();
+  });
 
-//     expect(store.dispatch).toHaveBeenCalledTimes(1);
-//     expect(store.dispatch).toHaveBeenCalledWith(
-//       SessionActions.login({ phoneNumber: "1234567890", password: "password" })
-//     );
-//   });
-// });
+  test("should dispatch login action with valid inputs", async () => {
+    renderWithProvider(<Login />, { store });
+
+    fireEvent.change(screen.getByTestId("phone-number-input"), {
+      target: { value: "1234567890" },
+    });
+    fireEvent.change(screen.getByTestId("password-input"), {
+      target: { value: "password" },
+    });
+
+    fireEvent.click(screen.getByText("Sign in"));
+
+    await waitFor(() => {
+      expect(store.dispatch).toHaveBeenCalledWith(
+        SessionActions.login({
+          phoneNumber: "1234567890",
+          password: "password",
+        })
+      );
+    });
+  });
+
+  test("should show loading state when login is in progress", () => {
+    store = setupDefaultStore({
+      requesting: {
+        [SessionActions.REQUEST_LOGIN]: true,
+      },
+    });
+
+    renderWithProvider(<Login />, { store });
+    expect(screen.getByRole("button", { name: /sign in/i })).toBeDisabled();
+  });
+
+  test("should display error on login error", async () => {
+    store = setupDefaultStore({
+      error: {
+        [SessionActions.REQUEST_LOGIN_FINISHED]: {
+          errors: [{ message: "Invalid credentials" }],
+        },
+      },
+    });
+
+    renderWithProvider(<Login />, { store });
+
+    await waitFor(() => {
+      expect(screen.getByText(/Invalid credentials/i)).toBeInTheDocument();
+    });
+  });
+
+  test("should display account approval status error", () => {
+    store = setupDefaultStore({
+      session: {
+        accountApprovalStatus: "Account not approved",
+      },
+    });
+
+    renderWithProvider(<Login />, { store });
+
+    expect(screen.getByText("Account not approved")).toBeInTheDocument();
+  });
+
+  // test("should not submit the form with invalid phone number format", async () => {
+  //   renderWithProvider(<Login />, { store });
+
+  //   fireEvent.change(screen.getByTestId("phone-number-input"), {
+  //     target: { value: "1234567890" },
+  //   });
+  //   fireEvent.change(screen.getByTestId("password-input"), {
+  //     target: { value: "password" },
+  //   });
+
+  //   fireEvent.click(screen.getByText("Sign in"));
+
+  //   // Assuming you have some validation for phone number format
+  //   expect(
+  //     await screen.findByText("Invalid phone number format")
+  //   ).toBeInTheDocument();
+  //   expect(store.dispatch).not.toHaveBeenCalledWith(
+  //     SessionActions.login({ phoneNumber: "abc123", password: "password" })
+  //   );
+  // });
+});

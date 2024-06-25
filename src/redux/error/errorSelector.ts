@@ -3,8 +3,9 @@ import { getKeyForAction } from "@/utilities/actionUtility";
 import XMLToJSON from "@/utilities/XMLToJSON";
 import ErrorModel from "@/models/error/errorModel";
 import ErrorDetail from "@/models/error/errorDetail";
-import { createSelector, Selector } from "@reduxjs/toolkit";
+import { createSelector } from "@reduxjs/toolkit";
 import { exceptions } from "@/config/consts";
+import { RootState } from "../store";
 
 /**
  * Returns a new object with the keys being the finished action type
@@ -29,13 +30,22 @@ function hasErrorsFn(
   );
 }
 
-export const getErrorModelFromState: Selector<
-  { error: any },
-  (actionType: string, scope: any) => any
-> = ({ error }, actionType, scope) => error[getKeyForAction(actionType, scope)];
+export const getErrorModelFromState = (
+  state: RootState,
+  actionType: string,
+  scope: string
+) => state.error[getKeyForAction(actionType, scope)];
 
-export const makeSelectErrorModel: any = () =>
-  createSelector(getErrorModelFromState, (error) => error);
+export const getErrorState = (state: RootState) => state.error;
+
+export const makeSelectErrorModel = () =>
+  createSelector(
+    [
+      getErrorState,
+      (_, actionType, scope = "") => getKeyForAction(actionType, scope),
+    ],
+    (errorState, key) => errorState[key]
+  );
 
 export const SelectHasErrors = createSelector(
   (state) => state.error,

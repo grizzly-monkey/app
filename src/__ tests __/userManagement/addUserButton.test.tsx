@@ -1,7 +1,6 @@
 import AddUserButton from "@/pages/userManagement/addUserButton";
 import { fireEvent, render } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { debug } from "jest-preview";
 jest.mock("react-redux", () => ({
     useDispatch: jest.fn(),
     useSelector: (callback:any)=>callback(),
@@ -32,7 +31,6 @@ describe("Add User Button", () => {
         fireEvent.click(button);
         const okButton = component.getByRole("button", { name: 'Add' });
         fireEvent.click(okButton);
-        debug()
         expect(component.getByText("Please input first name")).toBeInTheDocument();
     }
     )

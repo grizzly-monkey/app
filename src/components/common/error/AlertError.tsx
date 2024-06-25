@@ -11,10 +11,10 @@ const AlertError = ({ error, message }: AlertErrorProps) => {
 
   if (!message && error?.errors) {
     return error.errors.map(
-      (err: errorDetail) =>
+      (err: errorDetail, index: number) =>
         err.message && (
           <Alert
-            key={err.error}
+            key={err.message + index}
             message={err.message}
             type="error"
             closable
