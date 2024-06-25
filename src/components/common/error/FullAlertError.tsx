@@ -1,6 +1,6 @@
 import { Alert } from "antd";
 import "./style.scss";
-import { errorDetail, errorModel } from "@/types/error";
+import { errorDetail, } from "@/types/error";
 import { useAppDispatch } from "@/hooks/redux";
 import { removeByActionType } from "@/redux/error/errorAction";
 import { getKeyForAction } from "@/utilities/actionUtility";
@@ -18,10 +18,6 @@ const ErrorContent = ({ label, value }: ErrorContentProps) => {
     </div>
   );
 };
-
-interface AlertErrorProps {
-  error: errorModel;
-}
 
 const FullAlertError = ({ error }: any) => {
   if (!error || !error?.errors) return null;

@@ -7,16 +7,16 @@ import { store } from "@/redux/store";
 import "@/translation/i18n";
 import AppRoutes from "./routes";
 import theme from "./theme";
-import { Spin } from 'antd'
-import { LoadingOutlined } from '@ant-design/icons';
+// import { Spin } from 'antd'
+// import { LoadingOutlined } from '@ant-design/icons';
 
-const setSpinner = () => {
-  const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
-  Spin.setDefaultIndicator(antIcon)
-}
+// const setSpinner = () => {
+//   const antIcon = <LoadingOutlined data-testid="loader" style={{ fontSize: 24 }} spin />
+//   Spin.setDefaultIndicator(antIcon)
+// }
 
 function App() {
-  setSpinner()
+  // setSpinner()
   return (
     <Provider store={store}>
       <ConfigProvider theme={theme}>
