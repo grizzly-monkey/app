@@ -24,6 +24,7 @@ const UserActions = {
   UPDATE_USER_ROLES_FINISHED: "users/UPDATE_USER_ROLES_FINISHED",
   DELETE_USER: "users/DELETE_USER",
   DELETE_USER_FINISHED: "users/DELETE_USER_FINISHED",
+  UPDATE_USERS_LOCALLY: "users/UPDATE_USERS_LOCALLY",
 
   fetchUsers() {
     return createAction(this.FETCH_USERS);
@@ -64,6 +65,9 @@ const UserActions = {
   deleteUser(payload: any) {
     return createAction(this.DELETE_USER, payload);
   },
+  updateUsersLocally(payload: any) {
+    return createAction(this.UPDATE_USERS_LOCALLY, payload);
+  }
 };
 
 export default UserActions;

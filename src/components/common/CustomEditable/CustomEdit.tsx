@@ -49,6 +49,8 @@ interface CustomEditProps {
   setSubmitDisable: (arg: boolean) => void;
   isSubmitDisable?: boolean;
   bottomMarginLevel?: number;
+  containerDataTestId?: string;
+  inputDataTestId?: string;
 }
 
 const CustomEdit = ({
@@ -71,13 +73,12 @@ const CustomEdit = ({
   form,
   placeholder,
   isFullWidth,
-  customValidator,
   disabled,
-  tooltip,
-  tagRender,
   bottomMarginLevel = 4,
   isSubmitDisable,
   setSubmitDisable,
+  containerDataTestId,
+
 }: CustomEditProps) => {
   const cancelButtonRef = React.useRef<HTMLButtonElement | null>(null);
   const [valueChanged, setValueChanged] = React.useState(false)
@@ -139,6 +140,7 @@ const CustomEdit = ({
     <>
       {!isActive ? (
         <div
+          data-testid={containerDataTestId}
           className={classNames({
             'editable-trigger': true,
             [`${style.grid} mb-${bottomMarginLevel}`]: isLabel,
@@ -178,9 +180,9 @@ const CustomEdit = ({
         </div>
       ) : (
         <>
-          <form
-            onBlur={_onSubmit}
-            className={`pl-0 d-flex  ${isFullWidth ? styles.fillWidth : ''}`}
+          <div
+            onBlur={()=>{onCancel()}}
+            className={` ${isFullWidth ? styles.fillWidth : ''}`}
             style={{ display: 'flex' }}
           >
             <div className="flex-grow-1 " style={{ minWidth: 0, cursor: 'text' }}>
@@ -198,6 +200,7 @@ const CustomEdit = ({
                   escapeValidation: userDefineField?.escapeValidation,
                   emailInput: userDefineField?.emailInput,
                   setEmails: setEmails,
+                  inputDataTestId: userDefineField.inputDataTestId,
                 }}
                 placeholder={placeholder || ''}
                 card
@@ -230,7 +233,7 @@ const CustomEdit = ({
                 </div>
               </div>
             </div>
-          </form>
+          </div>
         </>
       )}
     </>
@@ -266,23 +269,6 @@ CustomEdit.propTypes = {
   isSubmitDisable: PropTypes.bool,
 }
 
-CustomEdit.defaultProps = {
-  disabled: false,
-  tooltip: null,
-  preset: false,
-  type: 'string',
-  label: '',
-  isEmpty: false,
-  emptyLabel: '',
-  children: null,
-  placeholder: '',
-  customValidator: () => Promise.resolve(),
-  onChange: null,
-  isFullWidth: null,
-  tagRender: null,
-  isHidden: false,
-  isSubmitDisable: false,
-  setSubmitDisable: () => { },
-}
+
 
 export default CustomEdit

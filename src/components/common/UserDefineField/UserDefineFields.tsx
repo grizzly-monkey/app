@@ -1,6 +1,6 @@
 import React, { JSXElementConstructor, ReactElement, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Input, InputNumber, Select, Radio, AutoComplete, Tag, Form } from 'antd'
+import { Input, InputNumber, Select, Radio, Tag } from 'antd'
 import dayjs from 'dayjs'
 
 import DatePicker from '../DatePicker'
@@ -9,16 +9,16 @@ import style from './userDefineField.module.scss'
 import weekday from 'dayjs/plugin/weekday'
 import localeData from 'dayjs/plugin/localeData'
 import { getTranslation } from '@/translation/i18n'
-import FormItem from 'antd/es/form/FormItem'
 import { CustomTagProps } from 'rc-select/lib/BaseSelect'
+import { Form } from "antd";
 
 dayjs.extend(weekday)
 dayjs.extend(localeData)
 
-const itemLayout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 14 },
-}
+// const itemLayout = {
+//   labelCol: { span: 8 },
+//   wrapperCol: { span: 14 },
+// }
 
 export const userDefineFieldType = {
   INT: 'int',
@@ -44,11 +44,13 @@ interface UserDefinedFieldsProps {
   tagRender?: tagRenderType,
   rules?: any[]
   validatorDependencies?: any
+  inputDataTestId?: string
 }
 
 export const getComponent = (fields: any, placeholder: any, tagRender: tagRenderType) => {
   let customComponent = (
     <Input
+      data-testid = {fields.inputDataTestId}
       autoFocus
       onChange={fields?.onChange}
       className={style.setHeight}
@@ -62,9 +64,10 @@ export const getComponent = (fields: any, placeholder: any, tagRender: tagRender
   if (fields.type === userDefineFieldType.ARRAY_FLOAT) {
     customComponent = (
       <Select
+        data-testid = {fields.inputDataTestId}
         autoFocus
         allowClear
-        dropdownMatchSelectWidth={false}
+        popupMatchSelectWidth={false}
         onChange={fields?.onChange}
         placeholder={placeholder}
         mode="tags"
@@ -78,10 +81,11 @@ export const getComponent = (fields: any, placeholder: any, tagRender: tagRender
   if (fields.type === userDefineFieldType.ARRAY_INT) {
     customComponent = (
       <Select
+        data-testid = {fields.inputDataTestId}
         autoFocus
         allowClear
         onChange={fields?.onChange}
-        dropdownMatchSelectWidth={false}
+        popupMatchSelectWidth={false}
         placeholder={placeholder}
         mode="tags"
         tagRender={tagRender}
@@ -94,8 +98,9 @@ export const getComponent = (fields: any, placeholder: any, tagRender: tagRender
   if (fields.type === userDefineFieldType.ARRAY_STRING) {
     customComponent = (
       <Select
+        data-testid = {fields.inputDataTestId}
         allowClear
-        dropdownMatchSelectWidth={false}
+        popupMatchSelectWidth={false}
         autoFocus
         onChange={fields?.onChange}
         placeholder={placeholder}
@@ -109,7 +114,7 @@ export const getComponent = (fields: any, placeholder: any, tagRender: tagRender
   }
   if (fields.type === userDefineFieldType.BOOL) {
     customComponent = (
-      <Radio.Group  onChange={fields?.onChange}>
+      <Radio.Group onChange={fields?.onChange}>
         <Radio value>
           {getTranslation('global.yes')}
         </Radio>
@@ -156,7 +161,7 @@ export const getComponent = (fields: any, placeholder: any, tagRender: tagRender
   return { customComponent, validator }
 }
 
-export const getPresetType = (type: any) => {
+export const getPresetType = (type:any) => {
   let presetType
   if (type === userDefineFieldType.ARRAY_STRING || type === userDefineFieldType.STRING) {
     presetType = userDefineFieldType.ARRAY_STRING
@@ -248,10 +253,11 @@ const UserDefineFields = ({
     if (field.type.includes('array')) mode = 'multiple'
     component = (
       <Select
+        data-testid = {field.inputDataTestId}
         autoFocus
         allowClear
         style={{ maxWidth: '100%' }}
-        dropdownMatchSelectWidth={false}
+        popupMatchSelectWidth={false}
         mode={mode}
         onChange={field?.onChange}
         showSearch={!!field?.searchable}
@@ -266,9 +272,10 @@ const UserDefineFields = ({
       : (field.listOfValues || []).map((value: any) => ({ label: value, value }))
     component = (
       <Select
+        data-testid = {field.inputDataTestId}
         autoFocus
         allowClear
-        dropdownMatchSelectWidth={false}
+        popupMatchSelectWidth={false}
         onChange={field?.onChange}
         mode={field.type}
         tagRender={tagRender}
@@ -317,7 +324,7 @@ const UserDefineFields = ({
   }
   return (
     <>
-      <FormItem
+      <Form.Item
         label={!card ? 'Value' : null}
         // labelCol={!card ? itemLayout.labelCol : null}
         // wrapperCol={!card ? itemLayout.wrapperCol : null}
@@ -328,7 +335,7 @@ const UserDefineFields = ({
           ...(rules || []),
           validation,
           {
-            validator(rule, value) {
+            validator(_, value) {
               let flag = 0
               if (field.type === userDefineFieldType.ARRAY_INT) {
                 if (Array.isArray(value)) {
@@ -353,7 +360,7 @@ const UserDefineFields = ({
         ]}
       >
         {component}
-      </FormItem>
+        </Form.Item>
     </>
   )
 }

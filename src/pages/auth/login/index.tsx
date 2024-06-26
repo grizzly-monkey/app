@@ -4,19 +4,20 @@ import Button from "@/components/common/button";
 import { Images } from "@/utilities/imagesPath";
 import Input from "@/components/common/input";
 import Checkbox from "@/components/common/checkbox";
-import { Link } from "react-router-dom";
 import routePaths from "@/config/routePaths";
+import { Link } from "react-router-dom";
 import PhoneInput from "@/components/common/input/phoneInput";
 import Form, { useForm } from "@/components/common/form";
-import { useDispatch } from "react-redux";
 import SessionActions from "@/redux/session/actions";
 import { loginType } from "@/types/auth";
 import { useAppSelector } from "@/hooks/redux";
-import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import { removeByActionType } from "@/redux/error/errorAction";
-import { errorToast } from "@/utilities/toast";
+import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import { makeRequestingSelector } from "@/redux/requesting/requestingSelector";
 import { IoEye, IoEyeOff } from "react-icons/io5";
+import AlertError from "@/components/common/error/AlertError";
+import { useAppDispatch } from "@/hooks/redux";
+import SessionSelectors from "@/redux/session/selectors";
 
 const selectLoading = makeRequestingSelector();
 const selectError = makeSelectErrorModel();
@@ -28,13 +29,16 @@ const iconStyle = {
 
 const Login = () => {
   const [form] = useForm();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const error = useAppSelector((state) =>
     selectError(state, SessionActions.REQUEST_LOGIN_FINISHED)
   );
   const loading = useAppSelector((state) =>
     selectLoading(state, [SessionActions.REQUEST_LOGIN])
+  );
+  const accountApprovalStatus = useAppSelector(
+    SessionSelectors.SelectAccountApprovalStatus
   );
 
   const onFinish = (payload: loginType) => {
@@ -51,11 +55,11 @@ const Login = () => {
   }
 
   useEffect(() => {
-    if (error) {
-      errorToast(error.errors.map((item: any) => item.message));
+    return () => {
+      dispatch(SessionActions.setAccountApprovalStatus(""));
       clearError();
-    }
-  }, [error]);
+    };
+  }, []);
 
   return (
     <div className="login_container">
@@ -71,6 +75,12 @@ const Login = () => {
             </div>
           </div>
 
+          {accountApprovalStatus && (
+            <AlertError message={accountApprovalStatus} />
+          )}
+
+          <AlertError error={error} />
+
           <Form form={form} onFinish={onFinish} layout="vertical">
             <PhoneInput
               label="Phone number"
@@ -82,8 +92,8 @@ const Login = () => {
                 },
               ]}
             />
-
             <Input
+            data-testid="first-name-input"
               label="Password"
               name="password"
               rules={[
@@ -95,6 +105,7 @@ const Login = () => {
               iconRender={renderPasswordIcon()}
               isPasswordInput
               placeholder="Enter your password"
+              testId="password-input"
             />
 
             <div className="forget_password_container">
@@ -105,6 +116,7 @@ const Login = () => {
                 </p>
               </Link>
             </div>
+
             <Button
               loading={loading}
               htmlType="submit"

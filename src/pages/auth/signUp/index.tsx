@@ -114,15 +114,15 @@ const SignUp = () => {
               />
 
               <Input
-                label="Organisation name"
+                label="Organization name"
                 name="organisationName"
                 rules={[
                   {
                     required: true,
-                    message: "Please input your organisation name!",
+                    message: "Please input your organization name!",
                   },
                 ]}
-                placeholder="Enter your organisation name"
+                placeholder="Enter your organization name"
               />
 
               <Input

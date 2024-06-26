@@ -27,7 +27,9 @@ export async function getToModel<T>(
   params?: Record<string, string>,
   requestConfig?: Record<string, string>,
   isAuthenticated?: boolean
-): Promise<{ payload: T | T[]; metadata: Record<string, string> } | ErrorModel> {
+): Promise<
+  { payload: T | T[]; metadata: Record<string, string> } | ErrorModel
+> {
   const response = await HttpUtility.get(
     endpoint,
     params,
@@ -53,7 +55,9 @@ export async function postToModel<T>(
   data?: T,
   requestConfig?: Record<string, string>,
   isAuthenticated?: boolean
-): Promise<{ payload: T | T[]; metadata: Record<string, string> } | ErrorModel> {
+): Promise<
+  { payload: T | T[]; metadata: Record<string, string> } | ErrorModel
+> {
   const response = await HttpUtility.post(
     endpoint,
     data,

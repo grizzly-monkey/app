@@ -37,4 +37,10 @@ export default BaseReducer(initialState, {
   [UserActions.REQUEST_RESET_PASSWORD_OTP_FINISHED](state, action) {
     return { ...state, passwordResetOTPSent: action.payload };
   },
+  [UserActions.UPDATE_USERS_LOCALLY](state, action) {
+    return {
+      ...state,
+      users: action.payload,
+    };
+  }
 });

@@ -5,5 +5,4 @@ export default () =>
   new CognitoUserPool({
     UserPoolId: COGNITO_POOL_ID as string,
     ClientId: COGNITO_CLIENT_ID as string,
-    Storage: window.sessionStorage,
   });

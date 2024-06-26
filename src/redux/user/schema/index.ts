@@ -21,7 +21,7 @@ export const addNormalizeUser =(data :normalizeData, newUser:User)=>{
       const resultArray = Array.isArray(result) ? result : [result];
       return {
         result: [newUser.userId , ...resultArray],
-        entities: {users: {[newUser.userId]: newUser,...entities.users}}
+        entities: {users: {...entities.users,[newUser.userId]: newUser}}
     }}
 
     return data

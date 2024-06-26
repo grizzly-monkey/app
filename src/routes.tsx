@@ -13,6 +13,7 @@ import Reservoirs from "./pages/reservoirs";
 import Inventory from "./pages/inventory";
 import Tasks from "./pages/tasks";
 import Workflow from "./pages/workflow";
+import Organization from "./pages/organization";
 
 export const router = createBrowserRouter([
   {
@@ -20,8 +21,8 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: "/",
-        element: <Login />,
+        path: routePaths.organization,
+        element: <Organization />,
       },
     ],
   },
