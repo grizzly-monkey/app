@@ -27,7 +27,7 @@ function* CREATE_USER(action: SagaAction) {
 
 function* REQUEST_RESET_PASSWORD_OTP(action: SagaAction) {
   const cognitoUserObject: CognitoUser = getCognitoUserObject(
-    `+${action.payload.phoneNumber}`
+    `+${action.payload.phone}`
   );
 
   yield call(

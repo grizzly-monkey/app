@@ -15,7 +15,8 @@ import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import { makeRequestingSelector } from "@/redux/requesting/requestingSelector";
 import UserActions from "@/redux/user/actions";
 import UserSelectors from "@/redux/user/selectors";
-import { forgotPasswordType } from "@/types/auth";
+import { forgotPasswordType, sendOTPType } from "@/types/auth";
+import { createAction } from "@/utilities/actionUtility";
 import { Images } from "@/utilities/imagesPath";
 import { successToast } from "@/utilities/toast";
 import { useEffect, useState } from "react";
@@ -74,14 +75,14 @@ const ForgotPassword = () => {
       visible ? <IoEye style={iconStyle} /> : <IoEyeOff style={iconStyle} />;
   }
 
-  const onPhoneInputFinish = (payload: any) => {
+  const onPhoneInputFinish = (payload: sendOTPType) => {
     dispatch(UserActions.sendResetPasswordOTP(payload));
   };
 
   const onNewPasswordFinish = (values: forgotPasswordType) => {
     const payload = {
       ...values,
-      phoneNumber: phoneInputForm.getFieldValue("phoneNumber"),
+      phoneNumber: phoneInputForm.getFieldValue("phone"),
     };
 
     dispatch(UserActions.resetPasswordWithOTP(payload));
@@ -93,6 +94,14 @@ const ForgotPassword = () => {
       setRemainingTime(30);
     }
   }, [isOTPSent, sentOTPError]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(
+        createAction(UserActions.REQUEST_RESET_PASSWORD_OTP_FINISHED, false)
+      );
+    };
+  }, []);
 
   useEffect(() => {
     let interval: any;
@@ -129,7 +138,7 @@ const ForgotPassword = () => {
             <Form form={phoneInputForm} onFinish={onPhoneInputFinish}>
               <PhoneInput
                 label="Phone number"
-                name="phoneNumber"
+                name="phone"
                 rules={[
                   {
                     required: true,
@@ -151,10 +160,11 @@ const ForgotPassword = () => {
                 label="OTP"
                 name="otp"
                 maxLength={6}
+                testId="otp"
                 rules={[
                   {
                     required: true,
-                    message: "Please input your password!",
+                    message: "Please input your otp!",
                   },
                   {
                     pattern: /^(?:\d*)$/,
@@ -176,8 +186,7 @@ const ForgotPassword = () => {
                     className="register_text cursor_pointer"
                     onClick={() =>
                       onPhoneInputFinish({
-                        phoneNumber:
-                          phoneInputForm.getFieldValue("phoneNumber"),
+                        phone: phoneInputForm.getFieldValue("phone"),
                       })
                     }
                   >
@@ -202,6 +211,7 @@ const ForgotPassword = () => {
                 <Input
                   label="Password"
                   name="password"
+                  testId="password"
                   rules={[
                     {
                       required: true,
@@ -226,6 +236,7 @@ const ForgotPassword = () => {
               <Input
                 label="Confirm Password"
                 name="confirmPassword"
+                testId="confirm-password"
                 rules={[
                   {
                     required: true,

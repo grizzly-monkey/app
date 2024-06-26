@@ -116,6 +116,7 @@ const SignUp = () => {
               <Input
                 label="Organization name"
                 name="organisationName"
+                testId="organisation-name"
                 rules={[
                   {
                     required: true,
@@ -128,10 +129,11 @@ const SignUp = () => {
               <Input
                 label="First name"
                 name="firstName"
+                testId="first-name"
                 rules={[
                   {
                     required: true,
-                    message: "Please input your first name",
+                    message: "Please input your first name!",
                   },
                 ]}
                 placeholder="Enter your first name"
@@ -139,6 +141,7 @@ const SignUp = () => {
               <Input
                 label="Last name"
                 name="lastName"
+                testId="last-name"
                 rules={[
                   {
                     required: true,
@@ -164,6 +167,7 @@ const SignUp = () => {
                 <Input
                   label="Password"
                   name="password"
+                  testId="password"
                   rules={[
                     {
                       required: true,
@@ -188,6 +192,7 @@ const SignUp = () => {
               <Input
                 label="Confirm Password"
                 name="confirmPassword"
+                testId="confirm-password"
                 rules={[
                   {
                     required: true,
