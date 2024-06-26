@@ -105,7 +105,7 @@ async function doRequest(
         // auth
         ...(isAuthenticated && { Authorization: `Bearer ${getAuthToken()}` }),
         "Content-Type": "application/json",
-        ACTIVE_ORGANISATION_ID: "or50cc0bda",
+        ACTIVE_ORGANISATION_ID: "null",
         ...config?.headers,
       },
     };

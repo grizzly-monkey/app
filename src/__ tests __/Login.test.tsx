@@ -81,22 +81,10 @@ describe("Login Page", () => {
         },
       },
     });
-  test("should display error on login error", async () => {
-    store = setupDefaultStore({
-      error: {
-        [SessionActions.REQUEST_LOGIN_FINISHED]: {
-          errors: [{ message: "Invalid credentials" }],
-        },
-      },
-    });
 
     renderWithProvider(<Login />, { store });
 
     expect(errorToast).toHaveBeenCalledWith("Invalid credentials");
-  });
-    await waitFor(() => {
-      expect(screen.getByText(/Invalid credentials/i)).toBeInTheDocument();
-    });
   });
 
   test("should display account approval status error", () => {

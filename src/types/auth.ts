@@ -14,7 +14,8 @@ export type sendOTPType = {
   phone: string;
 };
 export type forgotPasswordType = {
-  phoneNumber: string;
+  phoneNumber?: string;
+  confirmPassword?: string;
   otp: string;
   password: string;
 };
