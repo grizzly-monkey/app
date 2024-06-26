@@ -75,6 +75,13 @@ a {
   cursor: pointer;
 }
 
+.btn-success {
+  background-color: $primary-extra-light;
+}
+
+.btn-success:hover {
+  background-color: $primary-extra-light !important;
+}
 .image {
   height: 100%;
   width: 100%;

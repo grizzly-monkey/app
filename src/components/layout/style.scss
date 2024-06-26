@@ -1,12 +1,37 @@
 @import "../../assets/styles/mixins.scss";
 
+
 .ant-layout {
     background-color: #FAFAFA !important;
+    min-height: 100vh;
+    max-height: fit-content;
 }
+.ant-drawer-body {
+    background-color: #FAFAFA !important;
+}
+.drawer-sidebar .ant-drawer-body {
+    padding: 0px;
+  }
+  
+  .drawer-sidebar
+    .ant-drawer-body
+    aside.ant-layout-sider.ant-layout-sider-light.sider-primary.ant-layout-sider-primary {
+    margin: 0px;
+  }
 .ant-menu {
     background-color: #FAFAFA !important;
     border-inline-end: none !important;
 }
+.ant-layout-sider {
+    height: '100vh' !important; 
+    overflow: 'auto' !important; 
+    display: 'flex' !important; 
+    flex-direction: 'column' !important; 
+    background-color: #FAFAFA !important;
+    padding-left:'20px' !important;
+    padding-right:'20px' !important;
+}
+
 .icon {
     display: inline-flex;
     min-width: 32px;
@@ -27,7 +52,7 @@
   margin-left: 3px;
   position: sticky;
   top: 0;
-  background-color: #FAFAFA;
+  background-color: #FAFAFA !important;
   z-index: 99;
 }
 
@@ -117,6 +142,10 @@
     .ant-menu-submenu-title:hover {
         background-color: #E8E8E8 !important;
     }
+
+    .ant-menu-item-selected{
+        box-shadow: none !important;
+    }
 }
 
 
@@ -137,6 +166,35 @@
   font-size: 20px;
 }
 
-.ant-layout-content {
-    padding: 30px  20px 20px 0 !important;
+.header-notifications-dropdown {
+    background: #fff;
+    box-shadow: 0 20px 27px rgb(0 0 0 / 5%);
+    border-radius: 12px;
+    min-width: 150px;
+    padding-left: 16px;
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+  }
+
+  .colorRed {
+    color: $red;
+  }
+
+  .sideBarMenuTab {
+    display: none;
+}
+
+.header {
+        display: flex;
+        padding: 20px;
+        align-items: center;
+        justify-content: space-between;
+}
+
+.headerRight {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        justify-content: flex-end;
 }
