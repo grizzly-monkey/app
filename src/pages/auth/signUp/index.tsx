@@ -12,11 +12,13 @@ import { passwordPolicy } from "@/config/consts";
 import routePaths from "@/config/routePaths";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import AccountActions from "@/redux/account/actions";
+// import AccountSelectors from "@/redux/account/selectors";
 import { removeByActionType } from "@/redux/error/errorAction";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import { makeRequestingSelector } from "@/redux/requesting/requestingSelector";
 import { registerType } from "@/types/auth";
 import { getKeyForAction } from "@/utilities/actionUtility";
+// import { applyFieldErrorsToForm, hasFieldErrors } from "@/utilities/formUtils";
 import { Images } from "@/utilities/imagesPath";
 import { useEffect, useState } from "react";
 import { IoEye, IoEyeOff } from "react-icons/io5";
@@ -28,6 +30,21 @@ const selectError = makeSelectErrorModel();
 const iconStyle = {
   fontSize: 22,
   cursor: "pointer",
+};
+
+export const fieldMap = {
+  email: {
+    field: "email",
+  },
+  address: {
+    field: "address",
+  },
+  firstName: {
+    field: "firstName",
+  },
+  lastName: {
+    field: "lastName",
+  },
 };
 
 const SignUp = () => {
@@ -43,6 +60,12 @@ const SignUp = () => {
   const error = useAppSelector((state) =>
     selectError(state, AccountActions.REQUEST_REGISTER_FINISHED)
   );
+  // const fieldsError = useAppSelector((state) =>
+  //   AccountSelectors.SelectCreateUserFieldErrors(state, [
+  //     AccountActions.REQUEST_REGISTER_FINISHED,
+  //   ])
+  // );
+
   const loading = useAppSelector((state) =>
     selectLoading(state, [AccountActions.REQUEST_REGISTER])
   );
@@ -81,6 +104,19 @@ const SignUp = () => {
     };
   }, []);
 
+  // useEffect(() => {
+  //   if (hasFieldErrors(fieldsError)) {
+  //     console.log("yes form error", fieldsError);
+  //     applyFieldErrorsToForm(
+  //       form,
+  //       fieldMap,
+  //       ["email", "address", "firstName", "lastName"],
+  //       fieldsError
+  //     );
+  //   }
+  //   // previousFieldsError.current = fieldsError
+  // }, [fieldsError]);
+
   return (
     <div className="signUp_container">
       <div className="form_main_container">
@@ -113,6 +149,16 @@ const SignUp = () => {
                 ]}
               />
 
+              {/* <Input
+                label="email"
+                name="email"
+                placeholder="Enter your email"
+              />
+              <Input
+                label="Address"
+                name="address"
+                placeholder="Enter your address"
+              /> */}
               <Input
                 label="Organization name"
                 name="organisationName"

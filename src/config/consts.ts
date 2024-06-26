@@ -1,5 +1,5 @@
 export const exceptions = {
-  FieldValidationException: "FieldValidationException",
+  FieldValidationException: "BadRequestException",
 };
 
 export const passwordPolicy = {
