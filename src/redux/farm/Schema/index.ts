@@ -9,7 +9,8 @@ export const farmNormalizeSchema = (data: normalizeData) =>
   normalize(data, farmListSchema);
 
 
-export const addFarmNormalizedSchema = (data: normalizeData, newEntry: FarmModel) => {
+export const addFarmNormalizedSchema = (data: any, newEntry: FarmModel) => {
+  if(!data) return normalize([newEntry], farmListSchema)
   const { result, entities } = data
   if (result && entities)
     return {

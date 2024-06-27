@@ -35,7 +35,7 @@ class FarmModel extends BaseModel {
   updatedDate = null;
 
 
-  constructor(data: Partial<TodosList>) {
+  constructor(data: Partial<FarmModel>) {
     super();
     this.update(data);
   }

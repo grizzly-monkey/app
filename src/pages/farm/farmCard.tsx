@@ -6,7 +6,6 @@ import FarmSelectors from "@/redux/farm/FarmSelectors";
 
 const FarmCard = () => {
   const farms = useSelector(FarmSelectors.SelectDenormalizeFarm);
-  console.log("farms in card", farms);
   const cardData = [
     {
       name: "Farm name 1",
@@ -43,14 +42,6 @@ const FarmCard = () => {
       deviceStatus: "Active",
     },
   ];
-
-  // if (farm && !farm?.device) {
-  //   deviceStatus = <Chip label="Not configured" color="warning" />;
-  // } else if (farm?.device?.status === "up") {
-  //   deviceStatus = <Chip label="Active" color="success" />;
-  // } else if (farm?.device?.status === "down") {
-  //   deviceStatus = <Chip label="Down" color="error" />;
-  // }
 
   const deviceValue = (device) => {
     if (!device)

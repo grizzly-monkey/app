@@ -1,12 +1,39 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Col, Row, Form as AntdForm } from "antd";
 import Button from "@/components/common/button";
 import Form from "@/components/common/form";
 import Input from "@/components/common/input";
 import PhoneInput from "@/components/common/input/phoneInput";
 import Select from "@/components/ui/select";
+import { REGEX, applyErrorsToFields } from "../const";
+import { makeSelectErrorModel } from "@/redux/error/errorSelector";
+import FarmActions from "@/redux/farm/action";
 
-function AddForm({ form }) {
+const selectError = makeSelectErrorModel();
+
+function AddFarm({ form }) {
+  const error = useSelector((state) =>
+    selectError(state, FarmActions.ADD_FARM_FINISHED)
+  );
+
+  useEffect(() => {
+    if (error) {
+      applyErrorsToFields(form, error.errors);
+      error.errors.forEach((err) => {
+        if (err.location.includes("nutrient.dilutionRatio")) {
+          form.setFields([
+            {
+              name: "nutrientDilutionRatio",
+              errors: [err.message || "Please enter valid value"],
+              value: form.getFieldValue("nutrientDilutionRatio"),
+            },
+          ]);
+        }
+      });
+    }
+  }, [error]);
+
   const nutrientType = [
     {
       label: "2 part mix",
@@ -21,9 +48,6 @@ function AddForm({ form }) {
       value: "Custom nutrient mix",
     },
   ];
-
-  const ratioValidationRegex = /^\d+:\d+$/;
-  const number = /^(?:[1-9]\d{0,4}|50000)$/;
 
   return (
     <div className="addForm">
@@ -54,7 +78,7 @@ function AddForm({ form }) {
                   message: "Please input area",
                 },
                 {
-                  pattern: number,
+                  pattern: REGEX.number,
                   message: "Please provide valid area (e.g., 20000, 200.5)",
                 },
               ]}
@@ -82,14 +106,13 @@ function AddForm({ form }) {
             <Input
               label="Cultivable area (in sq meters)"
               name="cultivableArea"
-              value="Number"
               rules={[
                 {
                   required: true,
                   message: "Please input cultivable area",
                 },
                 {
-                  pattern: number,
+                  pattern: REGEX.number,
                   message:
                     "Please provide valid cultivable area (e.g., 20000, 200.5)",
                 },
@@ -107,7 +130,7 @@ function AddForm({ form }) {
                   message: "Please input Nutrient dilution ratio",
                 },
                 {
-                  pattern: ratioValidationRegex,
+                  pattern: REGEX.ratioValidationRegex,
                   message:
                     "Please provide farm dilution ratio in the format: numerator:denominator (e.g., 2:3)",
                 },
@@ -121,4 +144,4 @@ function AddForm({ form }) {
   );
 }
 
-export default AddForm;
+export default AddFarm;

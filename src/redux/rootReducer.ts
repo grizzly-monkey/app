@@ -13,7 +13,7 @@ const appReducer = combineReducers({
   error,
   requesting,
   users,
-  farms
+  farms,
   organizations,
 });
 

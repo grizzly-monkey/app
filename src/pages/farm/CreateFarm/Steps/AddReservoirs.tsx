@@ -1,22 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { Col, Row } from "antd";
 import Button from "@/components/common/button";
 import Form from "@/components/common/form";
 import Input from "@/components/common/input";
 import Card from "@/components/ui/card";
 import { MdDelete } from "react-icons/md";
+import { REGEX, applyErrorsToFields } from "../const";
+import { makeSelectErrorModel } from "@/redux/error/errorSelector";
+import FarmActions from "@/redux/farm/action";
 
-const AddReservoirs = ({ form }) => {
-  const [reservoirs, setReservoirs] = useState([{ key: 0 }]);
+const selectError = makeSelectErrorModel();
+
+const AddReservoirs = ({ form, reservoirs, setReservoirs }) => {
+  const error = useSelector((state) =>
+    selectError(state, FarmActions.ADD_FARM_FINISHED)
+  );
+
+  useEffect(() => {
+    if (error) applyErrorsToFields(form, error.errors, "reservoirs");
+  }, [error]);
 
   const addReservoir = () => {
     setReservoirs([...reservoirs, { key: reservoirs.length }]);
   };
 
   const deleteReservoir = (key) => {
-    if (reservoirs.length > 1) {
-      setReservoirs(reservoirs.filter((reservoir) => reservoir.key !== key));
-    }
+    setReservoirs(reservoirs.filter((reservoir) => reservoir.key !== key));
   };
 
   return (
@@ -48,7 +58,7 @@ const AddReservoirs = ({ form }) => {
                   <Col span={24}>
                     <Input
                       label={`Name`}
-                      name={`name`}
+                      name={`name_${index}`}
                       rules={[
                         {
                           required: true,
@@ -63,11 +73,16 @@ const AddReservoirs = ({ form }) => {
                   <Col xs={24} sm={12}>
                     <Input
                       label="Reservoir capacity (in liter)"
-                      name={`reservoirCapacity`}
+                      name={`reservoirCapacity_${index}`}
                       rules={[
                         {
                           required: true,
                           message: "Please input reservoir capacity",
+                        },
+                        {
+                          pattern: REGEX.number,
+                          message:
+                            "Please provide valid reservoir capacity (e.g., 2, 2.5)",
                         },
                       ]}
                       placeholder="Enter reservoir capacity (in liter)"
@@ -76,11 +91,16 @@ const AddReservoirs = ({ form }) => {
                   <Col xs={24} sm={12}>
                     <Input
                       label="PH reservoir capacity (in liter)"
-                      name={`phReservoirCapacity`}
+                      name={`phReservoirCapacity_${index}`}
                       rules={[
                         {
                           required: true,
                           message: "Please input PH reservoir capacity",
+                        },
+                        {
+                          pattern: REGEX.number,
+                          message:
+                            "Please provide valid Ph reservoir capacity (e.g., 2, 2.5)",
                         },
                       ]}
                       placeholder="Enter PH reservoir capacity (in liter)"
@@ -89,12 +109,17 @@ const AddReservoirs = ({ form }) => {
                   <Col xs={24} sm={12}>
                     <Input
                       label="Nutrient water reservoir capacity (in liter)"
-                      name={`nutrientWaterReservoirCapacity`}
+                      name={`nutrientWaterReservoirCapacity_${index}`}
                       rules={[
                         {
                           required: true,
                           message:
                             "Please input nutrient water reservoir capacity",
+                        },
+                        {
+                          pattern: REGEX.number,
+                          message:
+                            "Please provide valid nutrient water reservoir capacity (e.g., 2, 2.5)",
                         },
                       ]}
                       placeholder="Enter nutrient water reservoir capacity (in liter)"
@@ -103,12 +128,17 @@ const AddReservoirs = ({ form }) => {
                   <Col xs={24} sm={12}>
                     <Input
                       label="Stock nutrient solution capacity (in liter)"
-                      name={`stockNutrientSolutionCapacity`}
+                      name={`stockNutrientSolutionCapacity_${index}`}
                       rules={[
                         {
                           required: true,
                           message:
                             "Please input stock nutrient solution capacity",
+                        },
+                        {
+                          pattern: REGEX.number,
+                          message:
+                            "Please provide valid stock nutrient solution (e.g., 2, 2.5)",
                         },
                       ]}
                       placeholder="Enter stock nutrient solution capacity (in liter)"

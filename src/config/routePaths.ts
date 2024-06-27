@@ -9,7 +9,7 @@ const routePaths = {
   inventory:'/inventory',
   tasks:'/tasks',
   workflow:'/workflow',
-  farmCreate:'/farm/create'
+  farmCreate:'/farm/create',
   organization: "/organization",
 };
 

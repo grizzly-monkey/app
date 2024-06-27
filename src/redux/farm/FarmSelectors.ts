@@ -11,4 +11,6 @@ export default class FarmSelectors {
     (state) => state?.farms?.farms,
     (normalizedFarms) => farmDenormalizeSchema(normalizedFarms)
   );
+
+  static SelectSelectedFarm = (state: RootState) => state?.farms?.selectedFarm;
 }

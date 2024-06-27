@@ -51,6 +51,10 @@
   // background-color: aqua !important;
 }
 
+.zone-card-error {
+  border: 2px solid red;
+}
+
 @media (max-width: 1300px) {
   .stepperVertical {
     display: none;
