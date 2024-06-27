@@ -14,7 +14,7 @@ export interface CreateUser {
     firstName: string;
     lastName: string;
     email: string;
-    roles: string[];
+    roles: string[]|undefined;
     role: string;
     address: string;
     password: string;

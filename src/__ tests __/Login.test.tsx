@@ -4,6 +4,11 @@
 // import { setupDefaultStore } from "./utils/setupTests";
 // import { renderWithProvider } from "./utils/testUtils";
 // import SessionActions from "@/redux/session/actions";
+// import { errorToast } from "@/utilities/toast";
+
+// jest.mock("@/utilities/toast", () => ({
+//   errorToast: jest.fn(),
+// }));
 
 // describe("Login Page", () => {
 //   let store: any;
@@ -68,7 +73,7 @@
 //     expect(screen.getByRole("button", { name: /sign in/i })).toBeDisabled();
 //   });
 
-//   test("should display error on login error", async () => {
+//   test("should display error toast on login error", async () => {
 //     store = setupDefaultStore({
 //       error: {
 //         [SessionActions.REQUEST_LOGIN_FINISHED]: {
@@ -79,9 +84,7 @@
 
 //     renderWithProvider(<Login />, { store });
 
-//     await waitFor(() => {
-//       expect(screen.getByText(/Invalid credentials/i)).toBeInTheDocument();
-//     });
+//     expect(errorToast).toHaveBeenCalledWith("Invalid credentials");
 //   });
 
 //   test("should display account approval status error", () => {
