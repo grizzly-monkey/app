@@ -1,15 +1,32 @@
 import AddUserButton from "@/pages/userManagement/addUserButton";
-import { fireEvent, screen, act } from "@testing-library/react";
+import {
+  fireEvent,
+  screen,
+  waitFor
+} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { setupDefaultStore } from "../utils/setupTests";
 import { renderWithProvider } from "../utils/testUtils";
 
-// import UserActions from "@/redux/user/actions";
-// import userEvent from '@testing-library/user-event';
+import UserActions from "@/redux/user/actions";
+import userEvent from "@testing-library/user-event";
 
 describe("Add User Button", () => {
   let store: any;
+  let consoleErrorMock: any;
+  beforeAll(() => {
+    consoleErrorMock = jest
+      .spyOn(console, "error")
+      .mockImplementation((message) => {
+        if (message.includes("findDOMNode is deprecated")) {
+          return;
+        }
+      });
+  });
 
+  afterAll(() => {
+    consoleErrorMock.mockRestore();
+  });
   beforeEach(() => {
     store = setupDefaultStore({
       users: {
@@ -68,47 +85,40 @@ describe("Add User Button", () => {
 
     fireEvent.click(button);
 
-    act(() => {
-      fireEvent.change(screen.getByLabelText("First Name"), {
-        target: { value: "John" },
-      });
+    fireEvent.change(screen.getByLabelText("First Name"), {
+      target: { value: "John" },
     });
 
-    // act(() => {
-    //   fireEvent.change(screen.getByLabelText("Last Name"), {
-    //     target: { value: "Doe" },
-    //   });
-    // });
-    // act(() => {
-    //   fireEvent.change(screen.getByTestId("phone-number-input"), {
-    //     target: { value: "1234567890" },
-    //   });
-    // });
+    fireEvent.change(screen.getByLabelText("Last Name"), {
+      target: { value: "Doe" },
+    });
 
-    // fireEvent.click(screen.getByRole("button", { name: "Add" }));
+    fireEvent.change(screen.getByTestId("phone-number-input"), {
+      target: { value: "1234567890" },
+    });
 
-    // const select = screen.getByTestId("roles-select").firstElementChild;
-    // console.log(select);
-    // if (select) {
-    //   userEvent.click(select);
-    // }
+    const select = screen.getByTestId("roles-select").firstElementChild;
+    if (select) {
+      userEvent.click(select);
+    }
 
-    // screen.getByText("Admin");ß
-
-    // await waitFor(() => {
-    //   expect(store.dispatch).toHaveBeenCalledWith(
-    //     UserActions.createUser({
-    //       firstName: "John",
-    //       lastName: "Doe",
-    //       phone: "+1234567890",
-    //       address: "address",
-    //       email: "abc@gmail.com",
-    //       organisationName: "organisationName",
-    //       password:"Qwerty@123",
-    //       role: "ADMIN",
-    //       roles: ["ADMIN"],
-    //     })
-    //   );
-    // });
+    const adminOption = await screen.findByText("Admin");
+    userEvent.click(adminOption);
+    fireEvent.click(screen.getByRole("button", { name: "Add" }));
+    await waitFor(() => {
+      expect(store.dispatch).toHaveBeenCalledWith(
+        UserActions.createUser({
+          firstName: "John",
+          lastName: "Doe",
+          phone: "+1234567890",
+          address: "address",
+          email: "abc@gmail.com",
+          organisationName: "organisationName",
+          password: "Qwerty@123",
+          role: "ADMIN",
+          roles: ["ADMIN"],
+        })
+      );
+    });
   });
 });

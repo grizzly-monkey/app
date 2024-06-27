@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "global.name": "Name",
   "global.add": "Add",
   "global.firstName": "First Name",
@@ -22,9 +21,4 @@
   "userManagement.addUserModal.rolesError": "Please select roles",
   "userManagement.searchUserPlaceholder": "Search user"
 }
-=======
-  "welcome_back": "Welcome Back!",
-  "line2": "Space exploration is a study of the cosmos. There are many aspects of the universe that we do not fully understand.",
-  "line3": "Astronauts visit space and report back to us on their experiences there."
-}
->>>>>>> 48b19d7aeeb0634b21f4f966a2bad5e2c5383a0e
+  
