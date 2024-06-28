@@ -8,16 +8,18 @@ const farmListSchema = [farmList];
 export const farmNormalizeSchema = (data: normalizeData) =>
   normalize(data, farmListSchema);
 
-
-export const addFarmNormalizedSchema = (data: normalizeData, newEntry: FarmModel) => {
-  const { result, entities } = data
+export const addFarmNormalizedSchema = (
+  data: normalizeData,
+  newEntry: FarmModel
+) => {
+  const { result, entities } = data;
   if (result && entities)
     return {
       result: [newEntry.farmId, ...result],
       entities: { farms: { [newEntry.farmId]: newEntry, ...entities.farms } },
-    }
-  return data
-}
+    };
+  return data;
+};
 
 export const farmDenormalizeSchema = (data: normalizeData) => {
   if (!data) return null;

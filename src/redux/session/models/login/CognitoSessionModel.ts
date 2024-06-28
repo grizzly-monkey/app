@@ -1,4 +1,3 @@
-import { CognitoUser } from "amazon-cognito-identity-js";
 import { BaseModel } from "sjs-base-model";
 
 export default class CognitoSessionModel extends BaseModel {
@@ -7,8 +6,6 @@ export default class CognitoSessionModel extends BaseModel {
   refreshToken: any = null;
 
   idToken: any = null;
-
-  userDetails = CognitoUser;
 
   constructor(data: Partial<CognitoSessionModel>) {
     super();

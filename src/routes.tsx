@@ -15,6 +15,7 @@ import Tasks from "./pages/tasks";
 import Workflow from "./pages/workflow";
 import CreateFarm from "./pages/farm/CreateFarm";
 import Organization from "./pages/organization";
+import Profile from "./pages/profile";
 
 export const router = createBrowserRouter([
   {
@@ -24,10 +25,6 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Dashboard />,
-      },
-      {
-        path: routePaths.organization,
-        element: <Organization />,
       },
       {
         path: routePaths.userManagement,
@@ -61,7 +58,15 @@ export const router = createBrowserRouter([
         path: routePaths.farmCreate,
         element: <CreateFarm />,
       },
+      {
+        path: routePaths.profile,
+        element: <Profile />,
+      },
     ],
+  },
+  {
+    path: routePaths.organization,
+    element: <Organization />,
   },
   {
     path: routePaths.login,

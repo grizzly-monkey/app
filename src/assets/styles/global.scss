@@ -92,3 +92,6 @@ button:disabled {
   background: $primary !important;
   color: white !important;
 }
+.ant-dropdown-menu-item-selected {
+  background-color: rgba($primary, 0.1) !important;
+}

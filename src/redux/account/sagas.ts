@@ -1,10 +1,10 @@
 import ErrorModel from "@/models/error/errorModel";
+import { router } from "@/routes";
 import { SagaAction } from "@/types/redux";
 import { runEffect } from "@/utilities/actionUtility";
 import { all, call, cancel, takeEvery } from "redux-saga/effects";
 import AccountActions from "./actions";
 import AccountEffects from "./effects";
-import { router } from "@/routes";
 
 function* REQUEST_REGISTER(action: SagaAction): Generator {
   const result = yield call(

@@ -1,13 +1,19 @@
 import { loginType } from "@/types/auth";
 import { createAction } from "@/utilities/actionUtility";
 import CognitoSessionModel from "./models/login/CognitoSessionModel";
+import { CognitoUserAttribute } from "amazon-cognito-identity-js";
 
 const SessionActions = {
   REQUEST_LOGIN: "session/REQUEST_LOGIN",
   REQUEST_LOGIN_FINISHED: "session/REQUEST_LOGIN_FINISHED",
   SET_USER_TOKENS: "session/SET_USER_TOKENS",
+  SET_USER_DETAILS: "session/SET_USER_DETAILS",
   ACCOUNT_APPROVAL_STATUS: "session/ACCOUNT_APPROVAL_STATUS",
   REQUEST_REFRESH_TOKEN_SILENTLY: "session/REQUEST_REFRESH_TOKEN_SILENTLY",
+  GET_LANGUAGE_FROM_STORAGE: "session/GET_LANGUAGE_FROM_STORAGE",
+  GET_LANGUAGE_FROM_STORAGE_FINISHED:
+    "session/GET_LANGUAGE_FROM_STORAGE_FINISHED",
+  LOGOUT: "session/LOGOUT",
 
   login: (values: loginType) =>
     createAction(SessionActions.REQUEST_LOGIN, values),
@@ -15,10 +21,25 @@ const SessionActions = {
   setUserTokens: (token: CognitoSessionModel) =>
     createAction(SessionActions.SET_USER_TOKENS, { token }),
 
+  setUserDetails: (details: CognitoUserAttribute) =>
+    createAction(SessionActions.SET_USER_DETAILS, details),
+
   setAccountApprovalStatus: (status: string) =>
     createAction(SessionActions.ACCOUNT_APPROVAL_STATUS, status),
 
   refreshTokenSilently: () =>
     createAction(SessionActions.REQUEST_REFRESH_TOKEN_SILENTLY),
+
+  getLanguageFromStorage() {
+    return createAction(this.GET_LANGUAGE_FROM_STORAGE);
+  },
+
+  changeLanguage(language: string) {
+    return createAction(this.GET_LANGUAGE_FROM_STORAGE_FINISHED, language);
+  },
+
+  logout() {
+    return createAction(this.LOGOUT);
+  },
 };
 export default SessionActions;
