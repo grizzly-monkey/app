@@ -14,6 +14,7 @@ import Inventory from "./pages/inventory";
 import Tasks from "./pages/tasks";
 import Workflow from "./pages/workflow";
 import Organization from "./pages/organization";
+import AddInventory from "./pages/inventory/addInventory";
 
 export const router = createBrowserRouter([
   {
@@ -24,15 +25,17 @@ export const router = createBrowserRouter([
         path: routePaths.organization,
         element: <Organization />,
       },
-    ],
-  },
-  {
-    path: routePaths.userManagement,
-    element: <Layout />,
-    children: [
       {
         path: routePaths.userManagement,
         element: <UserManagement />,
+      },
+      {
+        path: routePaths.inventory,
+        element: <Inventory />,
+      },
+      {
+        path: routePaths.addInventory,
+        element: <AddInventory />,
       },
     ],
   },
@@ -75,16 +78,6 @@ export const router = createBrowserRouter([
       {
         path: routePaths.reservoirs,
         element: <Reservoirs />,
-      },
-    ],
-  },
-  {
-    path: routePaths.inventory,
-    element: <Layout />,
-    children: [
-      {
-        path: routePaths.inventory,
-        element: <Inventory />,
       },
     ],
   },

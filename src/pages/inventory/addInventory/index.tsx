@@ -1,7 +1,7 @@
-import InventoryTable from "./inventoryTable";
-import "./style.scss";
+import AddInventoryForm from "./addInventoryForm";
 
-const Inventory = () => {
+const AddInventory = () => {
+  
   return (
     <div
       style={{
@@ -11,9 +11,9 @@ const Inventory = () => {
         padding: "20px",
       }}
     >
-      <InventoryTable />
+      <AddInventoryForm />
     </div>
   );
 };
 
-export default Inventory;
+export default AddInventory;

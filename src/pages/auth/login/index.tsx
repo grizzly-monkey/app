@@ -18,6 +18,7 @@ import { IoEye, IoEyeOff } from "react-icons/io5";
 import AlertError from "@/components/common/error/AlertError";
 import { useAppDispatch } from "@/hooks/redux";
 import SessionSelectors from "@/redux/session/selectors";
+import { errorToast } from "@/utilities/toast";
 
 const selectLoading = makeRequestingSelector();
 const selectError = makeSelectErrorModel();
@@ -55,9 +56,15 @@ const Login = () => {
   }
 
   useEffect(() => {
+    if (error) {
+      errorToast(error.errors.map((item: any) => item.message)[0]);
+      clearError();
+    }
+  }, [error]);
+
+  useEffect(() => {
     return () => {
       dispatch(SessionActions.setAccountApprovalStatus(""));
-      clearError();
     };
   }, []);
 
@@ -78,8 +85,6 @@ const Login = () => {
           {accountApprovalStatus && (
             <AlertError message={accountApprovalStatus} />
           )}
-
-          <AlertError error={error} />
 
           <Form form={form} onFinish={onFinish} layout="vertical">
             <PhoneInput

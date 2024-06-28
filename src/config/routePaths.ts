@@ -7,6 +7,7 @@ const routePaths = {
   polyhouse:'/polyhouse',
   reservoirs:'/reservoirs',
   inventory:'/inventory',
+  addInventory:'/inventory/add',
   tasks:'/tasks',
   workflow:'/workflow',
   organization: "/organization",

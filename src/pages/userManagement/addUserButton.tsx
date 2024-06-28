@@ -74,8 +74,8 @@ const AddUserButton = () => {
         onClose={handleCancel}
       >
         <Form form={form} layout="vertical">
-          <Row gutter={24}>
-            <Col span={24}>
+          <Row gutter={24} style={{marginBottom:'20px'}}>
+            <Col span={24} >
               <Input
                 label={getTranslation("global.firstName")}
                 name="firstName"
@@ -133,21 +133,23 @@ const AddUserButton = () => {
               <AntdForm.Item
                 label={getTranslation("global.roles")}
                 name="roles"
-                rules={[
-                  {
-                    required: true,
-                    message: getTranslation(
-                      "userManagement.addUserModal.rolesError"
-                    ),
-                  },
-                ]}
+                // rules={[
+                //   {
+                //     required: true,
+                //     message: getTranslation(
+                //       "userManagement.addUserModal.rolesError"
+                //     ),
+                //   },
+                // ]}
               >
                 <Select
+                  // open={true}
                   placeholder={getTranslation(
                     "userManagement.addUserModal.rolesPlaceholder"
                   )}
                   options={roles}
                   mode="multiple"
+                  data-testid="roles-select"
                 />
               </AntdForm.Item>
             </Col>

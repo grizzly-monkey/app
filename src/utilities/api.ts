@@ -4,4 +4,5 @@ export default {
   USERS: `${API_BASE}/${API_VER}/users`,
   REGISTER: `${API_BASE}/${API_VER}/auth/register`,
   ORGANIZATIONS: `${API_BASE}/${API_VER}/organisations`,
+  INVENTORIES: `${API_BASE}/${API_VER}/inventories/fm1a215ac2`,
 };

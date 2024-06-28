@@ -5,6 +5,10 @@ export const setupDefaultStore = (initialState: Record<string, any> = {}) => {
     session: {},
     requesting: {},
     error: {},
+    organizations: {
+      organisations: [],
+      selectedOrganisation: null,
+    },
     ...initialState,
   });
 };
