@@ -5,6 +5,7 @@ import error from "./error/errorReducer";
 import requesting from "./requesting/requestingReducer";
 import users from "./user/reducer";
 import organizations from "./organization/reducer";
+import inventories from "./inventory/reducer";
 
 const appReducer = combineReducers({
   session,
@@ -13,6 +14,7 @@ const appReducer = combineReducers({
   requesting,
   users,
   organizations,
+  inventories,
 });
 
 const rootReducer = (

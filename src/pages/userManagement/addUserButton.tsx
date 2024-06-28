@@ -74,8 +74,8 @@ const AddUserButton = () => {
         onClose={handleCancel}
       >
         <Form form={form} layout="vertical">
-          <Row gutter={24}>
-            <Col span={24}>
+          <Row gutter={24} style={{marginBottom:'20px'}}>
+            <Col span={24} >
               <Input
                 label={getTranslation("global.firstName")}
                 name="firstName"

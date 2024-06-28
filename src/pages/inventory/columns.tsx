@@ -23,7 +23,14 @@ const columns: TableProps<Inventory>["columns"]=[
     {
         title: "Stock",
         dataIndex: "quantity",
+<<<<<<< Updated upstream
         key: "quantity"
+=======
+        key: "quantity",
+        render:(_,record)=>{
+            return <>{record.quantity} <span style={{color:"red", paddingLeft:'20px'}}>Low</span></>
+        }
+>>>>>>> Stashed changes
     },
    
     {
