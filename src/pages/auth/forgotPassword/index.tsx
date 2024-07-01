@@ -15,6 +15,7 @@ import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import { makeRequestingSelector } from "@/redux/requesting/requestingSelector";
 import UserActions from "@/redux/user/actions";
 import UserSelectors from "@/redux/user/selectors";
+import { getTranslation } from "@/translation/i18n";
 import { forgotPasswordType, sendOTPType } from "@/types/auth";
 import { createAction } from "@/utilities/actionUtility";
 import { Images } from "@/utilities/imagesPath";
@@ -65,7 +66,7 @@ const ForgotPassword = () => {
       if (!value || value.length === 0 || isPasswordValid) {
         resolve();
       } else {
-        reject(new Error("Password does not agree to the policy"));
+        reject(new Error(getTranslation("global.passwordPolicyNotAgree")));
       }
     });
   };
@@ -90,7 +91,6 @@ const ForgotPassword = () => {
 
   useEffect(() => {
     if (isOTPSent && !sentOTPError) {
-      successToast("OTP sent successfully!!");
       setRemainingTime(30);
     }
   }, [isOTPSent, sentOTPError]);
@@ -124,9 +124,13 @@ const ForgotPassword = () => {
               <img src={Images.LOGO} />
             </div>
             <div className="form_header_content">
-              <p className="heading1">Forgot Password?</p>
+              <p className="heading1">
+                {getTranslation("global.forgotPassword")}
+              </p>
               <p className="description">
-                Please enter your phone number to reset the password
+                {getTranslation(
+                  "forgotPassword.enterPhoneNumberToResetPassword"
+                )}
               </p>
             </div>
           </div>
@@ -137,51 +141,54 @@ const ForgotPassword = () => {
           {!isOTPSent || sentOTPError ? (
             <Form form={phoneInputForm} onFinish={onPhoneInputFinish}>
               <PhoneInput
-                label="Phone number"
+                label={getTranslation("global.phoneNumber")}
                 name="phone"
                 rules={[
                   {
                     required: true,
-                    message: "Please input your phone number!",
+                    message: getTranslation("global.phoneNumberErrMsg"),
                   },
                 ]}
               />
 
               <Button
-                label="Reset Password"
+                label={getTranslation("forgotPassword.resetPassword")}
                 loading={sentOTPLoading}
                 htmlType="submit"
                 type="primary"
+                className="submit_btn"
               />
             </Form>
           ) : (
             <Form form={newPasswordForm} onFinish={onNewPasswordFinish}>
               <Input
-                label="OTP"
+                label={getTranslation("global.otp")}
                 name="otp"
                 maxLength={6}
                 testId="otp"
                 rules={[
                   {
                     required: true,
-                    message: "Please input your otp!",
+                    message: getTranslation("global.otpErrMsg"),
                   },
                   {
                     pattern: /^(?:\d*)$/,
-                    message: "OTP should contain just number",
+                    message: getTranslation("global.otpHaveNumberErrMsg"),
                   },
                 ]}
-                placeholder="Enter your OTP"
+                placeholder={getTranslation("global.otpPlaceholder")}
               />
 
               {remainingTime !== 0 ? (
                 <p className="not_a_memeber_text resend_otp_container">
-                  Resend OTP in{" "}
-                  <span className="register_text">{remainingTime} seconds</span>
+                  {getTranslation("forgotPassword.resetOtpIn")}{" "}
+                  <span className="register_text">
+                    {remainingTime} {getTranslation("forgotPassword.seconds")}
+                  </span>
                 </p>
               ) : (
                 <p className="not_a_memeber_text resend_otp_container">
-                  Don't receive the OTP?{" "}
+                  {getTranslation("forgotPassword.dontReceiveOtp")}{" "}
                   <span
                     className="register_text cursor_pointer"
                     onClick={() =>
@@ -190,7 +197,7 @@ const ForgotPassword = () => {
                       })
                     }
                   >
-                    RESEND OTP
+                    {getTranslation("forgotPassword.resendOtp")}
                   </span>
                 </p>
               )}
@@ -209,13 +216,13 @@ const ForgotPassword = () => {
                 placement="right"
               >
                 <Input
-                  label="Password"
+                  label={getTranslation("global.password")}
                   name="password"
                   testId="password"
                   rules={[
                     {
                       required: true,
-                      message: "Please input your password!",
+                      message: getTranslation("global.passwordErrMsg"),
                     },
                     { validator: (_, value) => validatePassword(value) },
                   ]}
@@ -230,43 +237,51 @@ const ForgotPassword = () => {
                   }}
                   iconRender={renderPasswordIcon()}
                   isPasswordInput
-                  placeholder="Enter your password"
+                  placeholder={getTranslation("global.passwordPlaceholder")}
                 />
               </Tooltip>
               <Input
-                label="Confirm Password"
+                label={getTranslation("global.confirmPassword")}
                 name="confirmPassword"
                 testId="confirm-password"
                 rules={[
                   {
                     required: true,
-                    message: "Please input your confirm password!",
+                    message: getTranslation("global.confirmPasswordErrMsg"),
                   },
                   ({ getFieldValue }) => ({
                     validator(_, value) {
                       if (!value || getFieldValue("password") === value) {
                         return Promise.resolve();
                       }
-                      return Promise.reject("Password don't match");
+                      return Promise.reject(
+                        getTranslation("global.passwordDontMatch")
+                      );
                     },
                   }),
                 ]}
                 iconRender={renderPasswordIcon()}
                 isPasswordInput
-                placeholder="Enter your confirm password"
+                placeholder={getTranslation(
+                  "global.confirmPasswordPlaceholder"
+                )}
               />
 
               <Button
                 loading={passwordResetLoading}
-                label="Reset Password"
+                label={getTranslation("forgotPassword.resetPassword")}
                 htmlType="submit"
                 type="primary"
+                className="submit_btn"
               />
             </Form>
           )}
           <Link to={routePaths.login}>
             <p className="not_a_memeber_text">
-              Back to <span className="register_text">Login</span>
+              {getTranslation("forgotPassword.backTo")}{" "}
+              <span className="register_text">
+                {getTranslation("global.signIn")}
+              </span>
             </p>
           </Link>
         </div>

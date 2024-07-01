@@ -15,14 +15,20 @@ import { IoLanguage, IoMenu } from "react-icons/io5";
 import { Link, useLocation } from "react-router-dom";
 import Dropdown from "../ui/dropdown";
 import routePaths from "@/config/routePaths";
+import { getTranslation } from "@/translation/i18n";
 
 const FarmLabel = ({ selectedFarm }: { selectedFarm: FarmModel }) => {
   return selectedFarm ? (
     <div className="bodyText">
-      <span className="select_farm_text">Farm : </span> {selectedFarm?.name}
+      <span className="select_farm_text">
+        {getTranslation("global.farm")} :{" "}
+      </span>{" "}
+      {selectedFarm?.name}
     </div>
   ) : (
-    <span className="bodyText select_farm_text">Select Farm</span>
+    <span className="bodyText select_farm_text">
+      {getTranslation("header.selectFarm")}
+    </span>
   );
 };
 
@@ -125,7 +131,6 @@ const Header = ({ toggleSidebar }: headerProps) => {
         </div>
 
         <Dropdown
-          value={selectedLanguage}
           label={
             <div className="profile_container">
               <Avatar shape="square" size={30} icon={<FaUser />} />
@@ -141,24 +146,26 @@ const Header = ({ toggleSidebar }: headerProps) => {
             return (
               <div className="user_profile_dropdown_container">
                 <Link to={routePaths.profile}>
-                  <UserProfileDropdownList Icon={FaRegUser} label="Profile" />
+                  <UserProfileDropdownList
+                    Icon={FaRegUser}
+                    label={getTranslation("global.profile")}
+                  />
                 </Link>
                 <Link to={routePaths.organization}>
                   <UserProfileDropdownList
                     Icon={GoOrganization}
-                    label="Organization"
+                    label={getTranslation("global.organization")}
                   />
                 </Link>
                 <UserProfileDropdownList
                   className="logout_container"
                   Icon={IoIosLogOut}
-                  label="Logout"
+                  label={getTranslation("global.logout")}
                   onClick={handleLogout}
                 />
               </div>
             );
           }}
-          onChange={handleSelectLanguage}
         />
       </div>
     </div>

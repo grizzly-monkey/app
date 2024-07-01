@@ -20,7 +20,7 @@ const FarmActions = {
     return createAction(this.GET_FARM_FROM_STORAGE);
   },
 
-  addFarm(payload) {
+  addFarm(payload: any) {
     return createAction(this.ADD_FARM, payload);
   },
 };

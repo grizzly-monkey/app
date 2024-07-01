@@ -4,6 +4,7 @@ import { renderWithProvider } from "./utils/testUtils";
 import SignUp from "@/pages/auth/signUp";
 import { fireEvent, screen, waitFor } from "@testing-library/dom";
 import AccountActions from "@/redux/account/actions";
+import { getTranslation } from "@/translation/i18n";
 
 describe("SignUp Page", () => {
   let store: any;
@@ -30,44 +31,60 @@ describe("SignUp Page", () => {
   test("renders SignUp page with form elements", () => {
     renderWithProvider(<SignUp />, { store });
 
-    expect(screen.getByText("Create Your Account")).toBeInTheDocument();
     expect(
-      screen.getByText(
-        "Fill in the details blow to register your absolutely free account."
-      )
+      screen.getByText(getTranslation("signUp.createYourAccount"))
     ).toBeInTheDocument();
-    expect(screen.getByText("Phone number")).toBeInTheDocument();
-    expect(screen.getByText("Organization name")).toBeInTheDocument();
-    expect(screen.getByText("First name")).toBeInTheDocument();
-    expect(screen.getByText("Last name")).toBeInTheDocument();
-    expect(screen.getByText("Password")).toBeInTheDocument();
-    expect(screen.getByText("Confirm Password")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Sign up" })).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("signUp.createYourAccountTagLine"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("global.phoneNumber"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("signUp.organizationName"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("signUp.firstName"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("signUp.lastName"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("global.password"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("global.confirmPassword"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: getTranslation("global.signUp") })
+    ).toBeInTheDocument();
   });
 
   test("displays validation errors on form submit with empty fields", async () => {
     renderWithProvider(<SignUp />, { store });
 
-    fireEvent.click(screen.getByRole("button", { name: "Sign up" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: getTranslation("global.signUp") })
+    );
 
     await waitFor(() => {
       expect(
-        screen.getByText("Please input your phone number!")
+        screen.getByText(getTranslation("global.phoneNumberErrMsg"))
       ).toBeInTheDocument();
       expect(
-        screen.getByText("Please input your organization name!")
+        screen.getByText(getTranslation("signUp.organizationNameErrMsg"))
       ).toBeInTheDocument();
       expect(
-        screen.getByText("Please input your first name!")
+        screen.getByText(getTranslation("signUp.firstNameErrMsg"))
       ).toBeInTheDocument();
       expect(
-        screen.getByText("Please input your last name!")
+        screen.getByText(getTranslation("signUp.lastNameErrMsg"))
       ).toBeInTheDocument();
       expect(
-        screen.getByText("Please input your password!")
+        screen.getByText(getTranslation("global.passwordErrMsg"))
       ).toBeInTheDocument();
       expect(
-        screen.getByText("Please input your confirm password!")
+        screen.getByText(getTranslation("global.confirmPasswordErrMsg"))
       ).toBeInTheDocument();
     });
   });
@@ -81,10 +98,14 @@ describe("SignUp Page", () => {
     fireEvent.change(screen.getByTestId("confirm-password"), {
       target: { value: "Password2!" },
     });
-    fireEvent.click(screen.getByRole("button", { name: "Sign up" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: getTranslation("global.signUp") })
+    );
 
     await waitFor(() => {
-      expect(screen.getByText("Password don't match")).toBeInTheDocument();
+      expect(
+        screen.getByText(getTranslation("global.passwordDontMatch"))
+      ).toBeInTheDocument();
     });
   });
 
@@ -92,22 +113,25 @@ describe("SignUp Page", () => {
     renderWithProvider(<SignUp />, { store });
 
     const testCases = [
-      { password: "short1!", error: "Password does not agree to the policy" },
+      {
+        password: "short1!",
+        error: getTranslation("global.passwordPolicyNotAgree"),
+      },
       {
         password: "nouppercase1!",
-        error: "Password does not agree to the policy",
+        error: getTranslation("global.passwordPolicyNotAgree"),
       },
       {
         password: "NOLOWERCASE1!",
-        error: "Password does not agree to the policy",
+        error: getTranslation("global.passwordPolicyNotAgree"),
       },
       {
         password: "NoNumbers!",
-        error: "Password does not agree to the policy",
+        error: getTranslation("global.passwordPolicyNotAgree"),
       },
       {
         password: "NoSymbols1",
-        error: "Password does not agree to the policy",
+        error: getTranslation("global.passwordPolicyNotAgree"),
       },
     ];
 
@@ -145,7 +169,9 @@ describe("SignUp Page", () => {
       target: { value: "Password1!" },
     });
 
-    fireEvent.click(screen.getByRole("button", { name: "Sign up" }));
+    fireEvent.click(
+      screen.getByRole("button", { name: getTranslation("global.signUp") })
+    );
 
     await waitFor(() => {
       expect(store.dispatch).toHaveBeenCalledWith(

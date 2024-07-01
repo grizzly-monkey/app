@@ -5,6 +5,7 @@ import { setupDefaultStore } from "./utils/setupTests";
 import { renderWithProvider } from "./utils/testUtils";
 import UserActions from "@/redux/user/actions";
 import { successToast } from "@/utilities/toast";
+import { getTranslation } from "@/translation/i18n";
 
 jest.mock("@/utilities/toast", () => ({
   successToast: jest.fn(),
@@ -35,21 +36,29 @@ describe("ForgotPassword Page", () => {
   test("renders the Forgot Password form correctly", () => {
     renderWithProvider(<ForgotPassword />, { store });
 
-    expect(screen.getByText("Forgot Password?")).toBeInTheDocument();
     expect(
-      screen.getByText("Please enter your phone number to reset the password")
+      screen.getByText(getTranslation("global.forgotPassword"))
     ).toBeInTheDocument();
-    expect(screen.getByText("Phone number")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        getTranslation("forgotPassword.enterPhoneNumberToResetPassword")
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("global.phoneNumber"))
+    ).toBeInTheDocument();
   });
 
   test("displays validation errors on form submit with empty fields in phone number form", async () => {
     renderWithProvider(<ForgotPassword />, { store });
 
-    fireEvent.click(screen.getByText("Reset Password"));
+    fireEvent.click(
+      screen.getByText(getTranslation("forgotPassword.resetPassword"))
+    );
 
     await waitFor(() => {
       expect(
-        screen.getByText("Please input your phone number!")
+        screen.getByText(getTranslation("global.phoneNumberErrMsg"))
       ).toBeInTheDocument();
     });
   });
@@ -58,7 +67,9 @@ describe("ForgotPassword Page", () => {
     renderWithProvider(<ForgotPassword />, { store });
 
     const phoneInput = screen.getByTestId("phone-number-input");
-    const submitButton = screen.getByText("Reset Password");
+    const submitButton = screen.getByText(
+      getTranslation("forgotPassword.resetPassword")
+    );
 
     fireEvent.change(phoneInput, { target: { value: "1234567890" } });
     fireEvent.click(submitButton);
@@ -106,7 +117,9 @@ describe("ForgotPassword Page", () => {
 
     renderWithProvider(<ForgotPassword />, { store });
 
-    expect(successToast).toHaveBeenCalledWith("OTP sent successfully!!");
+    expect(successToast).toHaveBeenCalledWith(
+      getTranslation("forgotPassword.otpSentSuccessfully")
+    );
   });
 
   test("displays OTP input and password fields when OTP is sent successfully", () => {
@@ -128,15 +141,19 @@ describe("ForgotPassword Page", () => {
 
     renderWithProvider(<ForgotPassword />, { store });
 
-    fireEvent.click(screen.getByText("Reset Password"));
+    fireEvent.click(
+      screen.getByText(getTranslation("forgotPassword.resetPassword"))
+    );
 
     await waitFor(() => {
-      expect(screen.getByText("Please input your otp!")).toBeInTheDocument();
       expect(
-        screen.getByText("Please input your password!")
+        screen.getByText(getTranslation("global.otpErrMsg"))
       ).toBeInTheDocument();
       expect(
-        screen.getByText("Please input your confirm password!")
+        screen.getByText(getTranslation("global.passwordErrMsg"))
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(getTranslation("global.confirmPasswordErrMsg"))
       ).toBeInTheDocument();
     });
   });
@@ -155,7 +172,7 @@ describe("ForgotPassword Page", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText("Password does not agree to the policy")
+        screen.getByText(getTranslation("global.passwordPolicyNotAgree"))
       ).toBeInTheDocument();
     });
   });
@@ -174,10 +191,14 @@ describe("ForgotPassword Page", () => {
       target: { value: "Password2!" },
     });
 
-    fireEvent.click(screen.getByText("Reset Password"));
+    fireEvent.click(
+      screen.getByText(getTranslation("forgotPassword.resetPassword"))
+    );
 
     await waitFor(() => {
-      expect(screen.getByText("Password don't match")).toBeInTheDocument();
+      expect(
+        screen.getByText(getTranslation("global.passwordDontMatch"))
+      ).toBeInTheDocument();
     });
   });
 
@@ -197,7 +218,9 @@ describe("ForgotPassword Page", () => {
     fireEvent.change(screen.getByTestId("confirm-password"), {
       target: { value: "Test@1234" },
     });
-    fireEvent.click(screen.getByText("Reset Password"));
+    fireEvent.click(
+      screen.getByText(getTranslation("forgotPassword.resetPassword"))
+    );
 
     await waitFor(() => {
       expect(store.dispatch).toHaveBeenCalledWith(

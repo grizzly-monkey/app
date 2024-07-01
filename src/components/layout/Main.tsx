@@ -1,20 +1,17 @@
+import { Drawer, Layout } from "antd";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import { Layout, Button, Drawer } from "antd";
-import Sidenav from "./Sidebar";
 import Header from "./Header";
-import { Images } from "@/utilities/imagesPath";
+import Sidenav from "./Sidebar";
 
 const { Content, Sider } = Layout;
 
 function Main() {
-  const [collapsed, setCollapsed] = useState(false);
   const [visible, setVisible] = useState(false);
 
   const toggleSidebar = () => {
-    setVisible(!visible)
-  }
-
+    setVisible(!visible);
+  };
 
   return (
     <Layout>
@@ -28,27 +25,25 @@ function Main() {
         width={280}
         className={`drawer-sidebar`}
       >
-          <Sider
-            trigger={null}
-            width={250}
-            theme="light"
-            className={`sider-primary ant-layout-sider-primary`}
-          >
-            <Sidenav />
-          </Sider>
+        <Sider
+          trigger={null}
+          width={250}
+          theme="light"
+          className={`sider-primary ant-layout-sider-primary`}
+        >
+          <Sidenav />
+        </Sider>
       </Drawer>
       <Sider
         width={250}
         theme="light"
         className="responsiveSider"
-        style={{paddingRight:'10px'}}
+        style={{ paddingRight: "10px" }}
       >
         <Sidenav />
       </Sider>
       <Layout>
-        <div>
-          <Header toggleSidebar={toggleSidebar} />
-        </div>
+        <Header toggleSidebar={toggleSidebar} />
         <Content className="content-ant">
           <Outlet />
         </Content>

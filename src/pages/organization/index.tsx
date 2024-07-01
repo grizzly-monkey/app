@@ -12,6 +12,7 @@ import OrganizationModel from "@/redux/organization/models/organizationModel";
 import { Images } from "@/utilities/imagesPath";
 import { useNavigate } from "react-router-dom";
 import routePaths from "@/config/routePaths";
+import { getTranslation } from "@/translation/i18n";
 
 const OrganizationCard = ({
   isActive,
@@ -96,7 +97,9 @@ const Organization = () => {
 
   return (
     <div className="organization_container">
-      <p className="heading1 organization_text">Select your organization</p>
+      <p className="heading1 organization_text">
+        {getTranslation("organization.selectYourOrganization")}
+      </p>
 
       <AlertError error={error} />
 

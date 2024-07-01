@@ -10,7 +10,7 @@ interface DropdownProps extends AntdDropdownProps {
   items?: MenuProps["items"];
   label: string | React.ReactNode;
   value?: string | undefined;
-  onChange: (e: string) => void;
+  onChange?: (e: string) => void;
 }
 
 const Dropdown = (props: DropdownProps) => {
@@ -21,7 +21,7 @@ const Dropdown = (props: DropdownProps) => {
         items: props.items,
         selectable: true,
         defaultSelectedKeys: props.value ? [props.value] : [],
-        onClick: (e) => props.onChange(e.key),
+        onClick: (e) => (props.onChange ? props.onChange(e.key) : () => {}),
       }}
       {...props}
     >
