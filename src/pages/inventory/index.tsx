@@ -1,17 +1,4 @@
 import InventoryTable from "./inventoryTable";
-<<<<<<< Updated upstream
-
-const Inventory = () => {
-    return (
-      <div style={{ height: "100%", display: "flex" }}>
-        <InventoryTable />
-      </div>
-    );
-  };
-  
-  export default Inventory;
-  
-=======
 import "./style.scss";
 
 const Inventory = () => {
@@ -30,4 +17,3 @@ const Inventory = () => {
 };
 
 export default Inventory;
->>>>>>> Stashed changes

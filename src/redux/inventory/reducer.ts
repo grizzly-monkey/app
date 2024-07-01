@@ -1,11 +1,12 @@
 import BaseReducer from "@/utilities/baseReducer";
 import InventoryActions from "./actions";
-import invertoryNormalizeSchema from "./schema";
+import invertoryNormalizeSchema, { addNormalizeInventory, subCategoryNormalizeSchema } from "./schema";
 
 const initialState = {
   inventories: {},
   selectedInventory: null,
   updatedInventory: {},
+  subCategories: {},
 };
 
 export default BaseReducer(initialState, {
@@ -39,4 +40,18 @@ export default BaseReducer(initialState, {
   //         inventory: action.payload,
   //     };
   // }
+
+  [InventoryActions.FETCH_SUBCATEGORIES_FINISHED](state, action) {
+    return {
+      ...state,
+      subCategories: subCategoryNormalizeSchema(action.payload),
+    };
+  },
+  [InventoryActions.CREATE_INVENTORY_FINISHED](state, action) {
+    return {
+      ...state,
+      inventories: addNormalizeInventory(state.inventories, action.payload),
+    };
+  },
+  
 });

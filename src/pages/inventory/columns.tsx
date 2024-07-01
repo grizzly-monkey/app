@@ -1,19 +1,20 @@
 import { TableProps } from "antd";
 import { Inventory } from "./types";
+import { getTranslation } from "@/translation/i18n";
 
 const columns: TableProps<Inventory>["columns"]=[
     {
-        title: "Name",
+        title: getTranslation("global.name"),
         dataIndex: "name",
         key: "1"
     },
     {
-        title: "Provider",
+        title: getTranslation("inventoryManagement.provider"),
         dataIndex: "provider",
         key: "2"
     },
     {
-        title:'Initial Stock',
+        title:getTranslation('inventoryManagement.initialStock'),
         dataIndex:'initialStock',
         key:'3',
         render:(_,record)=>{
@@ -21,25 +22,21 @@ const columns: TableProps<Inventory>["columns"]=[
         }
     },
     {
-        title: "Stock",
+        title: getTranslation("inventoryManagement.quantity"),
         dataIndex: "quantity",
-<<<<<<< Updated upstream
-        key: "quantity"
-=======
         key: "quantity",
         render:(_,record)=>{
             return <>{record.quantity} <span style={{color:"red", paddingLeft:'20px'}}>Low</span></>
         }
->>>>>>> Stashed changes
     },
    
     {
-        title: "Used",
+        title: getTranslation("inventoryManagement.used"),
         dataIndex: "used",
         key: "used"
     },
     {
-        title: "Wastage",
+        title: getTranslation("inventoryManagement.wastage"),
         dataIndex: "wastage",
         key: "wastage"
     },

@@ -9,6 +9,7 @@ import SignUp from "./pages/auth/signUp";
 import ForgotPassword from "./pages/auth/forgotPassword";
 import Organization from "./pages/organization";
 import AddInventory from "./pages/inventory/addInventory";
+import Inventory from "./pages/inventory";
 
 export const router = createBrowserRouter([
   {
@@ -45,59 +46,7 @@ export const router = createBrowserRouter([
     path: routePaths.forgotPassword,
     element: <ForgotPassword />,
   },
-<<<<<<< Updated upstream
-=======
-  {
-    path: routePaths.farm,
-    element: <Layout />,
-    children: [
-      {
-        path: routePaths.farm,
-        element: <Farm />,
-      },
-    ],
-  },
-  {
-    path: routePaths.polyhouse,
-    element: <Layout />,
-    children: [
-      {
-        path: routePaths.polyhouse,
-        element: <Polyhouse />,
-      },
-    ],
-  },
-  {
-    path: routePaths.reservoirs,
-    element: <Layout />,
-    children: [
-      {
-        path: routePaths.reservoirs,
-        element: <Reservoirs />,
-      },
-    ],
-  },
-  {
-    path: routePaths.tasks,
-    element: <Layout />,
-    children: [
-      {
-        path: routePaths.tasks,
-        element: <Tasks />,
-      },
-    ],
-  },
-  {
-    path: routePaths.workflow,
-    element: <Layout />,
-    children: [
-      {
-        path: routePaths.workflow,
-        element: <Workflow />,
-      },
-    ],
-  },
->>>>>>> Stashed changes
+ 
 ]);
 
 const AppRoutes = () => {

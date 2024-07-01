@@ -1,118 +1,145 @@
-import Button from "@/components/common/button"
-import { useState } from "react";
+import Button from "@/components/common/button";
+import { useEffect, useState } from "react";
 import { Modal, Form as AntdForm, Row, Col, Select } from "antd";
 import Form from "@/components/common/form";
 import Input from "@/components/common/input";
+import { getTranslation } from "@/translation/i18n";
+import { useSelector } from "react-redux";
+import InventoryActions from "@/redux/inventory/actions";
+import requestingSelector from "@/redux/requesting/requestingSelector";
+import { makeSelectErrorModel } from "@/redux/error/errorSelector";
+import FullAlertError from "@/components/common/error/FullAlertError";
 
+const selectError = makeSelectErrorModel();
 const AddProductButton = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const [form] = AntdForm.useForm();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [prevLoading, setPrevLoading] = useState(false);
+  const loading = useSelector(state=>requestingSelector(state,[InventoryActions.CREATE_PRODUCT],""))
+  const error = useSelector(state=>selectError(state,[InventoryActions.CREATE_PRODUCT_FINISHED],""))
+  const [form] = AntdForm.useForm();
 
-    const handleOk = () => {setIsModalOpen(false)};
-    const handleCancel = () => {setIsModalOpen(false)};
+  const handleOk = () => {
+    form.validateFields().then((values) => {
+      console.log(values);
+    }).catch((err) => console.log(err));
+  };
+  const handleCancel = () => {
+    form.resetFields();
+    setIsModalOpen(false);
+  };
 
-
-    return(<>
-    <Button label="Add Product"  style={{padding:"22px 20px", width:'30%'}} onClick={()=>setIsModalOpen(true)} />
-    <Modal
+  useEffect(() => {
+    if (prevLoading && !loading) {
+      handleCancel();
+    }
+    setPrevLoading(loading);
+  }, [loading]);
+  
+  return (
+    <>
+      <Button
+        label={getTranslation("inventoryManagement.addProduct")}
+        style={{ padding: "22px 20px", width: "30%" }}
+        onClick={() => setIsModalOpen(true)}
+      />
+      <Modal
         data-testid="add-user-modal"
         destroyOnClose={true}
         style={{ padding: "20px 30px" }}
-        title={"Add Product"}
+        title={getTranslation("inventoryManagement.addProduct")}
         open={isModalOpen}
         onCancel={handleCancel}
         onOk={handleOk}
         confirmLoading={loading}
-        okText={"Add"}
+        okText={getTranslation("global.add")}
+        cancelText={getTranslation("global.cancel")}
         onClose={handleCancel}
-      >
+      >{error && <FullAlertError error={error}/>}
         <Form form={form} layout="vertical">
           <Row gutter={24}>
             <Col span={24}>
               <Input
-                label={"Product Name"}
+                label={getTranslation("global.name")}
                 name="name"
                 rules={[
                   {
                     required: true,
-                    message: "Please enter name",
+                    message: getTranslation("global.nameError"),
                   },
                 ]}
-                placeholder={"Enter product name"}
+                placeholder={getTranslation("global.namePlaceholder")}
               />
             </Col>
           </Row>
           <Row gutter={24}>
             <Col span={24}>
               <AntdForm.Item
-                label={"Category"}
+                label={getTranslation("global.category")}
                 name="category"
                 rules={[
                   {
                     required: true,
-                    message: "Please select category",
+                    message: getTranslation("global.categoryError"),
                   },
                 ]}
               >
-                <Select 
-                options={[
+                <Select
+                  options={[
                     {
-                        label: "Fertilizer",
-                        value: "fertilizer",
+                      label: "Fertilizer",
+                      value: "fertilizer",
                     },
                     {
-                        label: "Pesticide",
-                        value: "pesticide",
+                      label: "Pesticide",
+                      value: "pesticide",
                     },
                     {
-                        label: "Seed",
-                        value: "seed",
+                      label: "Seed",
+                      value: "seed",
                     },
-                    
-                ]}
-                placeholder="Select category"
+                  ]}
+                  placeholder={getTranslation("global.categorySelectPlaceholder")}
                 />
               </AntdForm.Item>
             </Col>
           </Row>
-          
-         <Row gutter={24}>
+
+          <Row gutter={24}>
             <Col span={24}>
-            <AntdForm.Item
-                label={"Unit"}
+              <AntdForm.Item
+                label={getTranslation("inventoryManagement.unit")}
                 name="unit"
                 rules={[
                   {
                     required: true,
-                    message: "Please select unit",
+                    message: getTranslation("inventoryManagement.unitError"),
                   },
                 ]}
               >
-                <Select 
-                options={[
+                <Select
+                  options={[
                     {
-                        label: "nos",
-                        value: "nos",
+                      label: "nos",
+                      value: "nos",
                     },
                     {
-                        label: "kg",
-                        value: "kg",
+                      label: "kg",
+                      value: "kg",
                     },
                     {
-                        label: "gm",
-                        value: "gm",
+                      label: "gm",
+                      value: "gm",
                     },
-                    
-                ]}
-                placeholder="Select category"
+                  ]}
+                  placeholder={getTranslation("inventoryManagement.unitSelectPlaceholder")}
                 />
               </AntdForm.Item>
             </Col>
           </Row>
         </Form>
       </Modal>
-    </>)
-}
+    </>
+  );
+};
 
 export default AddProductButton;

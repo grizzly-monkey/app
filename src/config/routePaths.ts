@@ -3,8 +3,6 @@ const routePaths = {
   userManagement: "/users",
   signUp: "/signUp",
   forgotPassword: "/forgot-password",
-<<<<<<< Updated upstream
-=======
   farm:'/farm',
   polyhouse:'/polyhouse',
   reservoirs:'/reservoirs',
@@ -12,7 +10,6 @@ const routePaths = {
   addInventory:'/inventory/add',
   tasks:'/tasks',
   workflow:'/workflow',
->>>>>>> Stashed changes
   organization: "/organization",
 };
 

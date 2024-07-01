@@ -14,3 +14,10 @@ export interface Inventory {
     createdDate: string;
     updatedDate: string;
 }
+
+export interface CreateInventory {
+    productId: string;
+    description: string;
+    provider: string;
+    quantity: number;
+}
