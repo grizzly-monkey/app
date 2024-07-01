@@ -13,6 +13,7 @@ import InventorySelectors from "@/redux/inventory/selectors";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import requestingSelector from "@/redux/requesting/requestingSelector";
 import FullAlertError from "@/components/common/error/FullAlertError";
+import { getTranslation } from "@/translation/i18n";
 
 const selectError = makeSelectErrorModel();
 const InventoryTable = () => {
@@ -31,6 +32,7 @@ const InventoryTable = () => {
 
   useEffect(() => {
     dispatch(InventoryActions.fetchInventories());
+    dispatch(InventoryActions.fetchSubCategories());
   }, []);
 
   return (
@@ -41,7 +43,7 @@ const InventoryTable = () => {
         paddingTop: "20px",
       }}
       bordered={false}
-      title={"Inventory"}
+      title={getTranslation("global.inventory")}
       className="criclebox tablespace"
     >
       {error && <FullAlertError error={error} />}
@@ -53,13 +55,13 @@ const InventoryTable = () => {
         }}
       >
         <Flex gap={20}>
-          <Input placeholder="Search Inventory" />
-          <Select placeholder="Product" />
-          <Select placeholder="Category" />
+          <Input placeholder={getTranslation("inventoryManagement.searchInventoryPlaceholder")} />
+          <Select placeholder={getTranslation("global.categorySelectPlaceholder")} />
+          <Select placeholder={getTranslation("inventoryManagement.selectProductPlaceholder")} />
         </Flex>
         <div style={{ width: "15%" }}>
           <Button
-            label="Add New"
+            label={getTranslation("inventoryManagement.addInventory")}
             type="primary"
             style={{ width: "100%" }}
             onClick={onAddButtonClick}
