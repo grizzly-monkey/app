@@ -8,10 +8,17 @@ export default class FarmsEffects {
   static getFarms() {
     return getToModel(FarmModel, api.FARMS);
   }
+
   static addFarm(payload) {
     return postToModel(FarmModel, api.FARMS, payload)
   }
+
+  static updateFarm(farmId, payload) {
+    return postToModel(FarmModel, api.FARM.replace(':farmId', farmId), payload)
+  }
+
   static addPolyhouseToFarm(farmId,payload) {
     return postToModel(PolyhouseModel, api.POLYHOUSE.replace(':farmId', farmId), payload)
   }
+
 }

@@ -9,6 +9,7 @@ import Card from "@/components/ui/card";
 import NuseryCard from "./NurseryCard";
 import Select from "@/components/ui/select";
 import { REGEX, applyErrorsToCardFields } from "../const";
+import { getTranslation } from "@/translation/i18n";
 
 const AddNursery = ({
   polyhouseKey,
@@ -23,39 +24,43 @@ const AddNursery = ({
 
   const nurseryType = [
     {
-      label: "Open (no humidity control)",
+      label: `${getTranslation(
+        "farm.createFarm.polyhouse.nursery.nurseryType.openDome"
+      )}`,
       value: "Open (no humidity control)",
     },
     {
-      label: "Closed dome (humidity control)",
+      label: `${getTranslation(
+        "farm.createFarm.polyhouse.nursery.nurseryType.closeDome"
+      )}`,
       value: "Closed dome (humidity control)",
     },
   ];
 
   const nurseryGerminationType = [
     {
-      label: "Tray with coco peat",
+      label: `${getTranslation(
+        "farm.createFarm.polyhouse.nursery.germinationType.trayWithCocoPeat"
+      )}`,
       value: "Tray with coco peat",
     },
     {
-      label: "Oasis cubies",
+      label: `${getTranslation(
+        "farm.createFarm.polyhouse.nursery.germinationType.oasisCubies"
+      )}`,
       value: "Oasis cubies",
     },
     {
-      label: "Coco plugs",
+      label: `${getTranslation(
+        "farm.createFarm.polyhouse.nursery.germinationType.cocoPlugs"
+      )}`,
       value: "Coco plugs",
     },
   ];
 
   const wateringType = [
-    {
-      label: "Manual",
-      value: "Manual",
-    },
-    {
-      label: "Automatic",
-      value: "Automatic",
-    },
+    { label: `${getTranslation("global.manual")}`, value: "Manual" },
+    { label: `${getTranslation("global.automatic")}`, value: "Automatic" },
   ];
 
   const handleCancel = () => {
@@ -114,7 +119,10 @@ const AddNursery = ({
   return (
     <div>
       <div style={{ width: "150px", marginLeft: "auto" }}>
-        <Button label="Add nursery" onClick={() => setIsModalOpen(true)} />
+        <Button
+          label={getTranslation("farm.createFarm.polyhouse.nursery.addNursery")}
+          onClick={() => setIsModalOpen(true)}
+        />
       </div>
 
       <NuseryCard
@@ -125,7 +133,11 @@ const AddNursery = ({
       />
 
       <Modal
-        title={currentNursery ? "Edit nursery" : "Add nursery"}
+        title={
+          currentNursery
+            ? getTranslation("farm.createFarm.polyhouse.nursery.editNursery")
+            : getTranslation("farm.createFarm.polyhouse.nursery.addNursery")
+        }
         open={isModalOpen}
         onCancel={handleCancel}
         onOk={handleOk}
@@ -138,122 +150,184 @@ const AddNursery = ({
             <Row gutter={[16, 16]}>
               <Col xs={24} sm={12}>
                 <Input
-                  label="Nursery name"
+                  label={getTranslation(
+                    "farm.createFarm.polyhouse.nursery.nurseryName"
+                  )}
                   name="name"
                   rules={[
-                    { required: true, message: "Please input nursery name" },
+                    {
+                      required: true,
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.nursery.nurseryNameMessage"
+                      )}`,
+                    },
                   ]}
-                  placeholder="Enter nursery name"
+                  placeholder={getTranslation(
+                    "farm.createFarm.polyhouse.nursery.nurseryNamePlaceholder"
+                  )}
                 />
               </Col>
               <Col xs={24} sm={12}>
                 <AntdForm.Item
-                  label="Nursery type"
+                  label={getTranslation(
+                    "farm.createFarm.polyhouse.nursery.nurseryType"
+                  )}
                   name="type"
                   rules={[
-                    { required: true, message: "Please input nursery type" },
+                    {
+                      required: true,
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.nursery.nurseryTypeMessage"
+                      )}`,
+                    },
                   ]}
                 >
                   <Select
-                    placeholder="Select nursery type"
+                    placeholder={getTranslation(
+                      "farm.createFarm.polyhouse.nursery.nurseryTypePlaceholder"
+                    )}
                     options={nurseryType}
                   />
                 </AntdForm.Item>
               </Col>
               <Col xs={24} sm={12}>
                 <Input
-                  label="Nursery area (in sq meters)"
+                  label={getTranslation(
+                    "farm.createFarm.polyhouse.nursery.nurseryArea"
+                  )}
                   name="area"
                   rules={[
-                    { required: true, message: "Please input nursery area" },
+                    {
+                      required: true,
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.nursery.nurseryAreaMessage"
+                      )}`,
+                    },
                     {
                       pattern: REGEX.number,
-                      message:
-                        "Please provide valid nursery area (e.g., 20000, 200.5)",
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.nursery.nurseryAreaRegexMessage"
+                      )}`,
                     },
                   ]}
-                  placeholder="Enter nursery area (in sq meters)"
+                  placeholder={getTranslation(
+                    "farm.createFarm.polyhouse.nursery.nurseryAreaPlaceholder"
+                  )}
                 />
               </Col>
               <Col xs={24} sm={12}>
                 <AntdForm.Item
-                  label="Nursery germination type"
+                  label={getTranslation(
+                    "farm.createFarm.polyhouse.nursery.germinationType"
+                  )}
                   name="germinationType"
                   rules={[
                     {
                       required: true,
-                      message: "Please input nursery germination type",
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.nursery.germinationTypeMessage"
+                      )}`,
                     },
                   ]}
                 >
                   <Select
-                    placeholder="Select nursery germination type"
+                    placeholder={getTranslation(
+                      "farm.createFarm.polyhouse.nursery.germinationTypePlaceholder"
+                    )}
                     options={nurseryGerminationType}
                   />
                 </AntdForm.Item>
               </Col>
               <Col xs={24} sm={12}>
                 <Input
-                  label="Nursery germination area (in sq meters)"
+                  label={getTranslation(
+                    "farm.createFarm.polyhouse.nursery.germinationArea"
+                  )}
                   name="germinationArea"
                   rules={[
                     {
                       required: true,
-                      message:
-                        "Please input nursery germination area (in sq meters)",
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.nursery.germinationAreaMessage"
+                      )}`,
                     },
                     {
                       pattern: REGEX.number,
-                      message:
-                        "Please provide valid nursery germination area (e.g., 20000, 200.5)",
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.nursery.germinationAreaRegexMessage"
+                      )}`,
                     },
                   ]}
-                  placeholder="Enter nursery germination area (in sq meters)"
+                  placeholder={getTranslation(
+                    "farm.createFarm.polyhouse.nursery.germinationAreaPlaceholder"
+                  )}
                 />
               </Col>
               <Col xs={24} sm={12}>
                 <Input
-                  label="Seed count"
+                  label={getTranslation(
+                    "farm.createFarm.polyhouse.nursery.seedCount"
+                  )}
                   name="seedCount"
                   rules={[
-                    { required: true, message: "Please input seed count" },
+                    {
+                      required: true,
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.nursery.seedCountMessage"
+                      )}`,
+                    },
                     {
                       pattern: REGEX.number,
-                      message:
-                        "Please provide valid seed count (e.g., 20000, 200.5)",
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.nursery.seedCountRegexMessage"
+                      )}`,
                     },
                   ]}
-                  placeholder="Enter seed count"
+                  placeholder={getTranslation(
+                    "farm.createFarm.polyhouse.nursery.seedCountPlaceholder"
+                  )}
                 />
               </Col>
               <Col xs={24} sm={12}>
                 <AntdForm.Item
-                  label="Watering type"
+                  label={getTranslation(
+                    "farm.createFarm.polyhouse.nursery.wateringType"
+                  )}
                   name={`wateringType`}
                   rules={[
                     {
                       required: true,
-                      message: "Please input watering type",
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.nursery.wateringTypeMessage"
+                      )}`,
                     },
                   ]}
                 >
                   <Select
-                    placeholder="Select watering type"
+                    placeholder={getTranslation(
+                      "farm.createFarm.polyhouse.nursery.wateringTypePlaceholder"
+                    )}
                     options={wateringType}
                   />
                 </AntdForm.Item>
               </Col>
               <Col xs={24} sm={12}>
                 <Input
-                  label="Watering schedule"
+                  label={getTranslation(
+                    "farm.createFarm.polyhouse.nursery.wateringSchedule"
+                  )}
                   name="wateringSchedule"
                   rules={[
                     {
                       required: true,
-                      message: "Please input watering schedule",
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.nursery.wateringScheduleMessage"
+                      )}`,
                     },
                   ]}
-                  placeholder="Enter watering schedule"
+                  placeholder={getTranslation(
+                    "farm.createFarm.polyhouse.nursery.wateringSchedulePlaceholder"
+                  )}
                 />
               </Col>
             </Row>

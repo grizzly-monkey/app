@@ -9,6 +9,7 @@ import Select from "@/components/ui/select";
 import { REGEX, applyErrorsToFields } from "../const";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import FarmActions from "@/redux/farm/action";
+import { getTranslation } from "@/translation/i18n";
 
 const selectError = makeSelectErrorModel();
 
@@ -36,15 +37,21 @@ function AddFarm({ form }) {
 
   const nutrientType = [
     {
-      label: "2 part mix",
+      label: `${getTranslation(
+        "farm.createFarm.addFarm.nutrientType2PartMix"
+      )}`,
       value: "2 part mix",
     },
     {
-      label: "3 part mix",
+      label: `${getTranslation(
+        "farm.createFarm.addFarm.nutrientType3PartMix"
+      )}`,
       value: "3 part mix",
     },
     {
-      label: "Custom nutrient mix",
+      label: `${getTranslation(
+        "farm.createFarm.addFarm.nutrientTypeCustomNutrientMix"
+      )}`,
       value: "Custom nutrient mix",
     },
   ];
@@ -55,87 +62,113 @@ function AddFarm({ form }) {
         <Row gutter={24}>
           <Col span={24}>
             <Input
-              label="Name"
+              label={getTranslation("global.name")}
               name="name"
               rules={[
                 {
                   required: true,
-                  message: "Please input your name",
+                  message: `${getTranslation(
+                    "farm.createFarm.addFarm.nameMessage"
+                  )}`,
                 },
               ]}
-              placeholder="Enter your name"
+              placeholder={getTranslation(
+                "farm.createFarm.addFarm.namePlaceholder"
+              )}
             />
           </Col>
         </Row>
         <Row gutter={[16, 16]}>
           <Col xs={24} sm={12}>
             <Input
-              label="Area (in sq meters)"
+              label={getTranslation("farm.createFarm.addFarm.area")}
               name="area"
               rules={[
                 {
                   required: true,
-                  message: "Please input area",
+                  message: `${getTranslation(
+                    "farm.createFarm.addFarm.areaMessage"
+                  )}`,
                 },
                 {
                   pattern: REGEX.number,
-                  message: "Please provide valid area (e.g., 20000, 200.5)",
+                  message: `${getTranslation(
+                    "farm.createFarm.addFarm.areaRegexMessage"
+                  )}`,
                 },
               ]}
-              placeholder="Enter area (in sq meters)"
+              placeholder={getTranslation(
+                "farm.createFarm.addFarm.areaPlaceholder"
+              )}
             />
           </Col>
           <Col xs={24} sm={12}>
             <AntdForm.Item
-              label="Nutrients type"
+              label={getTranslation("farm.createFarm.addFarm.nutrientType")}
               name="nutrientType"
               rules={[
                 {
                   required: true,
-                  message: "Please Select Nutrients type",
+                  message: `${getTranslation(
+                    "farm.createFarm.addFarm.nutrientTypeMessage"
+                  )}`,
                 },
               ]}
             >
               <Select
-                placeholder="Select nutrients type"
+                placeholder={getTranslation(
+                  "farm.createFarm.addFarm.nutrientTypePlaceholder"
+                )}
                 options={nutrientType}
               />
             </AntdForm.Item>
           </Col>
           <Col xs={24} sm={12}>
             <Input
-              label="Cultivable area (in sq meters)"
+              label={getTranslation("farm.createFarm.addFarm.cultivableArea")}
               name="cultivableArea"
               rules={[
                 {
                   required: true,
-                  message: "Please input cultivable area",
+                  message: `${getTranslation(
+                    "farm.createFarm.addFarm.cultivableAreaMessage"
+                  )}`,
                 },
                 {
                   pattern: REGEX.number,
-                  message:
-                    "Please provide valid cultivable area (e.g., 20000, 200.5)",
+                  message: `${getTranslation(
+                    "farm.createFarm.addFarm.cultivableAreaRegexMessage"
+                  )}`,
                 },
               ]}
-              placeholder="Enter cultivable area (in sq meters)"
+              placeholder={getTranslation(
+                "farm.createFarm.addFarm.cultivableAreaPlaceholder"
+              )}
             />
           </Col>
           <Col xs={24} sm={12}>
             <Input
-              label="Nutrient dilution ratio (e.g., 2:3)"
+              label={getTranslation(
+                "farm.createFarm.addFarm.nutrientDilutionRatio"
+              )}
               name="nutrientDilutionRatio"
               rules={[
                 {
                   required: true,
-                  message: "Please input Nutrient dilution ratio",
+                  message: `${getTranslation(
+                    "farm.createFarm.addFarm.nutrientDilutionRatioMessage"
+                  )}`,
                 },
                 {
                   pattern: REGEX.ratioValidationRegex,
-                  message:
-                    "Please provide farm dilution ratio in the format: numerator:denominator (e.g., 2:3)",
+                  message: `${getTranslation(
+                    "farm.createFarm.addFarm.nutrientDilutionRatioRegexMessage"
+                  )}`,
                 },
               ]}
-              placeholder="Enter Nutrient dilution ratio"
+              placeholder={getTranslation(
+                "farm.createFarm.addFarm.nutrientDilutionRatioPlaceholder"
+              )}
             />
           </Col>
         </Row>

@@ -12,9 +12,8 @@ function Main() {
   const [visible, setVisible] = useState(false);
 
   const toggleSidebar = () => {
-    setVisible(!visible)
-  }
-
+    setVisible(!visible);
+  };
 
   return (
     <Layout>
@@ -28,20 +27,20 @@ function Main() {
         width={280}
         className={`drawer-sidebar`}
       >
-          <Sider
-            trigger={null}
-            width={250}
-            theme="light"
-            className={`sider-primary ant-layout-sider-primary`}
-          >
-            <Sidenav />
-          </Sider>
+        <Sider
+          trigger={null}
+          width={250}
+          theme="light"
+          className={`sider-primary ant-layout-sider-primary`}
+        >
+          <Sidenav />
+        </Sider>
       </Drawer>
       <Sider
         width={250}
         theme="light"
         className="responsiveSider"
-        style={{paddingRight:'10px'}}
+        style={{ paddingRight: "10px" }}
       >
         <Sidenav />
       </Sider>

@@ -11,6 +11,7 @@ import AddNursery from "./AddNursery";
 import { REGEX, applyErrorsToFields } from "../const";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import FarmActions from "@/redux/farm/action";
+import { getTranslation } from "@/translation/i18n";
 
 const selectError = makeSelectErrorModel();
 
@@ -111,53 +112,71 @@ const AddPolyhouses = ({ form, polyhouses, setPolyhouses }) => {
                 <Row gutter={24}>
                   <Col span={24}>
                     <Input
-                      label={`Polyhouse name`}
+                      label={getTranslation("farm.createFarm.polyhouse.name")}
                       name={`name_${index}`}
                       rules={[
                         {
                           required: true,
-                          message: "Please input polyhouse name",
+                          message: `${getTranslation(
+                            "farm.createFarm.polyhouse.nameMessage"
+                          )}`,
                         },
                       ]}
-                      placeholder="Enter polyhouse name"
+                      placeholder={getTranslation(
+                        "farm.createFarm.polyhouse.namePlaceholder"
+                      )}
                     />
                   </Col>
                 </Row>
                 <Row gutter={[16, 16]}>
                   <Col xs={24} sm={12}>
                     <Input
-                      label="Structure expected life"
+                      label={getTranslation(
+                        "farm.createFarm.polyhouse.structureExpectedLife"
+                      )}
                       name={`structureExpectedLife_${index}`}
                       rules={[
                         {
                           required: true,
-                          message: "Please input structure expected life",
+                          message: `${getTranslation(
+                            "farm.createFarm.polyhouse.structureExpectedLifeMessage"
+                          )}`,
                         },
                         {
                           pattern: REGEX.number,
-                          message:
-                            "Please provide valid structure expected life (e.g., 2, 2.5)",
+                          message: `${getTranslation(
+                            "farm.createFarm.polyhouse.structureExpectedLifeRegexMessage"
+                          )}`,
                         },
                       ]}
-                      placeholder="Enter structure expected life"
+                      placeholder={getTranslation(
+                        "farm.createFarm.polyhouse.structureExpectedLifePlaceholder"
+                      )}
                     />
                   </Col>
                   <Col xs={24} sm={12}>
                     <Input
-                      label="Plastic expected life"
+                      label={getTranslation(
+                        "farm.createFarm.polyhouse.plasticExpectedLife"
+                      )}
                       name={`plasticExpectedLife_${index}`}
                       rules={[
                         {
                           required: true,
-                          message: "Please input plastic expected life",
+                          message: `${getTranslation(
+                            "farm.createFarm.polyhouse.plasticExpectedLifeMessage"
+                          )}`,
                         },
                         {
                           pattern: REGEX.number,
-                          message:
-                            "Please provide valid plastic expected life (e.g., 2, 2.5)",
+                          message: `${getTranslation(
+                            "farm.createFarm.polyhouse.plasticExpectedLifeRegexMessage"
+                          )}`,
                         },
                       ]}
-                      placeholder="Enter plastic expected life"
+                      placeholder={getTranslation(
+                        "farm.createFarm.polyhouse.plasticExpectedLifePlaceholder"
+                      )}
                     />
                   </Col>
                 </Row>
@@ -165,7 +184,12 @@ const AddPolyhouses = ({ form, polyhouses, setPolyhouses }) => {
                 <Row gutter={24}>
                   <Col span={24}>
                     <Tabs defaultActiveKey="1">
-                      <TabPane tab="Configure zones" key="1">
+                      <TabPane
+                        tab={getTranslation(
+                          "farm.createFarm.polyhouse.configureZones"
+                        )}
+                        key="1"
+                      >
                         <AddZones
                           polyhouseKey={polyhouse.key}
                           zones={polyhouse.zones}
@@ -174,7 +198,12 @@ const AddPolyhouses = ({ form, polyhouses, setPolyhouses }) => {
                           errors={error ? error.errors : []}
                         />
                       </TabPane>
-                      <TabPane tab="Configure nurseries" key="2">
+                      <TabPane
+                        tab={getTranslation(
+                          "farm.createFarm.polyhouse.configureNurseries"
+                        )}
+                        key="2"
+                      >
                         <AddNursery
                           polyhouseKey={polyhouse.key}
                           nurseries={polyhouse.nurseries}

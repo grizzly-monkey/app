@@ -8,6 +8,7 @@ import Card from "@/components/ui/card";
 import ZoneCard from "./ZoneCard";
 import Select from "@/components/ui/select";
 import { REGEX, applyErrorsToCardFields, applyErrorsToFields } from "../const";
+import { getTranslation } from "@/translation/i18n";
 
 const AddZones = ({ polyhouseKey, zones, addZone, updateZones, errors }) => {
   const [form] = AntdForm.useForm();
@@ -15,15 +16,35 @@ const AddZones = ({ polyhouseKey, zones, addZone, updateZones, errors }) => {
   const [currentZone, setCurrentZone] = useState(null);
 
   const systemType = [
-    { label: "NFT system", value: "NFT system" },
-    { label: "Trough system", value: "Trough system" },
-    { label: "Raft system", value: "Raft system" },
-    { label: "Dutch bucket system", value: "Dutch bucket system" },
+    {
+      label: `${getTranslation(
+        "farm.createFarm.polyhouse.zone.systemType.NFTsystem"
+      )}`,
+      value: "NFT system",
+    },
+    {
+      label: `${getTranslation(
+        "farm.createFarm.polyhouse.zone.systemType.troughSystem"
+      )}`,
+      value: "Trough system",
+    },
+    {
+      label: `${getTranslation(
+        "farm.createFarm.polyhouse.zone.systemType.raftSystem"
+      )}`,
+      value: "Raft system",
+    },
+    {
+      label: `${getTranslation(
+        "farm.createFarm.polyhouse.zone.systemType.dutchBucketSystem"
+      )}`,
+      value: "Dutch bucket system",
+    },
   ];
 
   const wateringType = [
-    { label: "Manual", value: "Manual" },
-    { label: "Automatic", value: "Automatic" },
+    { label: `${getTranslation("global.manual")}`, value: "Manual" },
+    { label: `${getTranslation("global.automatic")}`, value: "Automatic" },
   ];
 
   const handleCancel = () => {
@@ -100,7 +121,7 @@ const AddZones = ({ polyhouseKey, zones, addZone, updateZones, errors }) => {
     <div>
       <div style={{ width: "150px", marginLeft: "auto" }}>
         <Button
-          label="Add zone"
+          label={getTranslation("farm.createFarm.polyhouse.zone.addZone")}
           onClick={() => {
             setIsModalOpen(true);
           }}
@@ -115,11 +136,19 @@ const AddZones = ({ polyhouseKey, zones, addZone, updateZones, errors }) => {
       />
 
       <Modal
-        title={currentZone ? "Edit zone" : "Add zone"}
+        title={
+          currentZone
+            ? `${getTranslation("farm.createFarm.polyhouse.zone.editZone")}`
+            : `${getTranslation("farm.createFarm.polyhouse.zone.addZone")}`
+        }
         open={isModalOpen}
         onCancel={handleCancel}
         onOk={handleOk}
-        okText={currentZone ? "Update" : "Add"}
+        okText={
+          currentZone
+            ? `${getTranslation("global.add")}`
+            : `${getTranslation("global.update")}`
+        }
         onClose={handleCancel}
         className="modal"
       >
@@ -128,149 +157,234 @@ const AddZones = ({ polyhouseKey, zones, addZone, updateZones, errors }) => {
             <Row gutter={[16, 16]}>
               <Col xs={24} sm={12}>
                 <Input
-                  label={`Zone name`}
+                  label={getTranslation("farm.createFarm.polyhouse.zone.name")}
                   name={`name`}
                   rules={[
-                    { required: true, message: "Please input zone name" },
+                    {
+                      required: true,
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.zone.nameMessage"
+                      )}`,
+                    },
                   ]}
-                  placeholder="Enter zone name"
+                  placeholder={getTranslation(
+                    "farm.createFarm.polyhouse.zone.namePlaceholder"
+                  )}
                 />
               </Col>
               <Col xs={24} sm={12}>
                 <AntdForm.Item
-                  label={`System type`}
+                  label={getTranslation(
+                    "farm.createFarm.polyhouse.zone.systemType"
+                  )}
                   name={`systemType`}
                   rules={[
-                    { required: true, message: "Please input system type" },
+                    {
+                      required: true,
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.zone.systemTypeMessage"
+                      )}`,
+                    },
                   ]}
                 >
                   <Select
-                    placeholder="Select system type"
+                    placeholder={getTranslation(
+                      "farm.createFarm.polyhouse.zone.systemTypePlaceholder"
+                    )}
                     options={systemType}
                   />
                 </AntdForm.Item>
               </Col>
               <Col xs={24} sm={12}>
                 <Input
-                  label="Zone area (in sq meters)"
+                  label={getTranslation(
+                    "farm.createFarm.polyhouse.zone.zoneArea"
+                  )}
                   name={`area`}
                   rules={[
-                    { required: true, message: "Please input zone area" },
+                    {
+                      required: true,
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.zone.zoneAreaMessage"
+                      )}`,
+                    },
                     {
                       pattern: REGEX.number,
-                      message:
-                        "Please provide valid zone area (e.g., 20000, 200.5)",
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.zone.zoneAreaRegexMessage"
+                      )}`,
                     },
                   ]}
-                  placeholder="Enter zone area (in sq meters)"
+                  placeholder={getTranslation(
+                    "farm.createFarm.polyhouse.zone.zoneAreaPlaceholder"
+                  )}
                 />
               </Col>
               <Col xs={24} sm={12}>
                 <Input
-                  label="Zone growing area (in sq meters)"
+                  label={getTranslation(
+                    "farm.createFarm.polyhouse.zone.growArea"
+                  )}
                   name={`growingArea.area`}
                   rules={[
                     {
                       required: true,
-                      message: "Please input zone growing area",
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.zone.growAreaMessage"
+                      )}`,
                     },
                     {
                       pattern: REGEX.number,
-                      message:
-                        "Please provide valid zone growing area (e.g., 20000, 200.5)",
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.zone.growAreaRegexMessage"
+                      )}`,
                     },
                   ]}
-                  placeholder="Enter zone growing area (in sq meters)"
+                  placeholder={getTranslation(
+                    "farm.createFarm.polyhouse.zone.growAreaPlaceholder"
+                  )}
                 />
               </Col>
               <Col xs={24} sm={12}>
                 <Input
-                  label="Row count"
+                  label={getTranslation(
+                    "farm.createFarm.polyhouse.zone.rowCount"
+                  )}
                   name={`growingArea.rowCount`}
                   rules={[
-                    { required: true, message: "Please input row count" },
+                    {
+                      required: true,
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.zone.rowCountMessage"
+                      )}`,
+                    },
                     {
                       pattern: REGEX.number,
-                      message:
-                        "Please provide valid row count (e.g., 20000, 200.5)",
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.zone.rowCountRegexMessage"
+                      )}`,
                     },
                   ]}
-                  placeholder="Enter row count"
+                  placeholder={getTranslation(
+                    "farm.createFarm.polyhouse.zone.rowCountPlaceholder"
+                  )}
                 />
               </Col>
               <Col xs={24} sm={12}>
                 <Input
-                  label="Row spacing"
+                  label={getTranslation(
+                    "farm.createFarm.polyhouse.zone.rowSpacing"
+                  )}
                   name={`growingArea.rowSpacing`}
                   rules={[
-                    { required: true, message: "Please input row spacing" },
+                    {
+                      required: true,
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.zone.rowSpacingMessage"
+                      )}`,
+                    },
                     {
                       pattern: REGEX.number,
-                      message:
-                        "Please provide valid row spacing (e.g., 20000, 200.5)",
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.zone.rowSpacingRegexMessage"
+                      )}`,
                     },
                   ]}
-                  placeholder="Enter row spacing"
+                  placeholder={getTranslation(
+                    "farm.createFarm.polyhouse.zone.rowSpacingPlaceholder"
+                  )}
                 />
               </Col>
               <Col xs={24} sm={12}>
                 <Input
-                  label="Plant spacing"
+                  label={getTranslation(
+                    "farm.createFarm.polyhouse.zone.plantSpacing"
+                  )}
                   name={`growingArea.plantSpacing`}
                   rules={[
-                    { required: true, message: "Please input plant spacing" },
+                    {
+                      required: true,
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.zone.plantSpacingMessage"
+                      )}`,
+                    },
                     {
                       pattern: REGEX.number,
-                      message:
-                        "Please provide valid plant spacing (e.g., 20000, 200.5)",
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.zone.plantSpacingRegexMessage"
+                      )}`,
                     },
                   ]}
-                  placeholder="Enter plant spacing"
+                  placeholder={getTranslation(
+                    "farm.createFarm.polyhouse.zone.plantSpacingPlaceholder"
+                  )}
                 />
               </Col>
               <Col xs={24} sm={12}>
                 <Input
-                  label="Plant count per row"
+                  label={getTranslation(
+                    "farm.createFarm.polyhouse.zone.plantCountPerRow"
+                  )}
                   name={`growingArea.plantCountPerRow`}
                   rules={[
                     {
                       required: true,
-                      message: "Please input plant count per row",
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.zone.plantCountPerRowMessage"
+                      )}`,
                     },
                     {
                       pattern: REGEX.number,
-                      message:
-                        "Please provide valid plant count per row (e.g., 20000, 200.5)",
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.zone.plantCountPerRowRegexMessage"
+                      )}`,
                     },
                   ]}
-                  placeholder="Enter plant count per row"
+                  placeholder={getTranslation(
+                    "farm.createFarm.polyhouse.zone.plantCountPerRowPlaceholder"
+                  )}
                 />
               </Col>
               <Col xs={24} sm={12}>
                 <AntdForm.Item
-                  label="Watering type"
+                  label={getTranslation(
+                    "farm.createFarm.polyhouse.zone.wateringType"
+                  )}
                   name={`growingArea.wateringType`}
                   rules={[
-                    { required: true, message: "Please input watering type" },
+                    {
+                      required: true,
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.zone.wateringTypeMessage"
+                      )}`,
+                    },
                   ]}
                 >
                   <Select
-                    placeholder="Select watering type"
+                    placeholder={getTranslation(
+                      "farm.createFarm.polyhouse.zone.wateringTypePlaceholder"
+                    )}
                     options={wateringType}
                   />
                 </AntdForm.Item>
               </Col>
               <Col xs={24} sm={12}>
                 <Input
-                  label="Watering schedule"
+                  label={getTranslation(
+                    "farm.createFarm.polyhouse.zone.wateringSchedule"
+                  )}
                   name={`growingArea.wateringSchedule`}
                   rules={[
                     {
                       required: true,
-                      message: "Please input watering schedule",
+                      message: `${getTranslation(
+                        "farm.createFarm.polyhouse.zone.wateringScheduleMessage"
+                      )}`,
                     },
                   ]}
-                  placeholder="Enter watering schedule"
+                  placeholder={getTranslation(
+                    "farm.createFarm.polyhouse.zone.wateringSchedulePlaceholder"
+                  )}
                 />
               </Col>
             </Row>

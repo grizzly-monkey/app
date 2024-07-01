@@ -9,6 +9,7 @@ import { MdDelete } from "react-icons/md";
 import { REGEX, applyErrorsToFields } from "../const";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import FarmActions from "@/redux/farm/action";
+import { getTranslation } from "@/translation/i18n";
 
 const selectError = makeSelectErrorModel();
 
@@ -57,91 +58,121 @@ const AddReservoirs = ({ form, reservoirs, setReservoirs }) => {
                 <Row gutter={24}>
                   <Col span={24}>
                     <Input
-                      label={`Name`}
+                      label={getTranslation("global.name")}
                       name={`name_${index}`}
                       rules={[
                         {
                           required: true,
-                          message: "Please input your name",
+                          message: `${getTranslation(
+                            "farm.createFarm.addFarm.nameMessage"
+                          )}`,
                         },
                       ]}
-                      placeholder="Enter your name"
+                      placeholder={getTranslation(
+                        "farm.createFarm.addFarm.namePlaceholder"
+                      )}
                     />
                   </Col>
                 </Row>
                 <Row gutter={[16, 16]}>
                   <Col xs={24} sm={12}>
                     <Input
-                      label="Reservoir capacity (in liter)"
+                      label={getTranslation(
+                        "farm.createFarm.reservoir.reservoirCapacity"
+                      )}
                       name={`reservoirCapacity_${index}`}
                       rules={[
                         {
                           required: true,
-                          message: "Please input reservoir capacity",
+                          message: `${getTranslation(
+                            "farm.createFarm.reservoir.reservoirCapacityMessage"
+                          )}`,
                         },
                         {
                           pattern: REGEX.number,
-                          message:
-                            "Please provide valid reservoir capacity (e.g., 2, 2.5)",
+                          message: `${getTranslation(
+                            "farm.createFarm.reservoir.reservoirCapacityRegexMessage"
+                          )}`,
                         },
                       ]}
-                      placeholder="Enter reservoir capacity (in liter)"
+                      placeholder={getTranslation(
+                        "farm.createFarm.reservoir.reservoirCapacityPlaceholder"
+                      )}
                     />
                   </Col>
                   <Col xs={24} sm={12}>
                     <Input
-                      label="PH reservoir capacity (in liter)"
+                      label={getTranslation(
+                        "farm.createFarm.reservoir.phReservoirCapacity"
+                      )}
                       name={`phReservoirCapacity_${index}`}
                       rules={[
                         {
                           required: true,
-                          message: "Please input PH reservoir capacity",
+                          message: `${getTranslation(
+                            "farm.createFarm.reservoir.phReservoirCapacityMessage"
+                          )}`,
                         },
                         {
                           pattern: REGEX.number,
-                          message:
-                            "Please provide valid Ph reservoir capacity (e.g., 2, 2.5)",
+                          message: `${getTranslation(
+                            "farm.createFarm.reservoir.phReservoirCapacityRegexMessage"
+                          )}`,
                         },
                       ]}
-                      placeholder="Enter PH reservoir capacity (in liter)"
+                      placeholder={getTranslation(
+                        "farm.createFarm.reservoir.phReservoirCapacityPlaceholder"
+                      )}
                     />
                   </Col>
                   <Col xs={24} sm={12}>
                     <Input
-                      label="Nutrient water reservoir capacity (in liter)"
+                      label={getTranslation(
+                        "farm.createFarm.reservoir.nutrientWaterReservoirCapacity"
+                      )}
                       name={`nutrientWaterReservoirCapacity_${index}`}
                       rules={[
                         {
                           required: true,
-                          message:
-                            "Please input nutrient water reservoir capacity",
+                          message: `${getTranslation(
+                            "farm.createFarm.reservoir.nutrientWaterReservoirCapacityMessage"
+                          )}`,
                         },
                         {
                           pattern: REGEX.number,
-                          message:
-                            "Please provide valid nutrient water reservoir capacity (e.g., 2, 2.5)",
+                          message: `${getTranslation(
+                            "farm.createFarm.reservoir.nutrientWaterReservoirCapacityRegexMessage"
+                          )}`,
                         },
                       ]}
-                      placeholder="Enter nutrient water reservoir capacity (in liter)"
+                      placeholder={getTranslation(
+                        "farm.createFarm.reservoir.nutrientWaterReservoirCapacityPlaceholder"
+                      )}
                     />
                   </Col>
                   <Col xs={24} sm={12}>
                     <Input
-                      label="Stock nutrient solution capacity (in liter)"
+                      label={getTranslation(
+                        "farm.createFarm.reservoir.stockNutrientSolutionCapacity"
+                      )}
                       name={`stockNutrientSolutionCapacity_${index}`}
                       rules={[
                         {
                           required: true,
-                          message:
-                            "Please input stock nutrient solution capacity",
+                          message: `${getTranslation(
+                            "farm.createFarm.reservoir.stockNutrientSolutionCapacityMessage"
+                          )}`,
                         },
                         {
                           pattern: REGEX.number,
-                          message:
-                            "Please provide valid stock nutrient solution (e.g., 2, 2.5)",
+                          message: `${getTranslation(
+                            "farm.createFarm.reservoir.stockNutrientSolutionCapacityRegexMessage"
+                          )}`,
                         },
                       ]}
-                      placeholder="Enter stock nutrient solution capacity (in liter)"
+                      placeholder={getTranslation(
+                        "farm.createFarm.reservoir.stockNutrientSolutionCapacityPlaceholder"
+                      )}
                     />
                   </Col>
                 </Row>

@@ -6,6 +6,7 @@ import { stepper, stepperNames } from "./const";
 import routePaths from "@/config/routePaths";
 import { useDispatch } from "react-redux";
 import FarmActions from "@/redux/farm/action";
+import { getTranslation } from "@/translation/i18n";
 
 const StepperNavigation = ({
   current,
@@ -21,8 +22,13 @@ const StepperNavigation = ({
   const [farmValues, setFarmValues] = useState(null);
 
   const nextStep = () => {
-    setFarmValues(form.getFieldsValue());
-    setCurrent(current + 1);
+    form
+      .validateFields()
+      .then(() => {
+        setFarmValues(form.getFieldsValue());
+        setCurrent(current + 1);
+      })
+      .catch(() => {});
   };
   const previousStep = () => setCurrent(current - 1);
 
@@ -178,22 +184,31 @@ const StepperNavigation = ({
     >
       {current === stepper[stepperNames.FARM_CREATION] && (
         <div style={{ width: "150px", display: "flex", gap: "10px" }}>
-          <Button label="Cancel" onClick={{ goBack }} />
-          <Button label="Next" onClick={nextStep} />
+          <Button label={getTranslation("global.cancel")} onClick={goBack} />
+          <Button label={getTranslation("global.next")} onClick={nextStep} />
         </div>
       )}
 
       {current === stepper[stepperNames.RESERVOIRS] && (
         <div style={{ width: "150px", display: "flex", gap: "10px" }}>
-          <Button label="Back" onClick={previousStep} />
-          <Button className="btn-success" label="Create" onClick={farmCreate} />
+          <Button
+            label={getTranslation("global.back")}
+            onClick={previousStep}
+          />
+          <Button
+            className="btn-success"
+            label={getTranslation("global.create")}
+            onClick={farmCreate}
+          />
         </div>
       )}
 
       {current === stepper[stepperNames.POLYHOUSES] && (
-        <div style={{ width: "150px", display: "flex", gap: "10px" }}>
-          <Button label="Back" onClick={previousStep} />
-          <Button label="Add" onClick={addPolyHousesToFarm} />
+        <div style={{ width: "75px", display: "flex", gap: "10px" }}>
+          <Button
+            label={getTranslation("global.add")}
+            onClick={addPolyHousesToFarm}
+          />
         </div>
       )}
     </div>

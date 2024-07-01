@@ -6,6 +6,7 @@ import { FaTractor } from "react-icons/fa";
 import { applyErrorsToFields } from "../const";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import FarmActions from "@/redux/farm/action";
+import { getTranslation } from "@/translation/i18n";
 
 const selectError = makeSelectErrorModel();
 const { Step } = Steps;
@@ -49,20 +50,36 @@ const Stepper = ({ current, setCurrent }) => {
       style={{ height: "100%", width: "100%" }}
     >
       <Step
-        title={<span style={{ color: farmColor }}>Farm</span>}
-        description={<span style={{ color: farmColor }}>farm details</span>}
+        title={
+          <span style={{ color: farmColor }}>
+            {getTranslation("global.farm")}
+          </span>
+        }
+        description={
+          <span style={{ color: farmColor }}>
+            {getTranslation("farm.createFarm.farmDetails")}
+          </span>
+        }
         icon={<FaTractor style={{ color: farmColor }} />}
       />
       <Step
-        title={<span style={{ color: reservoirColor }}>Reservoirs</span>}
+        title={
+          <span style={{ color: reservoirColor }}>
+            {getTranslation("global.reservoirs")}
+          </span>
+        }
         description={
-          <span style={{ color: reservoirColor }}>Configure reservoirs</span>
+          <span style={{ color: reservoirColor }}>
+            {getTranslation("farm.createFarm.configureReservoirs")}
+          </span>
         }
         icon={<FaRegUser style={{ color: reservoirColor }} />}
       />
       <Step
-        title="Polyhouses"
-        description={<span>Configure polyhouse, zone, nursery</span>}
+        title={getTranslation("global.polyhouses")}
+        description={
+          <span>{getTranslation("farm.createFarm.configurePolyhouses")}</span>
+        }
         icon={<FaRegUser />}
       />
     </Steps>

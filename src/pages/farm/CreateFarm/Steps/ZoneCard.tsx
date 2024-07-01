@@ -2,6 +2,7 @@ import React from "react";
 import Card from "@/components/ui/card";
 import { MdDelete } from "react-icons/md";
 import Fields from "@/utilities/fields/field";
+import { getTranslation } from "@/translation/i18n";
 
 const ZoneCard = ({ zones, onEdit, onDelete, errors }) => {
   const hasErrors = (zone) =>
@@ -25,7 +26,9 @@ const ZoneCard = ({ zones, onEdit, onDelete, errors }) => {
               borderRadius: "10px",
               boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
             }}
-            className={`zone-card ${hasErrors(zone) ? "zone-card-error" : ""}`}
+            className={`cursor_pointer ${
+              hasErrors(zone) ? "zone-card-error" : ""
+            }`}
             extra={
               <div
                 style={{
@@ -45,10 +48,13 @@ const ZoneCard = ({ zones, onEdit, onDelete, errors }) => {
             <Fields
               info={[
                 {
-                  label: "Name",
+                  label: `${getTranslation("global.name")}`,
                   value: <span style={{ width: "100%" }}>{zone.name}</span>,
                 },
-                { label: "Area", value: `${zone.area}` },
+                {
+                  label: `${getTranslation("global.area")}`,
+                  value: `${zone.area}`,
+                },
               ]}
             />
           </Card>

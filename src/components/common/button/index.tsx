@@ -13,7 +13,7 @@ const Button = (props: ButtonProps) => {
     <AntdButton
       iconPosition="end"
       type={props.type ? props.type : "primary"}
-      disabled={props.loading}
+      // disabled={props.loading}
       {...props}
       style={{
         width: "100%",
