@@ -7,6 +7,7 @@
   "global.polyhouses": "Polyhouses",
   "global.createBy": "Create by",
   "global.createdDate": "Create date",
+  "global.updatedDate": "Update date",
   "global.updatedBy": "Updated by",
   "global.manual": "Manual",
   "global.automatic": "Automatic",
@@ -16,6 +17,9 @@
   "global.next": "Next",
   "global.create": "Create",
   "global.back": "Back",
+  "global.yes": "Yes",
+  "global.areYouSure": "Are you sure",
+  "global.delete":"delete",
 
 
   "farm.addFarm": "Add farm",

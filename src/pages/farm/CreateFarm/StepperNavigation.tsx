@@ -1,12 +1,28 @@
-import React, { useEffect, useState } from "react";
-import { Popconfirm } from "antd";
+import { useEffect, useState } from "react";
 import Button from "@/components/common/button";
 import { useNavigate } from "react-router-dom";
 import { stepper, stepperNames } from "./const";
 import routePaths from "@/config/routePaths";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import FarmActions from "@/redux/farm/action";
 import { getTranslation } from "@/translation/i18n";
+import { FormInstance } from "antd";
+import { Nursery, Zone } from "../types";
+import requestingSelector from "@/redux/requesting/requestingSelector";
+import { successToast } from "@/utilities/toast";
+import { makeSelectErrorModel } from "@/redux/error/errorSelector";
+import { removeByActionType } from "@/redux/error/errorAction";
+
+const selectError = makeSelectErrorModel();
+
+interface stepperNavigationProps {
+  current: number;
+  setCurrent: (current: number) => void;
+  form: FormInstance;
+  reservoirForm: FormInstance;
+  reservoirs: { key: number }[];
+  polyhouses: { key: number; zones: Zone[]; nurseries: Nursery[] }[];
+}
 
 const StepperNavigation = ({
   current,
@@ -15,11 +31,50 @@ const StepperNavigation = ({
   reservoirs,
   polyhouses,
   reservoirForm,
-}) => {
+}: stepperNavigationProps) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [farmValues, setFarmValues] = useState(null);
+  const [isFarmCreationDispatch, setIsFarmCreationDispatch] = useState(false)
+  const [isPolyhouseDispatch, setIsPolyhouseDispatch] = useState(false)
+
+  const farmCreationError = useSelector((state) =>
+    selectError(state, FarmActions.ADD_FARM_FINISHED)
+  );
+
+  const polyhouseError = useSelector((state) =>
+    selectError(state, FarmActions.ADD_POLYHOUSE_TO_FARM_FINISHED)
+  );
+
+  const farmLoading = useSelector((state) =>
+    requestingSelector(state, [FarmActions.ADD_FARM])
+  );
+
+  const polyhouseLoading = useSelector((state) =>
+    requestingSelector(state, [FarmActions.ADD_POLYHOUSE_TO_FARM])
+  );
+
+  useEffect(() => {
+    if (!farmLoading && isFarmCreationDispatch) {
+      if (!farmCreationError) {
+        successToast("Farm is successfully created")
+        dispatch(removeByActionType(FarmActions.ADD_FARM_FINISHED))
+        setCurrent(current + 1)
+      }
+    }
+  }, [farmLoading, farmCreationError, isFarmCreationDispatch]);
+
+
+  useEffect(() => {
+    if (!polyhouseLoading && isPolyhouseDispatch) {
+      if (!polyhouseError) {
+        successToast("Polyhouse added successfully")
+        dispatch(removeByActionType(FarmActions.ADD_POLYHOUSE_TO_FARM_FINISHED))
+        navigate(routePaths.farm);
+      }
+    }
+  }, [polyhouseLoading, polyhouseError, isPolyhouseDispatch]);
 
   const nextStep = () => {
     form
@@ -124,6 +179,7 @@ const StepperNavigation = ({
         getFarmData()
           .then((payload) => {
             dispatch(FarmActions.addFarm(payload));
+            setIsFarmCreationDispatch(true)
           })
           .catch((error) => {
             console.error(error.message);
@@ -170,6 +226,7 @@ const StepperNavigation = ({
       .then(() => {
         const payload = getPolyhousesData();
         dispatch(FarmActions.addPolyhousesToFarm(payload));
+        setIsPolyhouseDispatch(true)
       })
       .catch(() => {});
   };
@@ -184,8 +241,16 @@ const StepperNavigation = ({
     >
       {current === stepper[stepperNames.FARM_CREATION] && (
         <div style={{ width: "150px", display: "flex", gap: "10px" }}>
-          <Button label={getTranslation("global.cancel")} onClick={goBack} />
-          <Button label={getTranslation("global.next")} onClick={nextStep} />
+          <Button
+            label={getTranslation("global.cancel")}
+            onClick={goBack}
+            loading={false}
+          />
+          <Button
+            label={getTranslation("global.next")}
+            onClick={nextStep}
+            loading={false}
+          />
         </div>
       )}
 
@@ -194,11 +259,13 @@ const StepperNavigation = ({
           <Button
             label={getTranslation("global.back")}
             onClick={previousStep}
+            loading={false}
           />
           <Button
             className="btn-success"
             label={getTranslation("global.create")}
             onClick={farmCreate}
+            loading={farmLoading}
           />
         </div>
       )}
@@ -207,8 +274,7 @@ const StepperNavigation = ({
         <div style={{ width: "75px", display: "flex", gap: "10px" }}>
           <Button
             label={getTranslation("global.add")}
-            onClick={addPolyHousesToFarm}
-          />
+            onClick={addPolyHousesToFarm} loading={polyhouseLoading}          />
         </div>
       )}
     </div>

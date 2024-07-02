@@ -1,9 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { Form as AntdForm } from "antd";
+import { useState } from "react";
 import "./style.scss";
-import { GrRefresh } from "react-icons/gr";
-import Button from "@/components/common/button";
 import Stepper from "./Stepper";
 import { stepper, stepperNames } from "./const";
 import AddFarm from "./Steps/AddFarm";
@@ -11,15 +7,8 @@ import AddReservoirs from "./Steps/AddReservoirs";
 import AddPolyhouses from "./Steps/AddPolyhouses";
 import StepperNavigation from "./StepperNavigation";
 import Card from "@/components/ui/card";
-import Form, { useForm } from "@/components/common/form";
-import { makeSelectErrorModel } from "@/redux/error/errorSelector";
-import { makeRequestingSelector } from "@/redux/requesting/requestingSelector";
-import FarmActions from "@/redux/farm/action";
-import { applyErrorsToFields } from "./const";
-
-const selectLoading = makeRequestingSelector();
-const selectError = makeSelectErrorModel();
-
+import { useForm } from "@/components/common/form";
+ 
 const CreateFarm = () => {
   const [form] = useForm();
   const [reservoirForm] = useForm();

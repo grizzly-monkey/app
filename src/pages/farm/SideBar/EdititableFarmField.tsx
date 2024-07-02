@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Form as AntdForm } from "antd";
 import PropTypes from "prop-types";
 import Form from "@/components/common/form";
 import CustomEdit from "@/components/common/CustomEditable/CustomEdit";
 import FarmActions from "@/redux/farm/action";
-import FarmSelectors from "@/redux/farm/FarmSelectors";
 import requestingSelector from "@/redux/requesting/requestingSelector";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import { applyErrorsToFields } from "../CreateFarm/const";
-import FullAlertError from "@/components/common/error/FullAlertError";
 
 interface EditableFarmFieldProps {
   fieldName: string;
@@ -107,10 +105,11 @@ const EditableFarmField = ({
         isActive={isActive}
         loading={loading}
         value={value}
+        placeholder={placeholder}
         setSubmitDisable={setIsSubmitDisable}
         onCancel={() => setIsActive(false)}
         setActive={() => setIsActive(!isActive)}
-        userDefineField={{ ...udf }}
+        userDefineField={{ ...udf, fieldId: farmId }}
         isSubmitDisable={isSubmitDisable}
         customValidator={customValidator}
       >

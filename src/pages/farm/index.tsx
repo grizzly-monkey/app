@@ -1,6 +1,6 @@
 import FarmCard from "./farmCard";
 import "./style.scss";
-import { Flex, Tooltip, Button as AntdButton } from "antd";
+import { Flex, Tooltip } from "antd";
 import { ReloadOutlined } from "@ant-design/icons";
 import Card from "@/components/ui/card";
 import Button from "@/components/common/button";
@@ -41,6 +41,7 @@ const Farm = () => {
                 onClick={onRefresh}
                 loading={loading}
                 icon={<ReloadOutlined style={{ color: "green" }} />}
+                label={""}
               />
             </Tooltip>
             <Button
@@ -49,6 +50,7 @@ const Farm = () => {
                 navigate(routePaths.farmCreate);
               }}
               style={{ padding: "none" }}
+              loading={false}
             />
           </Flex>
         }

@@ -1,3 +1,5 @@
+import { Farm, Polyhouse } from "@/pages/farm/types";
+import { normalizeData } from "@/types/normalize";
 import { createAction } from "@/utilities/actionUtility";
 
 const FarmActions = {
@@ -11,33 +13,38 @@ const FarmActions = {
   UPDATE_FARM:'farms/UPDATE_FARM',
   UPDATE_FARM_FINISHED:'farms/UPDATE_FARM_FINISHED',
   UPDATE_FARM_LOCALLY:'farms/UPDATE_FARM_LOCALLY',
+  DELETE_FARM:'farms/DELETE_FARM',
 
   fetchFarms(isRefresh = false) {
     return createAction(this.REQUEST_FARMS, isRefresh);
   },
 
-  addFarm(payload) {
+  addFarm(payload : Farm) {
     return createAction(this.ADD_FARM, payload)
   },
 
-  addPolyhousesToFarm(payload) {
+  addPolyhousesToFarm(payload : Polyhouse) {
     return createAction(this.ADD_POLYHOUSE_TO_FARM, payload)
   },
 
-  setSelectedFarm(farm) {
+  setSelectedFarm(farm: Farm | null) {
     return createAction(this.SET_SELECTED_FARM, farm)
   },
 
-  updateFarm (fieldName,updatedFarmValue) {
+  updateFarm (fieldName:string,updatedFarmValue:Farm) {
     return createAction(this.UPDATE_FARM, updatedFarmValue, false,
       {
         scope: fieldName,
       },)
   },
 
-  updateFarmLocally (selectedFarm, farms) {
+  updateFarmLocally (selectedFarm:Farm | null, farms:normalizeData) {
     return createAction(this.UPDATE_FARM_LOCALLY, {selectedFarm, farms})
-  }
+  },
+
+  deleteFarm() {
+    return createAction(this.DELETE_FARM)
+  },
 
 };
 export default FarmActions;

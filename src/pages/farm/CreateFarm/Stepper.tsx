@@ -1,17 +1,22 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Steps } from "antd";
 import { FaRegUser } from "react-icons/fa";
 import { FaTractor } from "react-icons/fa";
-import { applyErrorsToFields } from "../const";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import FarmActions from "@/redux/farm/action";
 import { getTranslation } from "@/translation/i18n";
+import { errorDetail } from "@/types/error";
 
 const selectError = makeSelectErrorModel();
 const { Step } = Steps;
 
-const Stepper = ({ current, setCurrent }) => {
+interface stepperProps {
+  current: number;
+  setCurrent: (current: number) => void;
+}
+
+const Stepper = ({ current, setCurrent }: stepperProps) => {
   const error = useSelector((state) =>
     selectError(state, FarmActions.ADD_FARM_FINISHED)
   );
@@ -19,16 +24,15 @@ const Stepper = ({ current, setCurrent }) => {
   const [farmColor, setFarmColor] = useState("inherit");
   const [reservoirColor, setReservoirColor] = useState("inherit");
 
-  const changeStep = (index) => {
+  const changeStep = (index: number) => {
     setCurrent(index);
   };
 
   useEffect(() => {
+    let newFarmColor = "inherit";
+    let newReservoirColor = "inherit";
     if (error) {
-      let newFarmColor = "inherit";
-      let newReservoirColor = "inherit";
-
-      error.errors.forEach((err) => {
+      error.errors.forEach((err: errorDetail) => {
         if (err.location.includes("reservoirs")) {
           newReservoirColor = "red";
         } else {
@@ -38,10 +42,13 @@ const Stepper = ({ current, setCurrent }) => {
 
       setFarmColor(newFarmColor);
       setReservoirColor(newReservoirColor);
+    }else {
+      setFarmColor(newFarmColor);
+      setReservoirColor(newReservoirColor);
     }
   }, [error]);
 
-  const stepsComponent = (orientation) => (
+  const stepsComponent = (orientation: 'horizontal' | 'vertical') => (
     <Steps
       current={current}
       onChange={changeStep}
@@ -61,6 +68,7 @@ const Stepper = ({ current, setCurrent }) => {
           </span>
         }
         icon={<FaTractor style={{ color: farmColor }} />}
+        disabled={current === 2}
       />
       <Step
         title={
@@ -74,6 +82,7 @@ const Stepper = ({ current, setCurrent }) => {
           </span>
         }
         icon={<FaRegUser style={{ color: reservoirColor }} />}
+        disabled={current === 2}
       />
       <Step
         title={getTranslation("global.polyhouses")}
@@ -81,6 +90,7 @@ const Stepper = ({ current, setCurrent }) => {
           <span>{getTranslation("farm.createFarm.configurePolyhouses")}</span>
         }
         icon={<FaRegUser />}
+        disabled={current === 0 || current === 1}
       />
     </Steps>
   );
