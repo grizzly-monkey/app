@@ -1,9 +1,10 @@
-import { all, call, takeEvery, select } from "redux-saga/effects";
+import { all, call, takeEvery, select, cancel, put } from "redux-saga/effects";
 import { runEffect } from "@/utilities/actionUtility";
 import { SagaAction } from "@/types/redux";
 import FarmActions from "./action";
 import FarmsEffects from "./effects";
 import FarmSelectors from "./FarmSelectors";
+import { resultHasError } from "@/utilities/onError";
 
 function* REQUEST_FARMS(action: SagaAction) {
   const farms = yield select(FarmSelectors.SelectDenormalizeFarm)
@@ -14,18 +15,32 @@ function* REQUEST_FARMS(action: SagaAction) {
 function* ADD_FARM(action: SagaAction) {
   const {payload} = action
   const result = yield call(runEffect, action, FarmsEffects.addFarm, payload)
+  if (resultHasError(result)) yield cancel()
 }
 
 function* ADD_POLYHOUSE_TO_FARM(action: SagaAction) {
   const {payload} = action
   const {farmId} = yield select(FarmSelectors.SelectSelectedFarm)
   const result = yield call(runEffect, action, FarmsEffects.addPolyhouseToFarm, farmId,payload)
+  if (resultHasError(result)) yield cancel()
 }
 
 function* UPDATE_FARM(action: SagaAction) {
   const {payload} = action
-  const {farmId} = yield select(FarmSelectors.SelectSelectedFarm)
+  const {farmId}= yield select(FarmSelectors.SelectSelectedFarm)
   const result = yield call(runEffect, action, FarmsEffects.updateFarm, farmId ,payload)
+  if (resultHasError(result)) yield cancel()
+
+  const farms = yield select(FarmSelectors.SelectFarmList)
+  const updatedFarms = {
+    entities: {
+      ...farms.entities,
+      [farmId] : result
+    },
+    ...farms.result
+  }
+
+  yield put(FarmActions.updateFarmLocally(result, updatedFarms))
 }
 
 

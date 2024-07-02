@@ -68,4 +68,11 @@ export default BaseReducer(initialState, {
       selectedFarm: action.payload
     };
   },
+  [FarmActions.UPDATE_FARM_LOCALLY](state, action) {
+    return {
+      ...state,
+      selectedFarm: action.payload.selectedFarm,
+      farms: action.payload.farms
+    };
+  },
 });

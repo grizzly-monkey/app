@@ -1,5 +1,5 @@
 import api from "@/utilities/api";
-import { getToModel, postToModel } from "@/utilities/effectUtility";
+import { getToModel, postToModel, putToModel } from "@/utilities/effectUtility";
 import FarmModel from "./models/FarmModel";
 import PolyhouseModel from "./models/PoluhouseModel";
 
@@ -14,7 +14,7 @@ export default class FarmsEffects {
   }
 
   static updateFarm(farmId, payload) {
-    return postToModel(FarmModel, api.FARM.replace(':farmId', farmId), payload)
+    return putToModel(FarmModel, api.FARM.replace(':farmId', farmId), payload)
   }
 
   static addPolyhouseToFarm(farmId,payload) {

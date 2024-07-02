@@ -10,6 +10,7 @@ const FarmActions = {
   SET_SELECTED_FARM:'farms/SET_SELECTED_FARM',
   UPDATE_FARM:'farms/UPDATE_FARM',
   UPDATE_FARM_FINISHED:'farms/UPDATE_FARM_FINISHED',
+  UPDATE_FARM_LOCALLY:'farms/UPDATE_FARM_LOCALLY',
 
   fetchFarms(isRefresh = false) {
     return createAction(this.REQUEST_FARMS, isRefresh);
@@ -27,6 +28,16 @@ const FarmActions = {
     return createAction(this.SET_SELECTED_FARM, farm)
   },
 
+  updateFarm (fieldName,updatedFarmValue) {
+    return createAction(this.UPDATE_FARM, updatedFarmValue, false,
+      {
+        scope: fieldName,
+      },)
+  },
+
+  updateFarmLocally (selectedFarm, farms) {
+    return createAction(this.UPDATE_FARM_LOCALLY, {selectedFarm, farms})
+  }
 
 };
 export default FarmActions;

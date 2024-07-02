@@ -19,6 +19,26 @@ export const REGEX = {
   number: /^(?:[1-9]\d{0,4}|50000)$/,
 };
 
+export const isNumber = (value) => REGEX.number.test(value);
+export const isRatioValidationRegex = (value) =>
+  REGEX.ratioValidationRegex.test(value);
+
+export const numberValidator = (_, value) => {
+  if (value && !isNumber(value))
+    return Promise.reject(new Error("please enter a number"));
+  return Promise.resolve();
+};
+
+export const ratioValidationRegex = (_, value) => {
+  if (value && !isRatioValidationRegex(value))
+    return Promise.reject(
+      new Error(
+        "Please provide farm dilution ratio in the format: numerator:denominator (e.g., 2:3)"
+      )
+    );
+  return Promise.resolve();
+};
+
 export const applyErrorsToFields = (form, errors, errRefrence = "") => {
   errors.forEach((err) => {
     if (!err.location) return;
