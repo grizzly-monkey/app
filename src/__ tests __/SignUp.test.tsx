@@ -181,6 +181,8 @@ describe("SignUp Page", () => {
           firstName: "John",
           lastName: "Doe",
           password: "Password1!",
+          address: "pune,maharashtra",
+          email: "dummy@gmail.com",
         })
       );
     });

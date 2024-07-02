@@ -19,7 +19,6 @@ import { getTranslation } from "@/translation/i18n";
 import { forgotPasswordType, sendOTPType } from "@/types/auth";
 import { createAction } from "@/utilities/actionUtility";
 import { Images } from "@/utilities/imagesPath";
-import { successToast } from "@/utilities/toast";
 import { useEffect, useState } from "react";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { Link } from "react-router-dom";

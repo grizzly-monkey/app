@@ -8,11 +8,11 @@ import { makeRequestingSelector } from "@/redux/requesting/requestingSelector";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import AlertError from "@/components/common/error/AlertError";
 import { Skeleton } from "antd";
-import OrganizationModel from "@/redux/organization/models/organizationModel";
 import { Images } from "@/utilities/imagesPath";
 import { useNavigate } from "react-router-dom";
 import routePaths from "@/config/routePaths";
 import { getTranslation } from "@/translation/i18n";
+import { organization } from "./type";
 
 const OrganizationCard = ({
   isActive,
@@ -22,8 +22,8 @@ const OrganizationCard = ({
 }: {
   isActive?: boolean;
   loading?: boolean;
-  data: OrganizationModel;
-  onClick: (organization: OrganizationModel) => void;
+  data: organization;
+  onClick: (organisationId: string) => void;
 }) => {
   const isOrganizationSelected = !loading && isActive;
 
@@ -32,7 +32,7 @@ const OrganizationCard = ({
       className={`organization_card ${
         isOrganizationSelected ? "selected_organization_card" : ""
       }`}
-      onClick={() => onClick(data)}
+      onClick={() => onClick(data.organisationId)}
     >
       {loading ? (
         <>
@@ -71,8 +71,8 @@ const Organization = () => {
   const organizations = useAppSelector(
     OrganizationSelectors.SelectOrganization
   );
-  const selectedOrganization = useAppSelector(
-    OrganizationSelectors.SelectSelectedOrganization
+  const selectedOrganizationId = useAppSelector(
+    OrganizationSelectors.SelectSelectedOrganizationId
   );
 
   const error = useAppSelector((state) =>
@@ -84,8 +84,8 @@ const Organization = () => {
 
   const organizationList = loading ? new Array(5).fill("") : organizations;
 
-  const handleSelectOrganization = (organization: OrganizationModel) => {
-    dispatch(OrganizationActions.selectOrganization(organization));
+  const handleSelectOrganization = (organisationId: string) => {
+    dispatch(OrganizationActions.selectOrganization(organisationId));
     navigate(routePaths.userManagement);
   };
 
@@ -104,14 +104,11 @@ const Organization = () => {
       <AlertError error={error} />
 
       <div className="organization_card_container">
-        {organizationList.map((organization: OrganizationModel) => (
+        {organizationList.map((organization: organization) => (
           <OrganizationCard
             key={organization.organisationId}
             data={organization}
-            isActive={
-              selectedOrganization?.organisationId ===
-              organization.organisationId
-            }
+            isActive={selectedOrganizationId === organization.organisationId}
             loading={loading}
             onClick={handleSelectOrganization}
           />

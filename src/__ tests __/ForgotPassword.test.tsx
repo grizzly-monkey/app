@@ -4,12 +4,7 @@ import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { setupDefaultStore } from "./utils/setupTests";
 import { renderWithProvider } from "./utils/testUtils";
 import UserActions from "@/redux/user/actions";
-import { successToast } from "@/utilities/toast";
 import { getTranslation } from "@/translation/i18n";
-
-jest.mock("@/utilities/toast", () => ({
-  successToast: jest.fn(),
-}));
 
 describe("ForgotPassword Page", () => {
   let store: any;
@@ -108,18 +103,6 @@ describe("ForgotPassword Page", () => {
     renderWithProvider(<ForgotPassword />, { store });
 
     expect(screen.getByText("OTP sending failed")).toBeInTheDocument();
-  });
-
-  test("shows success toast when OTP is sent successfully", () => {
-    store = setupDefaultStore({
-      users: { passwordResetOTPSent: true },
-    });
-
-    renderWithProvider(<ForgotPassword />, { store });
-
-    expect(successToast).toHaveBeenCalledWith(
-      getTranslation("forgotPassword.otpSentSuccessfully")
-    );
   });
 
   test("displays OTP input and password fields when OTP is sent successfully", () => {

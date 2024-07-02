@@ -30,7 +30,7 @@ describe("Organization Component", () => {
     store = setupDefaultStore({
       organizations: {
         organisations: mockOrganizations,
-        selectedOrganisation: null,
+        selectedOrganisationId: null,
       },
     });
 
@@ -44,7 +44,7 @@ describe("Organization Component", () => {
     store = setupDefaultStore({
       organizations: {
         organisations: mockOrganizations,
-        selectedOrganisation: null,
+        selectedOrganisationId: null,
       },
     });
 
@@ -54,7 +54,9 @@ describe("Organization Component", () => {
     fireEvent.click(orgCard);
 
     expect(store.dispatch).toHaveBeenCalledWith(
-      OrganizationActions.selectOrganization(mockOrganizations[1])
+      OrganizationActions.selectOrganization(
+        mockOrganizations[1].organisationId
+      )
     );
   });
 
@@ -76,7 +78,7 @@ describe("Organization Component", () => {
     store = setupDefaultStore({
       organizations: {
         organisations: mockOrganizations,
-        selectedOrganisation: null,
+        selectedOrganisationId: null,
       },
     });
 

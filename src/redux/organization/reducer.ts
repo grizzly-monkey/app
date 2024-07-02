@@ -3,7 +3,7 @@ import OrganizationActions from "./actions";
 
 export const initialState = {
   organisations: [],
-  selectedOrganisation: {},
+  selectedOrganisationId: null,
 };
 
 export default BaseReducer(
@@ -13,7 +13,7 @@ export default BaseReducer(
       return { ...state, organisations: action.payload };
     },
     [OrganizationActions.SELECT_ORGANIZATION](state, action) {
-      return { ...state, selectedOrganisation: action.payload };
+      return { ...state, selectedOrganisationId: action.payload };
     },
   },
   false
