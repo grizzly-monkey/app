@@ -46,6 +46,8 @@
   "login.pleaseSignToContinue": "Please Sign in to continue",
   "login.rememberMe": "Remember me",
   "login.dontHaveAnAccount": "Don't have an account?",
+  "login.adminApprovalPending": "You are not authorized to login. Please wait for admin approval.",
+  "login.adminApprovalRejected": "Your account approval is rejected by admin. Please contact to admin at app-approvals@growloc.com.",
   "signUp.createYourAccount": "Create Your Account",
   "signUp.createYourAccountTagLine": "Fill in the details blow to register your absolutely free account.",
   "signUp.organizationName": "Organization name",

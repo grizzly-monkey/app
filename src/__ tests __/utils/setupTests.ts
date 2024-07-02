@@ -13,7 +13,7 @@ export const setupDefaultStore = (initialState: Record<string, any> = {}) => {
     error: {},
     organizations: {
       organisations: [],
-      selectedOrganisation: null,
+      selectedOrganisationId: null,
     },
     farms: {
       farms: {},

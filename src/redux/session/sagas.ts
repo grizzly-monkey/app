@@ -20,6 +20,8 @@ import CognitoSessionModel from "./models/login/CognitoSessionModel";
 import URLParamsConstant from "@/config/URLParamsConstant";
 import { changeLanguage } from "i18next";
 import AppActions from "../actions";
+import OrganizationActions from "../organization/actions";
+import { getTranslation } from "@/translation/i18n";
 
 export function getCognitoUserObject(phoneNumber: string) {
   return new CognitoUser({
@@ -112,13 +114,13 @@ function* REQUEST_LOGIN(action: SagaAction): Generator {
     } else if (isVerifiedByAdmin === "1") {
       yield put(
         SessionActions.setAccountApprovalStatus(
-          "You are not authorized to login. Please wait for admin approval."
+          getTranslation("login.adminApprovalPending")
         )
       );
     } else if (isVerifiedByAdmin === "2") {
       yield put(
         SessionActions.setAccountApprovalStatus(
-          "Your account approval is rejected by admin. Please contact to admin at app-approvals@growloc.com."
+          getTranslation("login.adminApprovalRejected")
         )
       );
     }
@@ -174,6 +176,7 @@ function* INIT() {
   if (getIsAuthenticated()) {
     yield call(REFRESH_TOKEN_SILENTLY);
     yield call(GET_LANGUAGE_FROM_STORAGE);
+    yield put(OrganizationActions.getOrganizationFromStorage());
   }
 }
 
