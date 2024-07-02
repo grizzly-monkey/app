@@ -6,6 +6,8 @@ import onError from "./onError";
 import ErrorModel from "@/models/error/errorModel";
 import SessionSelectors from "@/redux/session/selectors";
 import { store } from "@/redux/store";
+import { LOCAL_STORAGE_KEYS } from "@/config/consts";
+import { getPreferenceValueFromStorage } from "./localStorage";
 // import SessionSelectors from "../redux/session/sessionSelector";
 
 interface ErrorContext {
@@ -104,8 +106,9 @@ async function doRequest(
         // auth
         ...(isAuthenticated && { Authorization: `Bearer ${getAuthToken()}` }),
         "Content-Type": "application/json",
-        // ACTIVE_ORGANISATION_ID: "or50cc0bda",
-        ACTIVE_ORGANISATION_ID: "or63bcc3a4",
+        ACTIVE_ORGANISATION_ID: getPreferenceValueFromStorage(
+          LOCAL_STORAGE_KEYS.organization
+        ),
         ...config?.headers,
       },
     };

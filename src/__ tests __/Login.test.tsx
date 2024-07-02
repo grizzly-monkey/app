@@ -4,17 +4,11 @@ import "@testing-library/jest-dom";
 import { setupDefaultStore } from "./utils/setupTests";
 import { renderWithProvider } from "./utils/testUtils";
 import SessionActions from "@/redux/session/actions";
+import { errorToast } from "@/utilities/toast";
+import { getTranslation } from "@/translation/i18n";
 
-jest.mock("../utilities/actionUtility", () => ({
-  getKeyForAction: jest.fn(
-    (actionType, scope) => `${scope ? `[scope:${scope}]` : ""}${actionType}`
-  ),
-  createAction: jest.fn((type, payload, error, meta) => ({
-    type,
-    payload,
-    error,
-    meta,
-  })),
+jest.mock("@/utilities/toast", () => ({
+  errorToast: jest.fn(),
 }));
 
 describe("Login Page", () => {
@@ -27,24 +21,36 @@ describe("Login Page", () => {
   test("should render the login form", () => {
     renderWithProvider(<Login />, { store });
 
-    expect(screen.getByText("Welcome Back!")).toBeInTheDocument();
-    expect(screen.getByText("Please Sign in to continue")).toBeInTheDocument();
-    expect(screen.getByText("Phone number")).toBeInTheDocument();
-    expect(screen.getByText("Password")).toBeInTheDocument();
-    expect(screen.getByText("Remember me")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Sign in" })).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("login.welcomeBack"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("login.pleaseSignToContinue"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("global.phoneNumber"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("global.password"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("login.rememberMe"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: getTranslation("global.signIn") })
+    ).toBeInTheDocument();
   });
 
   test("should display error messages when inputs are empty and form is submitted", async () => {
     renderWithProvider(<Login />, { store });
 
-    fireEvent.click(screen.getByText("Sign in"));
+    fireEvent.click(screen.getByText(getTranslation("global.signIn")));
 
     expect(
-      await screen.findByText("Please input your phone number!")
+      await screen.findByText(getTranslation("global.phoneNumberErrMsg"))
     ).toBeInTheDocument();
     expect(
-      await screen.findByText("Please input your password!")
+      await screen.findByText(getTranslation("global.passwordErrMsg"))
     ).toBeInTheDocument();
   });
 
@@ -58,7 +64,7 @@ describe("Login Page", () => {
       target: { value: "password" },
     });
 
-    fireEvent.click(screen.getByText("Sign in"));
+    fireEvent.click(screen.getByText(getTranslation("global.signIn")));
 
     await waitFor(() => {
       expect(store.dispatch).toHaveBeenCalledWith(
@@ -81,7 +87,7 @@ describe("Login Page", () => {
     expect(screen.getByRole("button", { name: /sign in/i })).toBeDisabled();
   });
 
-  test("should display error on login error", async () => {
+  test("should display error toast on login error", async () => {
     store = setupDefaultStore({
       error: {
         [SessionActions.REQUEST_LOGIN_FINISHED]: {
@@ -92,9 +98,7 @@ describe("Login Page", () => {
 
     renderWithProvider(<Login />, { store });
 
-    await waitFor(() => {
-      expect(screen.getByText(/Invalid credentials/i)).toBeInTheDocument();
-    });
+    expect(errorToast).toHaveBeenCalledWith("Invalid credentials");
   });
 
   test("should display account approval status error", () => {
@@ -108,25 +112,4 @@ describe("Login Page", () => {
 
     expect(screen.getByText("Account not approved")).toBeInTheDocument();
   });
-
-  // test("should not submit the form with invalid phone number format", async () => {
-  //   renderWithProvider(<Login />, { store });
-
-  //   fireEvent.change(screen.getByTestId("phone-number-input"), {
-  //     target: { value: "1234567890" },
-  //   });
-  //   fireEvent.change(screen.getByTestId("password-input"), {
-  //     target: { value: "password" },
-  //   });
-
-  //   fireEvent.click(screen.getByText("Sign in"));
-
-  //   // Assuming you have some validation for phone number format
-  //   expect(
-  //     await screen.findByText("Invalid phone number format")
-  //   ).toBeInTheDocument();
-  //   expect(store.dispatch).not.toHaveBeenCalledWith(
-  //     SessionActions.login({ phoneNumber: "abc123", password: "password" })
-  //   );
-  // });
 });

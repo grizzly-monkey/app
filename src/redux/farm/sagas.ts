@@ -1,10 +1,16 @@
+import { resultHasError } from "@/utilities/onError";
+import URLParamsConstant from "@/config/URLParamsConstant";
+import {
+  getPreferenceValueFromStorage,
+  setPreferenceValueInStorage,
+} from "@/utilities/localStorage";
+import FarmSelectors from "./FarmSelectors";
+import { LOCAL_STORAGE_KEYS } from "@/config/consts";
 import { all, call, takeEvery, select, cancel, put } from "redux-saga/effects";
 import { runEffect } from "@/utilities/actionUtility";
 import { SagaAction } from "@/types/redux";
 import FarmActions from "./action";
 import FarmsEffects from "./effects";
-import FarmSelectors from "./FarmSelectors";
-import { resultHasError } from "@/utilities/onError";
 import { Farm } from "@/pages/farm/types";
 import { normalizeData } from "@/types/normalize";
 import ErrorModel from "@/models/error/errorModel";
@@ -13,6 +19,8 @@ function* REQUEST_FARMS(action: SagaAction) {
   const farms: Farm[] = yield select(FarmSelectors.SelectDenormalizeFarm);
   if (farms.length === 0 || action.payload)
     yield call(runEffect, action, FarmsEffects.getFarms);
+
+  yield put(FarmActions.getFarmFromStorage());
 }
 
 function* ADD_FARM(action: SagaAction) {
@@ -55,7 +63,7 @@ function* UPDATE_FARM(action: SagaAction) {
     result: farms.result,
   };
 
-  console.log("updated farm", updatedFarms, farms)
+
   yield put(FarmActions.updateFarmLocally(result as Farm, updatedFarms));
 }
 
@@ -74,6 +82,7 @@ function* DELETE_FARM(action: SagaAction) {
   const farms: normalizeData = yield select(FarmSelectors.SelectFarmList);
   
   const updatedResult = (farms.result as string[]).filter((id: string) => id !== farmId);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { [farmId]: _, ...newFarmsEntities } = farms.entities.farms;
 
   const updatedFarms = {
@@ -86,6 +95,45 @@ function* DELETE_FARM(action: SagaAction) {
   yield put(FarmActions.updateFarmLocally(null, updatedFarms));
 }
 
+
+function* GET_FARM_FROM_STORAGE(): Generator {
+  const searchParams = new URLSearchParams(window.location.search);
+  const farmId = searchParams.get(URLParamsConstant.FARM_ID);
+
+  if (farmId) {
+    yield put(FarmActions.selectFarm(farmId));
+    yield cancel();
+  }
+
+  const farm: any = yield getPreferenceValueFromStorage(
+    LOCAL_STORAGE_KEYS.farm
+  );
+  if (farm) yield put(FarmActions.selectFarm(farm));
+  else {
+    const farms: any = yield select(FarmSelectors.SelectDenormalizeFarm);
+
+    if (farms.length === 0) {
+      yield put(FarmActions.selectFarm(null));
+    } else {
+      yield put(FarmActions.selectFarm(farms[0].farmId));
+    }
+  }
+}
+
+function* GET_FARM_FROM_STORAGE_FINISHED(action: SagaAction) {
+  // const urlParameter = {
+  //   [URLParamsConstant.FARM_ID]: action.payload,
+  // }
+  // setURLParameters(urlParameter)
+
+  yield call(
+    setPreferenceValueInStorage,
+    LOCAL_STORAGE_KEYS.farm,
+    action.payload
+  );
+}
+
+
 export default function* rootSaga() {
   yield all([
     takeEvery(FarmActions.REQUEST_FARMS, REQUEST_FARMS),
@@ -93,5 +141,10 @@ export default function* rootSaga() {
     takeEvery(FarmActions.ADD_POLYHOUSE_TO_FARM, ADD_POLYHOUSE_TO_FARM),
     takeEvery(FarmActions.UPDATE_FARM, UPDATE_FARM),
     takeEvery(FarmActions.DELETE_FARM, DELETE_FARM),
+    takeEvery(FarmActions.GET_FARM_FROM_STORAGE, GET_FARM_FROM_STORAGE),
+    takeEvery(
+      FarmActions.GET_FARM_FROM_STORAGE_FINISHED,
+      GET_FARM_FROM_STORAGE_FINISHED
+    ),
   ]);
 }

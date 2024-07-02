@@ -20,5 +20,8 @@ export default {
     "\\.(css|scss)$": "identity-obj-proxy",
   },
   transformIgnorePatterns: ["<rootDir>/node_modules"],
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+  setupFilesAfterEnv: [
+    "<rootDir>/jest.setup.ts",
+    "<rootDir>/src/__ tests __/__ mocks __/actionMock.ts",
+  ],
 };

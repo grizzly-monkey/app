@@ -46,6 +46,7 @@ const initialState = {
   //   createdDate: '2024-06-26T11:46:18.381Z',
   //   updatedDate: '2024-06-26T11:46:18.381Z'
   // }
+  selectedFarmId: null,
 };
 
 export default BaseReducer(initialState, {
@@ -73,6 +74,12 @@ export default BaseReducer(initialState, {
       ...state,
       selectedFarm: action.payload.selectedFarm,
       farms: action.payload.farms
+    };
+  },
+  [FarmActions.GET_FARM_FROM_STORAGE_FINISHED](state, action) {
+    return {
+      ...state,
+      selectedFarmId: action.payload,
     };
   },
 });

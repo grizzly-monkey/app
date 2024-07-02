@@ -1,5 +1,5 @@
 export const exceptions = {
-  FieldValidationException: "FieldValidationException",
+  FieldValidationException: "BadRequestException",
 };
 
 export const passwordPolicy = {
@@ -11,3 +11,20 @@ export const passwordPolicy = {
 };
 
 export const TOKEN_EXPIRE_TIME = 3600;
+
+export const LOCAL_STORAGE_KEYS = {
+  farm: "farm",
+  organization: "organization",
+  language: "language",
+};
+
+export const LANGUAGE_KEYS = {
+  en: "en",
+};
+
+export const LANGUAGE_OPTIONS = [
+  {
+    label: "EN",
+    key: LANGUAGE_KEYS.en,
+  },
+];

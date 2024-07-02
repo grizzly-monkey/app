@@ -14,6 +14,8 @@ const FarmActions = {
   UPDATE_FARM_FINISHED:'farms/UPDATE_FARM_FINISHED',
   UPDATE_FARM_LOCALLY:'farms/UPDATE_FARM_LOCALLY',
   DELETE_FARM:'farms/DELETE_FARM',
+  GET_FARM_FROM_STORAGE: "farms/GET_FARM_FROM_STORAGE",
+  GET_FARM_FROM_STORAGE_FINISHED: "farms/GET_FARM_FROM_STORAGE_FINISHED",
 
   fetchFarms(isRefresh = false) {
     return createAction(this.REQUEST_FARMS, isRefresh);
@@ -46,5 +48,12 @@ const FarmActions = {
     return createAction(this.DELETE_FARM)
   },
 
+  selectFarm(farmId: string | null) {
+    return createAction(this.GET_FARM_FROM_STORAGE_FINISHED, farmId);
+  },
+
+  getFarmFromStorage() {
+    return createAction(this.GET_FARM_FROM_STORAGE);
+  },
 };
 export default FarmActions;

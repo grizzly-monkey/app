@@ -1,7 +1,6 @@
 import { BaseModel } from "sjs-base-model";
 
 class FarmModel extends BaseModel {
-
   farmId = null;
 
   id = null;
@@ -29,11 +28,10 @@ class FarmModel extends BaseModel {
   createdBy = null;
 
   updatedBy = null;
-  
+
   createdDate = null;
 
   updatedDate = null;
-
 
   constructor(data: Partial<FarmModel>) {
     super();
@@ -41,4 +39,4 @@ class FarmModel extends BaseModel {
   }
 }
 
-export default FarmModel
+export default FarmModel;

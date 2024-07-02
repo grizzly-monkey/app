@@ -1,4 +1,4 @@
-jest.mock("../utilities/actionUtility", () => ({
+jest.mock("../../utilities/actionUtility", () => ({
   getKeyForAction: jest.fn(
     (actionType, scope) => `${scope ? `[scope:${scope}]` : ""}${actionType}`
   ),

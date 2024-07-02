@@ -15,12 +15,11 @@ const PhoneInput = (props: PhoneProps) => {
       name={props.name}
       label={props.label}
       rules={props.rules}
-      style={{ marginBottom: "20px" }}
+      style={{ marginBottom: "25px" }}
     >
       <ReactPhoneInput
         country="in"
         inputClass="phone_input_container"
-        placeholder="Test"
         inputProps={{
           "data-testid": "phone-number-input",
         }}

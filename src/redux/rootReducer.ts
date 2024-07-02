@@ -4,7 +4,7 @@ import account from "./account/reducer";
 import error from "./error/errorReducer";
 import requesting from "./requesting/requestingReducer";
 import users from "./user/reducer";
-import farms from './farm/reducer'
+import farms from "./farm/reducer";
 import organizations from "./organization/reducer";
 
 const appReducer = combineReducers({

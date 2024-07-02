@@ -10,6 +10,6 @@ const OrganizationActions = {
     createAction(OrganizationActions.REQUEST_ORGANIZATION),
 
   selectOrganization: (organization: OrganizationModel) =>
-    createAction(OrganizationActions.SELECT_ORGANIZATION, { organization }),
+    createAction(OrganizationActions.SELECT_ORGANIZATION, organization),
 };
 export default OrganizationActions;

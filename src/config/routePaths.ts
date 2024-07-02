@@ -11,6 +11,7 @@ const routePaths = {
   workflow:'/workflow',
   farmCreate:'/farm/create',
   organization: "/organization",
+  profile: "/profile",
 };
 
 export default routePaths;

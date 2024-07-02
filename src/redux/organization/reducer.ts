@@ -13,7 +13,7 @@ export default BaseReducer(
       return { ...state, organisations: action.payload };
     },
     [OrganizationActions.SELECT_ORGANIZATION](state, action) {
-      return { ...state, selectedOrganisation: action.payload.organization };
+      return { ...state, selectedOrganisation: action.payload };
     },
   },
   false

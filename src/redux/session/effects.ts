@@ -1,10 +1,5 @@
 import ErrorModel from "@/models/error/errorModel";
-import {
-  AuthenticationDetails,
-  CognitoRefreshToken,
-  CognitoUser,
-  CognitoUserSession,
-} from "amazon-cognito-identity-js";
+import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
 import ErrorDetail from "../../models/error/errorDetail";
 import CognitoSessionModel from "./models/login/CognitoSessionModel";
 
@@ -49,9 +44,8 @@ export function getCallbacks(resolve: (value: any) => void): Callbacks {
         refreshToken: data?.refreshToken?.token,
         idToken: data?.idToken?.jwtToken,
         accessToken: data?.accessToken?.jwtToken,
-        userDetails: data?.idToken?.payload,
       });
-      resolve(cognitoSession);
+      resolve({ tokens: cognitoSession, userDetails: data?.idToken?.payload });
     },
     onFailure: (err) => {
       const error = getErrorInstanceFromCognitoError(err);
@@ -73,38 +67,6 @@ export default class SessionEffects {
       });
 
       user.authenticateUser(authDetails, getCallbacks(resolve));
-    });
-  }
-
-  static requestSession(user: CognitoUser): Promise<any> {
-    return new Promise((resolve) => {
-      user.getSession((error: Error, session: CognitoUserSession | null) => {
-        console.log("in requestSession", error, session);
-        if (error) {
-          const err = getErrorInstanceFromCognitoError(error);
-          resolve(err);
-        } else {
-          resolve(session);
-        }
-      });
-    });
-  }
-
-  static requestRefreshToken(
-    user: CognitoUser,
-    refreshToken: CognitoRefreshToken
-  ): Promise<any> {
-    return new Promise((resolve, reject) => {
-      user.refreshSession(
-        refreshToken,
-        (error: Error, session: CognitoUserSession | null) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(session);
-          }
-        }
-      );
     });
   }
 }

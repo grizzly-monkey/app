@@ -1,23 +1,24 @@
-import { useEffect } from "react";
-import "../style.scss";
 import Button from "@/components/common/button";
-import { Images } from "@/utilities/imagesPath";
-import Input from "@/components/common/input";
 import Checkbox from "@/components/common/checkbox";
-import routePaths from "@/config/routePaths";
-import { Link } from "react-router-dom";
-import PhoneInput from "@/components/common/input/phoneInput";
+import AlertError from "@/components/common/error/AlertError";
 import Form, { useForm } from "@/components/common/form";
-import SessionActions from "@/redux/session/actions";
-import { loginType } from "@/types/auth";
-import { useAppSelector } from "@/hooks/redux";
+import Input from "@/components/common/input";
+import PhoneInput from "@/components/common/input/phoneInput";
+import routePaths from "@/config/routePaths";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { removeByActionType } from "@/redux/error/errorAction";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import { makeRequestingSelector } from "@/redux/requesting/requestingSelector";
-import { IoEye, IoEyeOff } from "react-icons/io5";
-import AlertError from "@/components/common/error/AlertError";
-import { useAppDispatch } from "@/hooks/redux";
+import SessionActions from "@/redux/session/actions";
 import SessionSelectors from "@/redux/session/selectors";
+import { getTranslation } from "@/translation/i18n";
+import { loginType } from "@/types/auth";
+import { Images } from "@/utilities/imagesPath";
+import { errorToast } from "@/utilities/toast";
+import { useEffect } from "react";
+import { IoEye, IoEyeOff } from "react-icons/io5";
+import { Link } from "react-router-dom";
+import "../style.scss";
 
 const selectLoading = makeRequestingSelector();
 const selectError = makeSelectErrorModel();
@@ -55,9 +56,15 @@ const Login = () => {
   }
 
   useEffect(() => {
+    if (error) {
+      errorToast(error.errors.map((item: any) => item.message)[0]);
+      clearError();
+    }
+  }, [error]);
+
+  useEffect(() => {
     return () => {
       dispatch(SessionActions.setAccountApprovalStatus(""));
-      clearError();
     };
   }, []);
 
@@ -70,8 +77,10 @@ const Login = () => {
               <img src={Images.LOGO} />
             </div>
             <div className="form_header_content">
-              <p className="heading1">Welcome Back!</p>
-              <p className="description">Please Sign in to continue</p>
+              <p className="heading1">{getTranslation("login.welcomeBack")}</p>
+              <p className="description">
+                {getTranslation("login.pleaseSignToContinue")}
+              </p>
             </div>
           </div>
 
@@ -79,39 +88,37 @@ const Login = () => {
             <AlertError message={accountApprovalStatus} />
           )}
 
-          <AlertError error={error} />
-
           <Form form={form} onFinish={onFinish} layout="vertical">
             <PhoneInput
-              label="Phone number"
+              label={getTranslation("global.phoneNumber")}
               name="phoneNumber"
               rules={[
                 {
                   required: true,
-                  message: "Please input your phone number!",
+                  message: getTranslation("global.phoneNumberErrMsg"),
                 },
               ]}
             />
             <Input
-              label="Password"
+              label={getTranslation("global.password")}
               name="password"
               rules={[
                 {
                   required: true,
-                  message: "Please input your password!",
+                  message: getTranslation("global.passwordErrMsg"),
                 },
               ]}
               iconRender={renderPasswordIcon()}
               isPasswordInput
-              placeholder="Enter your password"
+              placeholder={getTranslation("global.passwordPlaceholder")}
               testId="password-input"
             />
 
             <div className="forget_password_container">
-              <Checkbox label="Remember me" />
+              <Checkbox label={getTranslation("login.rememberMe")} />
               <Link to={routePaths.forgotPassword}>
                 <p className="heading4 forget_password_text">
-                  Forgot password?
+                  {getTranslation("global.forgotPassword")}
                 </p>
               </Link>
             </div>
@@ -119,15 +126,17 @@ const Login = () => {
             <Button
               loading={loading}
               htmlType="submit"
-              label="Sign in"
+              label={getTranslation("global.signIn")}
               type="primary"
             />
           </Form>
 
           <Link to={routePaths.signUp}>
             <p className="not_a_memeber_text">
-              Don't have an account?{" "}
-              <span className="register_text">Sign Up</span>
+              {getTranslation("login.dontHaveAnAccount")}{" "}
+              <span className="register_text">
+                {getTranslation("global.signUp")}
+              </span>
             </p>
           </Link>
         </div>

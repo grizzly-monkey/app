@@ -1,14 +1,12 @@
+import { Drawer, Layout } from "antd";
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import { Layout, Button, Drawer } from "antd";
-import Sidenav from "./Sidebar";
 import Header from "./Header";
-import { Images } from "@/utilities/imagesPath";
+import Sidenav from "./Sidebar";
 
 const { Content, Sider } = Layout;
 
 function Main() {
-  const [collapsed, setCollapsed] = useState(false);
   const [visible, setVisible] = useState(false);
 
   const toggleSidebar = () => {
@@ -45,9 +43,7 @@ function Main() {
         <Sidenav />
       </Sider>
       <Layout>
-        <div>
-          <Header toggleSidebar={toggleSidebar} />
-        </div>
+        <Header toggleSidebar={toggleSidebar} />
         <Content className="content-ant">
           <Outlet />
         </Content>
