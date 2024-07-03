@@ -1,4 +1,5 @@
 import InventoryTable from "./inventoryTable";
+import InventorySidebar from "./sideBar";
 import "./style.scss";
 
 const Inventory = () => {
@@ -8,10 +9,11 @@ const Inventory = () => {
         height: "100%",
         display: "flex",
         width: "100%",
-        padding: "20px",
+        
       }}
     >
       <InventoryTable />
+      <InventorySidebar/>
     </div>
   );
 };

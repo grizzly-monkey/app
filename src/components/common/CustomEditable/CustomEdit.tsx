@@ -180,14 +180,14 @@ const CustomEdit = ({
         </div>
       ) : (
         <>
-          <div
-            onBlur={()=>{onCancel()}}
+          <form
+            onBlur={()=>{_onSubmit}}
             className={` ${isFullWidth ? styles.fillWidth : ''}`}
             style={{ display: 'flex' }}
           >
             <div className="flex-grow-1 " style={{ minWidth: 0, cursor: 'text' }}>
               <UserDefineFields
-                fieldDecorator={[`${userDefineField.fieldId}`, `${name}`]}
+                fieldDecorator={userDefineField.fieldId?[`${userDefineField.fieldId}`, `${name}`]:[`${name}`]}
                 field={{
                   type: presetType,
                   defaultValue: defaultValues,
@@ -233,7 +233,7 @@ const CustomEdit = ({
                 </div>
               </div>
             </div>
-          </div>
+          </form>
         </>
       )}
     </>

@@ -16,30 +16,30 @@ export default BaseReducer(initialState, {
       inventories: invertoryNormalizeSchema(action.payload),
     };
   },
-  // [InventoryActions.CREATE_INVENTORY_FINISHED](state, action) {
-  //     return {
-  //         ...state,
-  //         inventory: addNormalizeInventory(state.inventory, action.payload),
-  //     };
-  // },
-  // [InventoryActions.SELECT_INVENTORY](state, action) {
-  //     return {
-  //         ...state,
-  //         selectedInventory: action.payload,
-  //     };
-  // },
-  // [InventoryActions.UNSELECT_INVENTORY](state) {
-  //     return {
-  //         ...state,
-  //         selectedInventory: null,
-  //     };
-  // },
-  // [InventoryActions.UPDATE_INVENTORIES_LOCALLY](state, action) {
-  //     return {
-  //         ...state,
-  //         inventory: action.payload,
-  //     };
-  // }
+  [InventoryActions.CREATE_INVENTORY_FINISHED](state, action) {
+    return {
+      ...state,
+      inventories: addNormalizeInventory(state.inventories, action.payload),
+    };
+  },
+  [InventoryActions.SELECT_INVENTORY](state, action) {
+      return {
+          ...state,
+          selectedInventory: action.payload,
+      };
+  },
+  [InventoryActions.UNSELECT_INVENTORY](state) {
+      return {
+          ...state,
+          selectedInventory: null,
+      };
+  },
+  [InventoryActions.UPDATE_INVENTORIES_LOCALLY](state, action) {
+      return {
+          ...state,
+          inventories: action.payload,
+      };
+  },
 
   [InventoryActions.FETCH_SUBCATEGORIES_FINISHED](state, action) {
     return {
@@ -47,11 +47,6 @@ export default BaseReducer(initialState, {
       subCategories: subCategoryNormalizeSchema(action.payload),
     };
   },
-  [InventoryActions.CREATE_INVENTORY_FINISHED](state, action) {
-    return {
-      ...state,
-      inventories: addNormalizeInventory(state.inventories, action.payload),
-    };
-  },
+
   
 });

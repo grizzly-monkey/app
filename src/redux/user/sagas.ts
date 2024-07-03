@@ -71,17 +71,27 @@ function* PATCH_USER(action: SagaAction) {
 }
 
 function* DELETE_USER(action: SagaAction): Generator {
-  const result: any = yield call(runEffect, action, UserEffects.deleteUser, action.payload);
+  const result: any = yield call(
+    runEffect,
+    action,
+    UserEffects.deleteUser,
+    action.payload
+  );
   if (resultHasError(result)) yield cancel();
   successToast("User deleted successfully!!");
-  const users: any = yield select(UserSelectors.selectNormalizedUsers)
-  const userIds = users.result.filter((userId: string) => userId !== action.payload)
-  const { [action.payload]: _, ...newUsers } = users?.entities?.users
-  yield put(UserActions.updateUsersLocally({ result: userIds, entities:{users: newUsers} }))
-  yield put(UserActions.unSelectUser())
+  const users: any = yield select(UserSelectors.selectNormalizedUsers);
+  const userIds = users.result.filter(
+    (userId: string) => userId !== action.payload
+  );
+  const { [action.payload]: _, ...newUsers } = users?.entities?.users;
+  yield put(
+    UserActions.updateUsersLocally({
+      result: userIds,
+      entities: { users: newUsers },
+    })
+  );
+  yield put(UserActions.unSelectUser());
 }
-
-
 
 export default function* userSaga() {
   yield all([

@@ -1,5 +1,5 @@
 import api from "@/utilities/api";
-import { getToModel, postToModel } from "@/utilities/effectUtility";
+import { delToModel, getToModel, patchToModel, postToModel } from "@/utilities/effectUtility";
 import InventoryModel from "./models/getModels/inventoryModel";
 import { SubCategoryModel } from "./models/getModels/subCategoryModel";
 
@@ -13,11 +13,19 @@ class InventoryEffects {
   }
 
   static createInventory(payload: any) {
-    return postToModel(InventoryModel, api.INVENTORIES, payload);
+    return postToModel(InventoryModel, api.INVENTORIESWITHOUTFARMID, payload);
   }
 
   static createProduct(payload: any) {
     return postToModel(InventoryModel, api.PRODUCTS, payload);
+  }
+
+  static patchInventory(payload: any) {
+    return patchToModel(InventoryModel, `${api.INVENTORIESWITHOUTFARMID}/${payload.id}`, payload.data);
+  }
+
+  static deleteInventory(id: string) {
+    return delToModel(InventoryModel, `${api.INVENTORIESWITHOUTFARMID}/${id}`);
   }
 }
 

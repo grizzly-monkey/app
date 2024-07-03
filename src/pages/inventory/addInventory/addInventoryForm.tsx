@@ -9,7 +9,7 @@ import routePaths from "@/config/routePaths";
 import { getTranslation } from "@/translation/i18n";
 import { useDispatch, useSelector } from "react-redux";
 import InventorySelectors from "@/redux/inventory/selectors";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import InventoryActions from "@/redux/inventory/actions";
 import requestingSelector from "@/redux/requesting/requestingSelector";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
@@ -19,6 +19,7 @@ const selectError = makeSelectErrorModel();
 const AddInventoryForm = () => {
   const dispatch = useDispatch();
   const [form] = AntdForm.useForm();
+  const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const loading = useSelector((state) =>
     requestingSelector(state, [InventoryActions.CREATE_INVENTORY], "")
   );
@@ -29,12 +30,36 @@ const AddInventoryForm = () => {
     selectError(state, [InventoryActions.FETCH_SUBCATEGORIES_FINISHED], "")
   );
   const categories = useSelector((state) =>
-    InventorySelectors.getSubCategories(state)
+    InventorySelectors.selectSubCategories(state)
   );
   const navigate = useNavigate();
   const onCancel = () => {
     navigate(routePaths.inventory);
   };
+
+  const onCategoryChange = (value: any) => {
+    const selectedCategory = categories.find(
+      (category: any) => category.subCategoryId === value
+    );
+    if (selectedCategory) {
+      setSelectedCategory(selectedCategory);
+    }
+    form.setFieldsValue({ product: undefined });
+  }
+
+  const onProductChange = (value: any) => {
+    form.setFieldsValue({ productId: value });
+  }
+
+  const categoryOptions = categories.map((category: any) => ({
+    label: category.name,
+    value: category.subCategoryId,
+  }));
+
+  const products = selectedCategory?.products.map((product: any) => ({
+    label: product.name,
+    value: product.id,
+  }));
 
   const onFinish = (values: any) => {
     dispatch(InventoryActions.createInventory(values));
@@ -45,6 +70,8 @@ const AddInventoryForm = () => {
       dispatch(InventoryActions.fetchSubCategories());
     }
   }, []);
+
+ 
   return (
     <>
       {createInventoryError && <FullAlertError error={createInventoryError} />}
@@ -69,23 +96,11 @@ const AddInventoryForm = () => {
                 ]}
               >
                 <Select
-                  options={[
-                    {
-                      label: "Fertilizer",
-                      value: "fertilizer",
-                    },
-                    {
-                      label: "Pesticide",
-                      value: "pesticide",
-                    },
-                    {
-                      label: "Seed",
-                      value: "seed",
-                    },
-                  ]}
+                  options={categoryOptions}
                   placeholder={getTranslation(
                     "global.categorySelectPlaceholder"
                   )}
+                  onChange={onCategoryChange}
                 />
               </AntdForm.Item>
             </Col>
@@ -94,7 +109,7 @@ const AddInventoryForm = () => {
                 <AntdForm.Item
                   style={{ width: "100%" }}
                   label={getTranslation("inventoryManagement.product")}
-                  name="product"
+                  name="productId"
                   rules={[
                     {
                       required: true,
@@ -109,16 +124,8 @@ const AddInventoryForm = () => {
                       placeholder={getTranslation(
                         "inventoryManagement.selectProductPlaceholder"
                       )}
-                      options={[
-                        {
-                          label: "Product 1",
-                          value: "product1",
-                        },
-                        {
-                          label: "Product 2",
-                          value: "product2",
-                        },
-                      ]}
+                      options={products}
+                      onChange={onProductChange}
                     />
                     <AddProductButton />
                   </Flex>
@@ -131,12 +138,7 @@ const AddInventoryForm = () => {
               <AntdForm.Item
                 label={getTranslation("global.description")}
                 name="description"
-                rules={[
-                  {
-                    required: true,
-                    message: getTranslation("global.descriptionError"),
-                  },
-                ]}
+                
               >
                 <Input
                   placeholder={getTranslation("global.descriptionPlaceholder")}
@@ -181,9 +183,11 @@ const AddInventoryForm = () => {
                 ]}
               >
                 <InputNumber
+                  style={{ width: "100%" }}
                   placeholder={getTranslation(
                     "inventoryManagement.quantityPlaceholder"
                   )}
+                  suffix={getTranslation("inventoryManagement.unit")}
                 />
               </AntdForm.Item>
             </Col>
@@ -210,6 +214,7 @@ const AddInventoryForm = () => {
             onClick={onCancel}
           />
           <Button
+            loading={loading}
             label={getTranslation("global.add")}
             type="primary"
             htmlType="submit"
