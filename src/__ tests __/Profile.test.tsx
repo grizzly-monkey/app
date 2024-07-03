@@ -76,4 +76,69 @@ describe("Profile Component", () => {
       );
     });
   });
+
+  test("displays validation errors on form submit with empty fields", async () => {
+    renderWithProvider(<Profile />, { store });
+
+    fireEvent.click(screen.getByText(getTranslation("global.update")));
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(getTranslation("global.firstNameErrMsg"))
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(getTranslation("global.lastNameErrMsg"))
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(getTranslation("global.emailErrMsg"))
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(getTranslation("global.addressErrMsg"))
+      ).toBeInTheDocument();
+    });
+  });
+
+  test("should show error message if email is invalid", async () => {
+    renderWithProvider(<Profile />, { store });
+
+    fireEvent.change(screen.getByTestId("email"), {
+      target: { value: "Invalid Email" },
+    });
+
+    fireEvent.click(screen.getByText(getTranslation("global.update")));
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(getTranslation("global.invalidEmailErr"))
+      ).toBeInTheDocument();
+    });
+  });
+
+  test("should display error on update profile error", async () => {
+    store = setupDefaultStore({
+      error: {
+        [SessionActions.UPDATE_USER_DETAILS_FINISHED]: {
+          errors: [{ message: "Some error occurred" }],
+        },
+      },
+    });
+
+    renderWithProvider(<Profile />, { store });
+
+    await waitFor(() => {
+      expect(screen.getByText("Some error occurred")).toBeInTheDocument();
+    });
+  });
+
+  test("should show loading state when update profile is in progress", async () => {
+    store = setupDefaultStore({
+      requesting: {
+        [SessionActions.UPDATE_USER_DETAILS]: true,
+      },
+    });
+
+    renderWithProvider(<Profile />, { store });
+
+    expect(screen.getByRole("button", { name: /update/i })).toBeDisabled();
+  });
 });

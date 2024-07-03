@@ -12,6 +12,7 @@ import { userPayload } from "./types";
 import { makeRequestingSelector } from "@/redux/requesting/requestingSelector";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import AlertError from "@/components/common/error/AlertError";
+import { REGEX } from "@/utilities/regex";
 
 const selectLoading = makeRequestingSelector();
 const selectError = makeSelectErrorModel();
@@ -100,6 +101,10 @@ const Profile = () => {
               {
                 required: true,
                 message: getTranslation("global.emailErrMsg"),
+              },
+              {
+                pattern: REGEX.VALID_EMAIL_VALIDATION,
+                message: getTranslation("global.invalidEmailErr"),
               },
             ]}
             placeholder={getTranslation("global.emailPlaceholder")}

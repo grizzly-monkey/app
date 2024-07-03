@@ -103,7 +103,6 @@ async function doRequest(
       method: restRequest.method,
       url: restRequest.url,
       headers: {
-        // auth
         ...(isAuthenticated && { Authorization: `Bearer ${getAuthToken()}` }),
         "Content-Type": "application/json",
         ACTIVE_ORGANISATION_ID: getPreferenceValueFromStorage(

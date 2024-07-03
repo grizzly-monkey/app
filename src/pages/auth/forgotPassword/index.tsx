@@ -19,6 +19,7 @@ import { getTranslation } from "@/translation/i18n";
 import { forgotPasswordType, sendOTPType } from "@/types/auth";
 import { createAction } from "@/utilities/actionUtility";
 import { Images } from "@/utilities/imagesPath";
+import { REGEX } from "@/utilities/regex";
 import { useEffect, useState } from "react";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { Link } from "react-router-dom";
@@ -171,7 +172,7 @@ const ForgotPassword = () => {
                     message: getTranslation("global.otpErrMsg"),
                   },
                   {
-                    pattern: /^(?:\d*)$/,
+                    pattern: REGEX.VALID_NUMBER_VALIDATION,
                     message: getTranslation("global.otpHaveNumberErrMsg"),
                   },
                 ]}
@@ -287,10 +288,7 @@ const ForgotPassword = () => {
       </div>
       <div className="image_main_container">
         <div className="image_container">
-          <img
-            alt="not found"
-            src="https://images.unsplash.com/photo-1615811361523-6bd03d7748e7?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          />
+          <img alt="not found" src={Images.FORGOT_PASSWORD_BG} />
         </div>
       </div>
     </div>

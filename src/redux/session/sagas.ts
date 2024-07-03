@@ -2,7 +2,7 @@ import { LOCAL_STORAGE_KEYS, TOKEN_EXPIRE_TIME } from "@/config/consts";
 import routePaths from "@/config/routePaths";
 import { router } from "@/routes";
 import { SagaAction } from "@/types/redux";
-import { createAction, runEffect } from "@/utilities/actionUtility";
+import { runEffect } from "@/utilities/actionUtility";
 import {
   getIsAuthenticated,
   getPreferenceValueFromStorage,
@@ -22,7 +22,7 @@ import { changeLanguage } from "i18next";
 import AppActions from "../actions";
 import OrganizationActions from "../organization/actions";
 import { getTranslation } from "@/translation/i18n";
-import { successToast } from "@/utilities/toast";
+import { errorToast, successToast } from "@/utilities/toast";
 
 export function getCognitoUserObject(phoneNumber: string) {
   return new CognitoUser({
@@ -52,10 +52,6 @@ const getSession = async () => {
     }
   });
 };
-
-export function* RESET_REDUX_STORE() {
-  yield put(createAction(AppActions.RESET_STORE));
-}
 
 function* REFRESH_TOKEN_SILENTLY(): Generator {
   try {
@@ -163,14 +159,18 @@ function* GET_LANGUAGE_FROM_STORAGE_FINISHED(action: SagaAction) {
   );
 }
 
-function* LOGOUT() {
+function* LOGOUT(action: SagaAction) {
   const user = getCurrentUser();
 
   user?.signOut();
-  yield call(RESET_REDUX_STORE);
+  yield put(AppActions.resetStore());
   yield call(setAuthStatusInLocalStorage, false);
   localStorage.clear();
   router.navigate(routePaths.login);
+
+  if (!action.payload) {
+    errorToast(getTranslation("global.unauthorizedErr"));
+  }
 }
 
 function* UPDATE_USER_DETAILS(action: SagaAction): Generator {

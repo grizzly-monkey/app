@@ -1,17 +1,18 @@
-import { useEffect } from "react";
-import "./style.scss";
-import { TiTick } from "react-icons/ti";
+import AlertError from "@/components/common/error/AlertError";
+import routePaths from "@/config/routePaths";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { makeSelectErrorModel } from "@/redux/error/errorSelector";
+import FarmActions from "@/redux/farm/action";
 import OrganizationActions from "@/redux/organization/actions";
 import OrganizationSelectors from "@/redux/organization/selectors";
 import { makeRequestingSelector } from "@/redux/requesting/requestingSelector";
-import { makeSelectErrorModel } from "@/redux/error/errorSelector";
-import AlertError from "@/components/common/error/AlertError";
-import { Skeleton } from "antd";
-import { Images } from "@/utilities/imagesPath";
-import { useNavigate } from "react-router-dom";
-import routePaths from "@/config/routePaths";
 import { getTranslation } from "@/translation/i18n";
+import { Images } from "@/utilities/imagesPath";
+import { Skeleton } from "antd";
+import { useEffect } from "react";
+import { TiTick } from "react-icons/ti";
+import { useNavigate } from "react-router-dom";
+import "./style.scss";
 import { organization } from "./type";
 
 const OrganizationCard = ({
@@ -81,12 +82,11 @@ const Organization = () => {
   const loading = useAppSelector((state) =>
     selectLoading(state, [OrganizationActions.REQUEST_ORGANIZATION])
   );
-
   const organizationList = loading ? new Array(5).fill("") : organizations;
 
   const handleSelectOrganization = (organisationId: string) => {
     dispatch(OrganizationActions.selectOrganization(organisationId));
-    navigate(routePaths.userManagement);
+    navigate(routePaths.farm);
   };
 
   useEffect(() => {

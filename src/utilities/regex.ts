@@ -5,6 +5,9 @@ export const hasSpecialCharRegex = /[\^$*.\[\]{}()?\-!@#%&\/,><:;|_~]/;
 
 export const REGEX = {
   PASSWORD_VALIDATION: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/,
+  VALID_NUMBER_VALIDATION: /^(?:\d*)$/,
+  VALID_EMAIL_VALIDATION:
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
 };
 
 export const hasNumber = (value: string) => {

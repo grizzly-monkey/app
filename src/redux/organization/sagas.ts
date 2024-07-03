@@ -40,7 +40,11 @@ function* GET_ORGANIZATION_FROM_STORAGE(): Generator {
     LOCAL_STORAGE_KEYS.organization
   );
 
-  yield put(OrganizationActions.selectOrganization(organizationPreference));
+  yield put(
+    OrganizationActions.selectOrganization(
+      typeof organizationPreference === "string" ? organizationPreference : ""
+    )
+  );
 }
 
 export default function* rootSaga(): Generator {

@@ -6,6 +6,7 @@ import requesting from "./requesting/requestingReducer";
 import users from "./user/reducer";
 import farms from "./farm/reducer";
 import organizations from "./organization/reducer";
+import AppActions from "./actions";
 
 const appReducer = combineReducers({
   session,
@@ -21,6 +22,10 @@ const rootReducer = (
   state: any,
   action: Action
 ): ReturnType<typeof appReducer> => {
+  if (action.type === AppActions.RESET_STORE) {
+    return appReducer(undefined, action);
+  }
+
   return appReducer(state, action);
 };
 

@@ -47,8 +47,8 @@ const SessionActions = {
     return createAction(this.GET_LANGUAGE_FROM_STORAGE_FINISHED, language);
   },
 
-  logout() {
-    return createAction(this.LOGOUT);
+  logout(authorized: boolean | undefined = true) {
+    return createAction(this.LOGOUT, authorized);
   },
 };
 export default SessionActions;
