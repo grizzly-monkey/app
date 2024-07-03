@@ -1,9 +1,15 @@
-import { Outlet } from "react-router-dom";
+import Main from "./Main";
+import './style.scss'
+
 
 const Layout = () => {
   return (
     <div>
-      <Outlet />
+      <div>
+        <div style={{ background: "#FAFAFA" }}>
+          <Main />
+        </div>
+      </div>
     </div>
   );
 };

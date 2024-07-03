@@ -1,5 +1,5 @@
 import { store } from "@/redux/store";
-import ErrorModel from "@/models/ErrorModel";
+import ErrorModel from "@/models/error/errorModel";
 import RequestingActions from "@/redux/requesting/actions";
 import logger from "./logger";
 

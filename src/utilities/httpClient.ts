@@ -3,7 +3,9 @@ import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
 import logger from "./logger";
 import onError from "./onError";
-import ErrorModel from "@/models/ErrorModel";
+import ErrorModel from "@/models/error/errorModel";
+// import SessionSelectors from "@/redux/session/selectors";
+// import { store } from "@/redux/store";
 // import SessionSelectors from "../redux/session/sessionSelector";
 
 interface ErrorContext {
@@ -53,11 +55,9 @@ const RequestMethod = {
 };
 
 export function getAuthToken() {
-  // const token = SessionSelectors.SelectShareToken(store.getState());
-  // if (token) return token;
   // const { idToken } = SessionSelectors.SelectToken(store.getState());
   // return idToken;
-  return "";
+  return "eyJraWQiOiJGWGI3MlNwV21HdjJjWHo3QmZkRHlIdTAyWk9mNGVYWEZacEFZcE1kZElFPSIsImFsZyI6IlJTMjU2In0.eyJjdXN0b206Y3JlYXRlZF9hdCI6IjE3MTQxMjIwNTE4MTgiLCJzdWIiOiI2MTUzMGRjYS03MDMxLTcwZGEtYjFkNS1kYjVkMWVjZjI5YzIiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuYXAtc291dGgtMS5hbWF6b25hd3MuY29tXC9hcC1zb3V0aC0xXzZleERyb0I1NCIsInVwZGF0ZWRfYXQiOjE3MTQxMjIwNTE4MTgsImF1dGhfdGltZSI6MTcxOTQ2MDUyNCwiZXhwIjoxNzE5NTczOTk0LCJjdXN0b206cm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzE5NTcwMzk0LCJqdGkiOiJhZjRiMzhjZS00ODhmLTQzMjktYmQxZC1hNWRkZDIwOGIyMDEiLCJlbWFpbCI6ImthbWFsX2tpc2hvcmVAYXZvY2Fkb2xhYnMuaW4iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImFkZHJlc3MiOnsiZm9ybWF0dGVkIjoicHVuZSJ9LCJjdXN0b206b3JnYW5pc2F0aW9uTmFtZSI6IkF2b2NhZG8gTGFicyIsInBob25lX251bWJlcl92ZXJpZmllZCI6dHJ1ZSwiY3VzdG9tOmlzVmVyaWZpZWRCeUFkbWluIjoiMCIsImNvZ25pdG86dXNlcm5hbWUiOiI2MTUzMGRjYS03MDMxLTcwZGEtYjFkNS1kYjVkMWVjZjI5YzIiLCJnaXZlbl9uYW1lIjoia2FtYWwiLCJjdXN0b206b3JnYW5pc2F0aW9uSWQiOiJvcjUwY2MwYmRhIiwib3JpZ2luX2p0aSI6IjcxODU2MTJhLWQ2MDAtNDQ5NS1iMWQwLTA5NGMzYzFjYjhjNyIsImF1ZCI6IjdkOWEwNzRubGt0OG5tbG91dW9udmk5MmQzIiwiZXZlbnRfaWQiOiJlM2YzNzVhOS1jYzAxLTRiM2UtYmExMC1jZWFlOTcxNzcxNmQiLCJ0b2tlbl91c2UiOiJpZCIsInBob25lX251bWJlciI6Iis5MTcwNzA5NzAwNTAiLCJmYW1pbHlfbmFtZSI6Imtpc2hvciJ9.AC9XxJKEKRWjlof5Od1AYAMaD_t9EXitwQ4KP1rsjfjTPQpMSGCeJT5VCsBJh6JeiN4O_hEr3ghEVxYRxCfrAmPkuJJFYC40aUNtuC5BcAYuQFBnbMgLkm1xMyfM3kINPCLveHKegG4AR-ifnOnMlZVM2y_Iqzu_O-QipP-XGmYIuNIklOx0hSJK82dTahYpeb8vQ2w7RlSzT9mX603FXGmPqpz7AMRXP59FSmwtAF9kjrcIge96BjDnLyrhzAoPt6lQm2xoE4qtgWSk-JsT3-l1__JdnGEyumzoet44jW_NkG-2EXaZDnksl247whsmh1HF6LluAAekWfwz6KVHQg"
 }
 
 function dofillInErrorWithDefaults(
@@ -69,9 +69,7 @@ function dofillInErrorWithDefaults(
   model.exception = error.exception || "Error requesting data";
   model.errors = error.errors && error.errors.length ? error.errors : null;
   model.path = error.path || request.url;
-  model.traceId = error.traceId;
   model.timestamp = error.timestamp || new Date().getTime();
-  model.XMLResponse = error.xmlResponse ? error.xmlResponse : null;
   return model;
 }
 
@@ -107,6 +105,7 @@ async function doRequest(
         // auth
         ...(isAuthenticated && { Authorization: `Bearer ${getAuthToken()}` }),
         "Content-Type": "application/json",
+        ACTIVE_ORGANISATION_ID: "or50cc0bda",
         ...config?.headers,
       },
     };
@@ -187,7 +186,7 @@ async function doRequest(
 
 export async function get(
   endpoint: string,
-  params?: Record<string, any>,
+  params?: Record<string, string>,
   requestConfig?: Config,
   isAuthenticated?: boolean
 ): Promise<any> {
