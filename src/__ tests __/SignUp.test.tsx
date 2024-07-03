@@ -5,19 +5,15 @@ import SignUp from "@/pages/auth/signUp";
 import { fireEvent, screen, waitFor } from "@testing-library/dom";
 import AccountActions from "@/redux/account/actions";
 import { getTranslation } from "@/translation/i18n";
+import { iconRenderError } from "./__ mocks __/errorMock";
 
 describe("SignUp Page", () => {
   let store: any;
+
   let consoleErrorMock: any;
 
   beforeAll(() => {
-    consoleErrorMock = jest
-      .spyOn(console, "error")
-      .mockImplementation((message) => {
-        if (message.includes("findDOMNode is deprecated")) {
-          return;
-        }
-      });
+    consoleErrorMock = iconRenderError;
   });
 
   afterAll(() => {
@@ -44,10 +40,10 @@ describe("SignUp Page", () => {
       screen.getByText(getTranslation("signUp.organizationName"))
     ).toBeInTheDocument();
     expect(
-      screen.getByText(getTranslation("signUp.firstName"))
+      screen.getByText(getTranslation("global.firstName"))
     ).toBeInTheDocument();
     expect(
-      screen.getByText(getTranslation("signUp.lastName"))
+      screen.getByText(getTranslation("global.lastName"))
     ).toBeInTheDocument();
     expect(
       screen.getByText(getTranslation("global.password"))
@@ -75,10 +71,10 @@ describe("SignUp Page", () => {
         screen.getByText(getTranslation("signUp.organizationNameErrMsg"))
       ).toBeInTheDocument();
       expect(
-        screen.getByText(getTranslation("signUp.firstNameErrMsg"))
+        screen.getByText(getTranslation("global.firstNameErrMsg"))
       ).toBeInTheDocument();
       expect(
-        screen.getByText(getTranslation("signUp.lastNameErrMsg"))
+        screen.getByText(getTranslation("global.lastNameErrMsg"))
       ).toBeInTheDocument();
       expect(
         screen.getByText(getTranslation("global.passwordErrMsg"))

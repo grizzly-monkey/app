@@ -22,6 +22,7 @@ import { changeLanguage } from "i18next";
 import AppActions from "../actions";
 import OrganizationActions from "../organization/actions";
 import { getTranslation } from "@/translation/i18n";
+import { successToast } from "@/utilities/toast";
 
 export function getCognitoUserObject(phoneNumber: string) {
   return new CognitoUser({
@@ -172,6 +173,23 @@ function* LOGOUT() {
   router.navigate(routePaths.login);
 }
 
+function* UPDATE_USER_DETAILS(action: SagaAction): Generator {
+  const user = getCurrentUser();
+
+  const result: any = yield call(
+    runEffect,
+    action,
+    SessionEffects.updateUserDetails,
+    user,
+    action.payload
+  );
+
+  if (resultHasError(result)) yield cancel();
+
+  successToast(getTranslation("profile.updateMsg"));
+  yield call(REFRESH_TOKEN_SILENTLY);
+}
+
 function* INIT() {
   if (getIsAuthenticated()) {
     yield call(REFRESH_TOKEN_SILENTLY);
@@ -195,6 +213,7 @@ function* LOGINFLOW() {
     GET_LANGUAGE_FROM_STORAGE_FINISHED
   );
   yield takeEvery(SessionActions.LOGOUT, LOGOUT);
+  yield takeEvery(SessionActions.UPDATE_USER_DETAILS, UPDATE_USER_DETAILS);
 }
 
 export default function* rootSaga() {

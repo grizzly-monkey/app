@@ -171,28 +171,28 @@ const SignUp = () => {
               />
 
               <Input
-                label={getTranslation("signUp.firstName")}
+                label={getTranslation("global.firstName")}
                 name="firstName"
                 testId="first-name"
                 rules={[
                   {
                     required: true,
-                    message: getTranslation("signUp.firstNameErrMsg"),
+                    message: getTranslation("global.firstNameErrMsg"),
                   },
                 ]}
-                placeholder={getTranslation("signUp.firstNamePlaceholder")}
+                placeholder={getTranslation("global.firstNamePlaceholder")}
               />
               <Input
-                label={getTranslation("signUp.lastName")}
+                label={getTranslation("global.lastName")}
                 name="lastName"
                 testId="last-name"
                 rules={[
                   {
                     required: true,
-                    message: getTranslation("signUp.lastNameErrMsg"),
+                    message: getTranslation("global.lastNameErrMsg"),
                   },
                 ]}
-                placeholder={getTranslation("signUp.lastNamePlaceholder")}
+                placeholder={getTranslation("global.lastNamePlaceholder")}
               />
 
               <Tooltip

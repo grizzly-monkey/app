@@ -1,5 +1,10 @@
 import ErrorModel from "@/models/error/errorModel";
-import { AuthenticationDetails, CognitoUser } from "amazon-cognito-identity-js";
+import {
+  AuthenticationDetails,
+  CognitoUser,
+  CognitoUserAttribute,
+  ICognitoUserAttributeData,
+} from "amazon-cognito-identity-js";
 import ErrorDetail from "../../models/error/errorDetail";
 import CognitoSessionModel from "./models/login/CognitoSessionModel";
 
@@ -67,6 +72,28 @@ export default class SessionEffects {
       });
 
       user.authenticateUser(authDetails, getCallbacks(resolve));
+    });
+  }
+
+  static updateUserDetails(
+    user: CognitoUser,
+    details: (CognitoUserAttribute | ICognitoUserAttributeData)[]
+  ): Promise<any> {
+    return new Promise((resolve) => {
+      return user.getSession(function (err: any) {
+        if (err) {
+          const error = getErrorInstanceFromCognitoError(err);
+          resolve(error);
+        }
+        return user.updateAttributes(details, (err, result) => {
+          if (err) {
+            const error = getErrorInstanceFromCognitoError(err);
+            resolve(error);
+          } else {
+            resolve(result);
+          }
+        });
+      });
     });
   }
 }

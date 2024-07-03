@@ -1,13 +1,18 @@
 import { loginType } from "@/types/auth";
 import { createAction } from "@/utilities/actionUtility";
 import CognitoSessionModel from "./models/login/CognitoSessionModel";
-import { CognitoUserAttribute } from "amazon-cognito-identity-js";
+import {
+  CognitoUserAttribute,
+  ICognitoUserAttributeData,
+} from "amazon-cognito-identity-js";
 
 const SessionActions = {
   REQUEST_LOGIN: "session/REQUEST_LOGIN",
   REQUEST_LOGIN_FINISHED: "session/REQUEST_LOGIN_FINISHED",
   SET_USER_TOKENS: "session/SET_USER_TOKENS",
   SET_USER_DETAILS: "session/SET_USER_DETAILS",
+  UPDATE_USER_DETAILS: "session/UPDATE_USER_DETAILS",
+  UPDATE_USER_DETAILS_FINISHED: "session/UPDATE_USER_DETAILS_FINISHED",
   ACCOUNT_APPROVAL_STATUS: "session/ACCOUNT_APPROVAL_STATUS",
   REQUEST_REFRESH_TOKEN_SILENTLY: "session/REQUEST_REFRESH_TOKEN_SILENTLY",
   GET_LANGUAGE_FROM_STORAGE: "session/GET_LANGUAGE_FROM_STORAGE",
@@ -23,6 +28,10 @@ const SessionActions = {
 
   setUserDetails: (details: CognitoUserAttribute) =>
     createAction(SessionActions.SET_USER_DETAILS, details),
+
+  updateUserDetails: (
+    details: (CognitoUserAttribute | ICognitoUserAttributeData)[]
+  ) => createAction(SessionActions.UPDATE_USER_DETAILS, details),
 
   setAccountApprovalStatus: (status: string) =>
     createAction(SessionActions.ACCOUNT_APPROVAL_STATUS, status),
