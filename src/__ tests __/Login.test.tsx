@@ -5,6 +5,7 @@ import { setupDefaultStore } from "./utils/setupTests";
 import { renderWithProvider } from "./utils/testUtils";
 import SessionActions from "@/redux/session/actions";
 import { errorToast } from "@/utilities/toast";
+import { getTranslation } from "@/translation/i18n";
 
 jest.mock("@/utilities/toast", () => ({
   errorToast: jest.fn(),
@@ -20,23 +21,36 @@ describe("Login Page", () => {
   test("should render the login form", () => {
     renderWithProvider(<Login />, { store });
 
-    expect(screen.getByText("Welcome Back!")).toBeInTheDocument();
-    expect(screen.getByText("Please Sign in to continue")).toBeInTheDocument();
-    expect(screen.getByText("Phone number")).toBeInTheDocument();
-    expect(screen.getByText("Password")).toBeInTheDocument();
-    expect(screen.getByText("Remember me")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Sign in" })).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("login.welcomeBack"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("login.pleaseSignToContinue"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("global.phoneNumber"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("global.password"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("login.rememberMe"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: getTranslation("global.signIn") })
+    ).toBeInTheDocument();
   });
 
   test("should display error messages when inputs are empty and form is submitted", async () => {
     renderWithProvider(<Login />, { store });
 
-    fireEvent.click(screen.getByText("Sign in"));
+    fireEvent.click(screen.getByText(getTranslation("global.signIn")));
+
     expect(
-      await screen.findByText("Please input your phone number!")
+      await screen.findByText(getTranslation("global.phoneNumberErrMsg"))
     ).toBeInTheDocument();
     expect(
-      await screen.findByText("Please input your password!")
+      await screen.findByText(getTranslation("global.passwordErrMsg"))
     ).toBeInTheDocument();
   });
 
@@ -50,7 +64,7 @@ describe("Login Page", () => {
       target: { value: "password" },
     });
 
-    fireEvent.click(screen.getByText("Sign in"));
+    fireEvent.click(screen.getByText(getTranslation("global.signIn")));
 
     await waitFor(() => {
       expect(store.dispatch).toHaveBeenCalledWith(

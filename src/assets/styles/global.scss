@@ -75,6 +75,13 @@ a {
   cursor: pointer;
 }
 
+.btn-success {
+  background-color: $primary-extra-light;
+}
+
+.btn-success:hover {
+  background-color: $primary-extra-light !important;
+}
 .image {
   height: 100%;
   width: 100%;
@@ -84,4 +91,7 @@ a {
 button:disabled {
   background: $primary !important;
   color: white !important;
+}
+.ant-dropdown-menu-item-selected {
+  background-color: rgba($primary, 0.1) !important;
 }

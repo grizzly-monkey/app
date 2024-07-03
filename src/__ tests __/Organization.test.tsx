@@ -4,6 +4,7 @@ import { fireEvent, screen } from "@testing-library/react";
 import { setupDefaultStore } from "./utils/setupTests";
 import { renderWithProvider } from "./utils/testUtils";
 import OrganizationActions from "@/redux/organization/actions";
+import { getTranslation } from "@/translation/i18n";
 
 const mockOrganizations: any[] = [
   { organisationId: "1", organisationName: "Org1", logo: "logo1.png" },
@@ -20,14 +21,16 @@ describe("Organization Component", () => {
   test("Renders Organization component without crashing", () => {
     renderWithProvider(<Organization />, { store });
 
-    expect(screen.getByText("Select your organization")).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("organization.selectYourOrganization"))
+    ).toBeInTheDocument();
   });
 
   test("Displays organizations when loaded", () => {
     store = setupDefaultStore({
       organizations: {
         organisations: mockOrganizations,
-        selectedOrganisation: null,
+        selectedOrganisationId: null,
       },
     });
 
@@ -41,7 +44,7 @@ describe("Organization Component", () => {
     store = setupDefaultStore({
       organizations: {
         organisations: mockOrganizations,
-        selectedOrganisation: null,
+        selectedOrganisationId: null,
       },
     });
 
@@ -51,7 +54,9 @@ describe("Organization Component", () => {
     fireEvent.click(orgCard);
 
     expect(store.dispatch).toHaveBeenCalledWith(
-      OrganizationActions.selectOrganization(mockOrganizations[1])
+      OrganizationActions.selectOrganization(
+        mockOrganizations[1].organisationId
+      )
     );
   });
 
@@ -73,7 +78,7 @@ describe("Organization Component", () => {
     store = setupDefaultStore({
       organizations: {
         organisations: mockOrganizations,
-        selectedOrganisation: null,
+        selectedOrganisationId: null,
       },
     });
 

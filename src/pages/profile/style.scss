@@ -1,0 +1,9 @@
+.form_input_container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 20px;
+}
+
+.submit_btn {
+  margin-top: 10px;
+}

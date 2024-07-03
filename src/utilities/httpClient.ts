@@ -4,8 +4,10 @@ import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import logger from "./logger";
 import onError from "./onError";
 import ErrorModel from "@/models/error/errorModel";
-// import SessionSelectors from "@/redux/session/selectors";
-// import { store } from "@/redux/store";
+import SessionSelectors from "@/redux/session/selectors";
+import { store } from "@/redux/store";
+import { LOCAL_STORAGE_KEYS } from "@/config/consts";
+import { getPreferenceValueFromStorage } from "./localStorage";
 // import SessionSelectors from "../redux/session/sessionSelector";
 
 interface ErrorContext {
@@ -102,10 +104,11 @@ async function doRequest(
       method: restRequest.method,
       url: restRequest.url,
       headers: {
-        // auth
         ...(isAuthenticated && { Authorization: `Bearer ${getAuthToken()}` }),
         "Content-Type": "application/json",
-        ACTIVE_ORGANISATION_ID: "null",
+        ACTIVE_ORGANISATION_ID: getPreferenceValueFromStorage(
+          LOCAL_STORAGE_KEYS.organization
+        ),
         ...config?.headers,
       },
     };
