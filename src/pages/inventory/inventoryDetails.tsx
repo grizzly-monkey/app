@@ -1,4 +1,5 @@
 import CustomEdit from "@/components/common/CustomEditable/CustomEdit";
+import FullAlertError from "@/components/common/error/FullAlertError";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import InventoryActions from "@/redux/inventory/actions";
 import InventorySelectors from "@/redux/inventory/selectors";
@@ -24,8 +25,33 @@ const InventoryDetails = ({
   const descriptionUdating = useSelector((state) =>
     requestingSelector(state, [InventoryActions.PATCH_INVENTORY], "description")
   );
+
+  const providerUdating = useSelector((state) =>
+    requestingSelector(state, [InventoryActions.PATCH_INVENTORY], "provider")
+  );
+
+  const quantityUdating = useSelector((state) =>
+    requestingSelector(state, [InventoryActions.PATCH_INVENTORY], "quantity")
+  );
+
+  const wastageUdating = useSelector((state) =>
+    requestingSelector(state, [InventoryActions.PATCH_INVENTORY], "wastage")
+  );
+
   const descriptionError = useSelector((state) =>
     selectError(state, InventoryActions.PATCH_INVENTORY_FINISHED, "description")
+  );
+
+  const providerError = useSelector((state) =>
+    selectError(state, InventoryActions.PATCH_INVENTORY_FINISHED, "provider")
+  );
+
+  const quantityError = useSelector((state) =>
+    selectError(state, InventoryActions.PATCH_INVENTORY_FINISHED, "quantity")
+  );
+
+  const wastageError = useSelector((state) =>
+    selectError(state, InventoryActions.PATCH_INVENTORY_FINISHED, "wastage")
   );
 
   const selectedInventory = useSelector(
@@ -33,30 +59,58 @@ const InventoryDetails = ({
   );
 
   const updateInventory = (data: any) => {
+    const intitalData = {
+      description: selectedInventory?.description,
+      provider: selectedInventory?.provider,
+      quantity: selectedInventory?.quantity,
+      wastage: selectedInventory?.wastage,
+    };
     dispatch(
       InventoryActions.patchInventory({
-        data: { [data.fieldName]: data.value },
+        data: { ...intitalData, ...{ [data.fieldName]: data.value } },
         id: selectedInventory?.inventoryId,
         scope: data.fieldName,
       })
     );
   };
 
-  console.log("error", form.getFieldsValue());
-  useEffect(()=>{
-    if(descriptionError){
-      form.setFields([
-        {
-          name: ["description"],
-          value: form.getFieldValue(["description"]),
-          errors: ['descriptionError'],
-        },
-      ]);
+  useEffect(() => {
+    if (!descriptionUdating) {
+      if (!descriptionError) {
+        toggleField("description", false);
+      }
     }
-  },[descriptionError])
+  }, [descriptionError, descriptionUdating]);
+  useEffect(() => {
+    if (!providerUdating) {
+      if (!providerError) {
+        toggleField("provider", false);
+      }
+    }
+  }, [providerUdating, providerError]);
+
+  useEffect(() => {
+    if (!quantityUdating) {
+      if (!quantityError) {
+        toggleField("quantity", false);
+      }
+    }
+  }, [quantityUdating, quantityError]);
+  useEffect(() => {
+    if (!wastageUdating) {
+      if (!wastageError) {
+        toggleField("wastage", false);
+      }
+    }
+  }, [wastageUdating, wastageError]);
+
   return (
     <Form form={form}>
       <div className="user-details-sidebar" style={{ width: "100%" }}>
+        <>{descriptionError && <FullAlertError error={descriptionError} />}</>
+        <>{providerError && <FullAlertError error={providerError} />}</>
+        <>{quantityError && <FullAlertError error={quantityError} />}</>
+        <>{wastageError && <FullAlertError error={wastageError} />}</>
         <Fields
           info={[
             {
@@ -95,9 +149,11 @@ const InventoryDetails = ({
                   <CustomEdit
                     form={form}
                     name="provider"
-                    onSubmit={() => console.log("submit")}
+                    onSubmit={(value) =>
+                      updateInventory({ fieldName: "provider", value: value })
+                    }
                     isActive={field.provider}
-                    loading={false}
+                    loading={providerUdating}
                     value={selectedInventory?.provider}
                     setSubmitDisable={(value) => console.log(value)}
                     onCancel={() => toggleField("provider", false)}
@@ -120,9 +176,11 @@ const InventoryDetails = ({
                     form={form}
                     type="int"
                     name="quantity"
-                    onSubmit={() => console.log("submit")}
+                    onSubmit={(value) =>
+                      updateInventory({ fieldName: "quantity", value: value })
+                    }
                     isActive={field.quantity}
-                    loading={false}
+                    loading={quantityUdating}
                     value={selectedInventory?.quantity}
                     setSubmitDisable={(value) => console.log(value)}
                     onCancel={() => toggleField("quantity", false)}
@@ -146,9 +204,11 @@ const InventoryDetails = ({
                     type="int"
                     form={form}
                     name="wastage"
-                    onSubmit={() => console.log("submit")}
+                    onSubmit={(value) =>
+                      updateInventory({ fieldName: "wastage", value: value })
+                    }
                     isActive={field.wastage}
-                    loading={false}
+                    loading={wastageUdating}
                     value={selectedInventory?.wastage}
                     setSubmitDisable={(value) => console.log(value)}
                     onCancel={() => toggleField("wastage", false)}
@@ -165,74 +225,6 @@ const InventoryDetails = ({
             },
           ]}
         />
-        {/* <table>
-                    <tbody>
-                        <tr >
-                            <td>
-                                <strong>
-                                    First Name
-                                </strong>
-                            </td>
-                            <td>
-                               
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>
-                                Last Name
-                            </strong></td>
-                            <td>
-                            <CustomEdit
-                                    form={form}
-                                    name="lastName"
-                                    onSubmit={updateLastName}
-                                    isActive={field.lastName}
-                                    loading={lastNameUdating}
-                                    value={selectedUser?.firstName}
-                                    setSubmitDisable={(value) => console.log(value)}
-                                    onCancel={() => toggleField('lastName', false)}
-                                    setActive={() => toggleField('lastName', true)}
-                                    userDefineField={{ field: "input" }}
-
-                                >
-                                    {selectedUser?.lastName}
-                                </CustomEdit>
-                                </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>
-                                    Contact Number
-                                </strong>
-                            </td>
-                            <td>{selectedUser?.phone}</td>
-                        </tr>
-                        <tr >
-                            <td>
-                                <strong>
-                                    Roles
-                                </strong>
-                            </td>
-                            <td>
-                                <CustomEdit
-                                    form={form}
-                                    name="roles"
-                                    onSubmit={updateRoles}
-                                    isActive={field.roles}
-                                    loading={rolesUdating}
-                                    value={[{ label: selectedUser?.role, value: selectedUser?.role}]}
-                                    setSubmitDisable={(value) => console.log(value)}
-                                    onCancel={() => toggleField('roles', false)}
-                                    setActive={() => toggleField('roles', true)}
-                                    userDefineField={{ options: roles}}
-                                    type="multiple"
-                                >
-                                    {selectedUser?.role}
-                                </CustomEdit>
-                                </td>
-                        </tr>
-                    </tbody>
-                </table> */}
       </div>
     </Form>
   );

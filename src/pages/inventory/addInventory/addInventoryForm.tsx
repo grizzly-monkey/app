@@ -20,6 +20,7 @@ const AddInventoryForm = () => {
   const dispatch = useDispatch();
   const [form] = AntdForm.useForm();
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
   const loading = useSelector((state) =>
     requestingSelector(state, [InventoryActions.CREATE_INVENTORY], "")
   );
@@ -44,12 +45,18 @@ const AddInventoryForm = () => {
     if (selectedCategory) {
       setSelectedCategory(selectedCategory);
     }
-    form.setFieldsValue({ product: undefined });
-  }
+    form.setFieldsValue({ productId: undefined });
+    setSelectedProduct(null);
+  };
 
   const onProductChange = (value: any) => {
     form.setFieldsValue({ productId: value });
-  }
+    selectedCategory?.products.forEach((product: any) => {
+      if (product.id === value) {
+        setSelectedProduct(product);
+      }
+    });
+  };
 
   const categoryOptions = categories.map((category: any) => ({
     label: category.name,
@@ -71,7 +78,6 @@ const AddInventoryForm = () => {
     }
   }, []);
 
- 
   return (
     <>
       {createInventoryError && <FullAlertError error={createInventoryError} />}
@@ -126,6 +132,7 @@ const AddInventoryForm = () => {
                       )}
                       options={products}
                       onChange={onProductChange}
+                      value={form.getFieldValue("productId")}
                     />
                     <AddProductButton />
                   </Flex>
@@ -138,7 +145,6 @@ const AddInventoryForm = () => {
               <AntdForm.Item
                 label={getTranslation("global.description")}
                 name="description"
-                
               >
                 <Input
                   placeholder={getTranslation("global.descriptionPlaceholder")}
@@ -187,7 +193,17 @@ const AddInventoryForm = () => {
                   placeholder={getTranslation(
                     "inventoryManagement.quantityPlaceholder"
                   )}
-                  suffix={getTranslation("inventoryManagement.unit")}
+                  suffix={
+                    <span
+                      style={{
+                        marginRight: "30px",
+                        borderLeft: "1px solid #d9d9d9",
+                        paddingLeft: "10px",
+                      }}
+                    >
+                      {selectedProduct?.unit ? selectedProduct.unit : "Unit"}
+                    </span>
+                  }
                 />
               </AntdForm.Item>
             </Col>

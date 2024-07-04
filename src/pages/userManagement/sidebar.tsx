@@ -63,6 +63,7 @@ const UserSidebar = () => {
   const dispatch = useDispatch();
   const closeSidebar = () => {
     dispatch(UserActions.unSelectUser());
+    
   };
   const toggleField = (key: string, value: boolean) =>
     setField({ ...field, [key]: value });

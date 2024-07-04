@@ -20,6 +20,7 @@ const selectError = makeSelectErrorModel();
 const InventoryTable = () => {
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [deleteButtonDisabled, setDeleteButtonDisabled] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const inventories = useSelector(InventorySelectors.selectInventories);
@@ -45,6 +46,11 @@ const InventoryTable = () => {
       setProducts(selectedCategory.products);
       setSelectedProduct(null);
     }
+  };
+
+  const onRowSelectionChange = (selectedRowKeys: any, selectedRows: any) => {
+    console.log(selectedRowKeys, selectedRows);
+    setDeleteButtonDisabled(selectedRowKeys.length === 0);
   };
 
   useEffect(() => {
@@ -82,15 +88,14 @@ const InventoryTable = () => {
       className="criclebox tablespace"
     >
       {error && <FullAlertError error={error} />}
-      <Flex style={{width:'100%'}}>
-        <div style={{width:'100%'}}>
+      <Flex style={{ width: "100%" }}>
+        <div style={{ width: "100%" }}>
           <Flex
             justify="space-between"
             gap={20}
             style={{
-              
               padding: "0px 20px",
-              width:'100%'
+              width: "100%",
             }}
           >
             <Flex gap={20}>
@@ -122,13 +127,13 @@ const InventoryTable = () => {
                 style={{ width: "60%" }}
                 onClick={onAddButtonClick}
               />
-              <AntButton
+              <Button
                 icon={<DeleteOutlined />}
-               
+                type="default"
                 danger
                 style={{ width: "20%" }}
+                // disabled={deleteButtonDisabled}
               />
-
             </Flex>
           </Flex>
           <Divider />
@@ -137,7 +142,7 @@ const InventoryTable = () => {
               rowSelection={{
                 type: "checkbox",
                 onChange: (selectedRowKeys, selectedRows) => {
-                  console.log(selectedRowKeys, selectedRows);
+                  onRowSelectionChange(selectedRowKeys, selectedRows);
                 },
               }}
               loading={loading}
