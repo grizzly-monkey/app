@@ -63,6 +63,8 @@
   "global.yes": "Yes",
   "global.areYouSure": "Are you sure",
   "global.delete": "delete",
+  "global.errorOccured": "Error occured",
+
   "global.phoneNumber": "Phone number",
   "global.phoneNumberErrMsg": "Please input your phone number",
   "global.password": "Password",
@@ -120,7 +122,8 @@
   "forgotPassword.resendOtp": "RESEND OTP",
   "forgotPassword.backTo": "Back to",
   "organization.selectYourOrganization": "Select your organization",
-  "profile.updateMsg": "Profile updated successfully!!",
+
+  "farm.farmCreation": "Farm creation",
   "farm.addFarm": "Add farm",
   "farm.farmArea": "Farm Area",
   "farm.cultivableArea": "Cultivable Area",

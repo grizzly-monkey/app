@@ -39,6 +39,16 @@ const AddReservoirs = ({ form, reservoirs, setReservoirs }: AddReservoirs) => {
 
   const deleteReservoir = (key: number) => {
     setReservoirs(reservoirs.filter((reservoir) => reservoir.key !== key));
+
+    const updatedFields = { ...form.getFieldsValue() };
+    Object.keys(updatedFields).forEach((field) => {
+      if (field.includes(`_${key}`)) {
+        delete updatedFields[field];
+      }
+    });
+
+    form.resetFields();
+    form.setFieldsValue(updatedFields);
   };
 
   return (
