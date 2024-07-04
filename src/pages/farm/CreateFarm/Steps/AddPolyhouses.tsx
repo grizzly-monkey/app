@@ -57,8 +57,6 @@ const AddPolyhouses = ({ form, polyhouses, setPolyhouses }) => {
     }
   }, [error]);
 
-  console.log("form initial", form.getFieldsValue());
-
   const deletePolyhouse = (key) => {
     setPolyhouses(polyhouses.filter((polyhouse) => polyhouse.key !== key));
 
