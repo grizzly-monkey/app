@@ -1,8 +1,8 @@
 import Card from "@/components/ui/card";
 import Table from "@/components/ui/table";
 import columns from "./columns";
-import Input from "@/components/common/input";
-import { Divider, Flex, Select, Button as AntButton } from "antd";
+// import Input from "@/components/common/input";
+import { Divider, Flex, Select, Input as AntdInput } from "antd";
 import Button from "@/components/common/button";
 import { useNavigate } from "react-router-dom";
 import routePaths from "@/config/routePaths";
@@ -16,8 +16,15 @@ import FullAlertError from "@/components/common/error/FullAlertError";
 import { getTranslation } from "@/translation/i18n";
 import { DeleteOutlined } from "@ant-design/icons";
 
+const { Search } = AntdInput;
+
 const selectError = makeSelectErrorModel();
 const InventoryTable = () => {
+  const [categoryFilteredInventories, setCategoryFilteredInventories] = useState([]);
+  const [productFilteredInventories, setProductFilteredInventories] = useState([]);
+  const [searchFilteredInventories, setSearchFilteredInventories] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [searchText, setSearchText] = useState("");
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [deleteButtonDisabled, setDeleteButtonDisabled] = useState(true);
@@ -38,7 +45,25 @@ const InventoryTable = () => {
     navigate(routePaths.addInventory);
   };
 
+  const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const filteredData = productFilteredInventories.filter((inventory: any) => {
+      return (
+        inventory.name.toLowerCase().includes(value.toLowerCase()) ||
+        inventory.description.toLowerCase().includes(value.toLowerCase())
+      );
+    });
+    setSearchText(value);
+    setSearchFilteredInventories(filteredData);
+  };
   const onCategoryChange = (value: any) => {
+    if (value === "all") {
+      setCategoryFilteredInventories(inventories);
+      setProductFilteredInventories(inventories);
+      setSearchFilteredInventories(inventories);
+      setSearchText("");
+      return;
+    }
     const selectedCategory = categories.find(
       (category: any) => category.subCategoryId === value
     );
@@ -46,35 +71,74 @@ const InventoryTable = () => {
       setProducts(selectedCategory.products);
       setSelectedProduct(null);
     }
+    const products = selectedCategory?.products || [];
+    const filteredData = inventories.filter((inventory: any) => {
+      return products.some((product: any) => product.id === inventory.productId);
+    })
+    setCategoryFilteredInventories(filteredData);
+    setProductFilteredInventories(filteredData);
+    setSearchFilteredInventories(filteredData);
+    setSearchText("");
   };
 
   const onRowSelectionChange = (selectedRowKeys: any, selectedRows: any) => {
-    console.log(selectedRowKeys, selectedRows);
+    setSelectedRows(selectedRows);
     setDeleteButtonDisabled(selectedRowKeys.length === 0);
   };
-
-  useEffect(() => {
-    if (!inventories.length) dispatch(InventoryActions.fetchInventories());
-    if (!categories.length) dispatch(InventoryActions.fetchSubCategories());
-  }, []);
 
   const categoryOptions = categories.map((category: any) => ({
     label: category.name,
     value: category.subCategoryId,
   }));
+  categoryOptions.unshift({
+    label: "All",
+    value: "all",
+  });
 
   const productOptions = products.map((product: any) => ({
     label: product.name,
     value: product.id,
   }));
+  productOptions.unshift({
+    label: "All",
+    value: "all",
+  });
 
   const onProductChange = (value: any) => {
+    if (value === "all") {
+      setProductFilteredInventories(categoryFilteredInventories);
+      setSearchFilteredInventories(categoryFilteredInventories);
+      setSearchText("");
+      setSelectedProduct(null);
+      return;
+    }
+    const filteredData = categoryFilteredInventories.filter((inventory:any )=> inventory.productId === value);
+    setProductFilteredInventories(filteredData);
+    setSearchFilteredInventories(filteredData);
+    setSearchText("");
     setSelectedProduct(value);
   };
 
   const onRowClick = (record: any) => {
     dispatch(InventoryActions.selectInventory(record));
   };
+
+  const onDeleteButtonClick = () => {
+    selectedRows.forEach((inventory: any) => {
+      dispatch(InventoryActions.deleteInventory(inventory.inventoryId));
+    });
+  }
+
+  useEffect(() => {
+    if (!inventories.length) dispatch(InventoryActions.fetchInventories());
+    if (!categories.length) dispatch(InventoryActions.fetchSubCategories());
+  }, []);
+
+  useEffect(() => {
+    setCategoryFilteredInventories(inventories);
+    setProductFilteredInventories(inventories);
+    setSearchFilteredInventories(inventories);
+  }, [inventories]);
 
   return (
     <Card
@@ -89,7 +153,7 @@ const InventoryTable = () => {
     >
       {error && <FullAlertError error={error} />}
       <Flex style={{ width: "100%" }}>
-        <div style={{ width: "100%" }}>
+        <div  style={{ width: "100%" }}>
           <Flex
             justify="space-between"
             gap={20}
@@ -99,12 +163,23 @@ const InventoryTable = () => {
             }}
           >
             <Flex gap={20}>
-              <Input
+              {/* <Input
                 placeholder={getTranslation(
                   "inventoryManagement.searchInventoryPlaceholder"
                 )}
+
+              /> */}
+              <Search
+               className="inventory"
+                placeholder={getTranslation(
+                  "inventoryManagement.searchInventoryPlaceholder"
+                )}
+                style={{ width: "40%", height: "45px" }}
+                onChange={onSearch}
+                value={searchText}
               />
               <Select
+              
                 placeholder={getTranslation("global.categorySelectPlaceholder")}
                 options={categoryOptions}
                 style={{ width: "27%" }}
@@ -132,7 +207,8 @@ const InventoryTable = () => {
                 type="default"
                 danger
                 style={{ width: "20%" }}
-                // disabled={deleteButtonDisabled}
+                disabled={deleteButtonDisabled}
+                onClick={onDeleteButtonClick}
               />
             </Flex>
           </Flex>
@@ -147,7 +223,7 @@ const InventoryTable = () => {
               }}
               loading={loading}
               columns={columns}
-              dataSource={inventories}
+              dataSource={searchFilteredInventories}
               className="ant-border-space"
               onRow={(record) => {
                 return {
