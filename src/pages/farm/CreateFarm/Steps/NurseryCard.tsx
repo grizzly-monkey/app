@@ -2,11 +2,10 @@ import React from "react";
 import Card from "@/components/ui/card";
 import { MdDelete } from "react-icons/md";
 import Fields from "@/utilities/fields/field";
-import { getTranslation } from "@/translation/i18n";
 
-const ZoneCard = ({ zones, onEdit, onDelete, errors }) => {
-  const hasErrors = (zone) =>
-    errors.some((error) => error.location.includes(`zones.${zone.key}`));
+const NuseryCard = ({ nurseries, onEdit, onDelete, errors }) => {
+  const hasErrors = (nursary) =>
+    errors.some((error) => error.location.includes(`nurseries.${nursary.key}`));
 
   return (
     <div
@@ -17,8 +16,8 @@ const ZoneCard = ({ zones, onEdit, onDelete, errors }) => {
         padding: "10px",
       }}
     >
-      {zones.map((zone, index) => (
-        <div onClick={() => onEdit(zone)}>
+      {nurseries.map((nusery, index) => (
+        <div key={index} onClick={() => onEdit(nusery)}>
           <Card
             bordered={false}
             title={`#${index + 1}`}
@@ -26,8 +25,8 @@ const ZoneCard = ({ zones, onEdit, onDelete, errors }) => {
               borderRadius: "10px",
               boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
             }}
-            className={`cursor_pointer ${
-              hasErrors(zone) ? "zone-card-error" : ""
+            className={`zone-card ${
+              hasErrors(nusery) ? "zone-card-error" : ""
             }`}
             extra={
               <div
@@ -38,7 +37,7 @@ const ZoneCard = ({ zones, onEdit, onDelete, errors }) => {
                 }}
                 onClick={(e) => {
                   e.stopPropagation();
-                  onDelete(zone.key);
+                  onDelete(nusery.key);
                 }}
               >
                 <MdDelete />
@@ -48,23 +47,17 @@ const ZoneCard = ({ zones, onEdit, onDelete, errors }) => {
             <Fields
               info={[
                 {
-                  label: `${getTranslation("global.name")}`,
-                  value: <span style={{ width: "100%" }}>{zone.name}</span>,
+                  label: "Name",
+                  value: <span style={{ width: "100%" }}>{nusery.name}</span>,
                 },
-                {
-                  label: `${getTranslation("global.area")}`,
-                  value: `${zone.area}`,
-                },
+                { label: "Area", value: `${nusery.area}` },
               ]}
             />
           </Card>
-          {hasErrors(zone) && (
-            <span style={{ color: "red" }}>Error occured</span>
-          )}
         </div>
       ))}
     </div>
   );
 };
 
-export default ZoneCard;
+export default NuseryCard;

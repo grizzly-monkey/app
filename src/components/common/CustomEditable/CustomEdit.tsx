@@ -1,25 +1,27 @@
-import React, { ReactNode, useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
-import classNames from 'classnames'
-import { Button } from 'antd'
-import { CheckOutlined, CloseOutlined, EditOutlined } from '@ant-design/icons'
-import styles from './Editable.module.scss'
-import UserDefineFields, { getPresetType } from '../UserDefineField/UserDefineFields'
-import style from '../UserDefineField/userDefineField.module.scss'
-import { arrayToString } from '@/utilities/typeConversion'
+import React, { ReactNode, useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import { Button } from "antd";
+import { CheckOutlined, CloseOutlined, EditOutlined } from "@ant-design/icons";
+import styles from "./Editable.module.scss";
+import UserDefineFields, {
+  getPresetType,
+} from "../UserDefineField/UserDefineFields";
+import style from "../UserDefineField/userDefineField.module.scss";
+import { arrayToString } from "@/utilities/typeConversion";
 // import GlabbrErrorModel from '../../../../models/GlabbrErrorModel'
 
 export const userDefineFieldType = {
-  INT: 'int',
-  FLOAT: 'float',
-  STRING: 'string',
-  BOOL: 'bool',
-  ARRAY_INT: 'array-int',
-  ARRAY_STRING: 'array-string',
-  ARRAY_FLOAT: 'array-float',
-  DATE: 'date',
+  INT: "int",
+  FLOAT: "float",
+  STRING: "string",
+  BOOL: "bool",
+  ARRAY_INT: "array-int",
+  ARRAY_STRING: "array-string",
+  ARRAY_FLOAT: "array-float",
+  DATE: "date",
   // UNKNOWN: 'unknown',
-}
+};
 
 interface CustomEditProps {
   onSubmit: (args: any) => void;
@@ -40,7 +42,7 @@ interface CustomEditProps {
   emptyLabel?: any;
   placeholder?: string;
   error?: any;
-  customValidator?: () => void;
+  customValidator?: (context: object, value: string) => Promise<void>;
   disabled?: boolean;
   tooltip?: React.FC;
   isFullWidth?: boolean;
@@ -76,65 +78,66 @@ const CustomEdit = ({
   disabled,
   bottomMarginLevel = 4,
   isSubmitDisable,
-  setSubmitDisable,
   containerDataTestId,
-
+  setSubmitDisable,
+  customValidator,
 }: CustomEditProps) => {
   const cancelButtonRef = React.useRef<HTMLButtonElement | null>(null);
-  const [valueChanged, setValueChanged] = React.useState(false)
-  const isLabel = !!label
-  let presetType, defaultValues
+  const [valueChanged, setValueChanged] = React.useState(false);
+  const isLabel = !!label;
+  let presetType, defaultValues;
   if (preset) {
-    presetType = getPresetType(type)
-  } else if (type === userDefineFieldType.BOOL) presetType = userDefineFieldType.BOOL
-  else presetType = type
-  if (value === null) defaultValues = children
-  else defaultValues = value
+    presetType = getPresetType(type);
+  } else if (type === userDefineFieldType.BOOL)
+    presetType = userDefineFieldType.BOOL;
+  else presetType = type;
+  if (value === null) defaultValues = children;
+  else defaultValues = value;
   const _onChange = (args: any[]) => {
-    setValueChanged(true)
-    setSubmitDisable(false)
-    if (onChange) onChange(args)
-  }
+    setValueChanged(true);
+    setSubmitDisable(false);
+    if (onChange) onChange(args);
+  };
 
-  const [emails, setEmails] = useState([])
+  const [emails, setEmails] = useState([]);
 
   const _onSubmit = (e: any) => {
-    e.preventDefault()
+    e.preventDefault();
     if (userDefineField.emailInput) {
-      onSubmit(emails)
-      return
+      onSubmit(emails);
+      return;
     }
     if (!valueChanged) {
-      onCancel()
-      return
+      onCancel();
+      return;
     }
-    if (loading) return null
-    if (e.relatedTarget === cancelButtonRef.current) return
+    if (loading) return null;
+    if (e.relatedTarget === cancelButtonRef.current) return;
 
     const errors = form.getFieldError(
-      userDefineField.fieldId ? [userDefineField.fieldId, name] : [name],
-    )
-    if (errors.length !== 0) return null
+      userDefineField.fieldId ? [userDefineField.fieldId, name] : [name]
+    );
+    if (errors.length !== 0) return null;
     const value = form.getFieldValue(
-      userDefineField.fieldId ? [userDefineField.fieldId, name] : [name],
-    )
-    if (type === 'date') {
-      onSubmit(value ? value.toDate().getTime() : null)
-      return
+      userDefineField.fieldId ? [userDefineField.fieldId, name] : [name]
+    );
+    if (type === "date") {
+      onSubmit(value ? value.toDate().getTime() : null);
+      return;
     }
-    onSubmit(value)
-  }
+    onSubmit(value);
+  };
   // const Container =
   //   tooltip ||
   //   function ({ children }:any) {
   //     return <>{children}</>
   //   }
   useEffect(() => {
-    if (disabled && isActive) onCancel()
-  }, [disabled])
+    if (disabled && isActive) onCancel();
+  }, [disabled]);
   const _setActive = () => {
-    if (!disabled) setActive()
-  }
+    if (!disabled) setActive();
+  };
 
   return (
     <>
@@ -142,22 +145,25 @@ const CustomEdit = ({
         <div
           data-testid={containerDataTestId}
           className={classNames({
-            'editable-trigger': true,
+            "editable-trigger": true,
             [`${style.grid} mb-${bottomMarginLevel}`]: isLabel,
           })}
           onClick={_setActive}
         >
           {isLabel ? <div className="text-gray-6 pl-0">{label}</div> : null}
           <div
-            className={`pr-0 text-left ${!isEmpty ? 'text-dark' : null} ${isLabel ? 'ml-3' : null}`}
+            className={`pr-0 text-left ${!isEmpty ? "text-dark" : null} ${
+              isLabel ? "ml-3" : null
+            }`}
           >
             <div className={`${styles.editableBox}`}>
-              <div className={`${isEmpty ? 'text-gray-6' : null} d-flex`}>
+              <div className={`${isEmpty ? "text-gray-6" : null} d-flex`}>
                 <div style={{ minWidth: 0 }} className="text-break">
                   {isEmpty ? emptyLabel : arrayToString(children)}
                 </div>
                 <div>
-                  {(preset && (type === 'date' || type === 'bool')) || isHidden ? null : (
+                  {(preset && (type === "date" || type === "bool")) ||
+                  isHidden ? null : (
                     <>
                       {disabled && (
                         <Button
@@ -180,19 +186,23 @@ const CustomEdit = ({
         </div>
       ) : (
         <>
-          <form
-            onBlur={()=>{_onSubmit}}
-            className={` ${isFullWidth ? styles.fillWidth : ''}`}
-            style={{ display: 'flex' }}
+          <div
+            onBlur={_onSubmit}
+            className={` ${isFullWidth ? styles.fillWidth : ""}`}
+            style={{ display: "flex" }}
           >
-            <div className="flex-grow-1 " style={{ minWidth: 0, cursor: 'text' }}>
+            <div
+              className="flex-grow-1 "
+              style={{ minWidth: 0, cursor: "text" }}
+            >
               <UserDefineFields
-                fieldDecorator={userDefineField.fieldId?[`${userDefineField.fieldId}`, `${name}`]:[`${name}`]}
+                fieldDecorator={[`${userDefineField.fieldId}`, `${name}`]}
                 field={{
                   type: presetType,
                   defaultValue: defaultValues,
                   onlyFromLov: userDefineField?.onlyFromLov,
                   listOfValues: userDefineField?.listOfValues,
+                  inputDataTestId: userDefineField.inputDataTestId,
                   options: userDefineField.options,
                   onChange: _onChange,
                   searchable: !!userDefineField.searchable,
@@ -200,17 +210,22 @@ const CustomEdit = ({
                   escapeValidation: userDefineField?.escapeValidation,
                   emailInput: userDefineField?.emailInput,
                   setEmails: setEmails,
-                  inputDataTestId: userDefineField.inputDataTestId,
                 }}
-                placeholder={placeholder || ''}
+                placeholder={placeholder || ""}
                 card
                 // tagRender={tagRender}
                 form={form}
-              // customValidator={customValidator}
+                customValidator={customValidator}
               />
             </div>
-            <div className="pr-0" style={{ height: '33px', display: 'flex', alignItems: 'center' }}>
-              <div className="d-flex align-items-center " style={{ display: 'flex', alignItems: 'center' }}>
+            <div
+              className="pr-0"
+              style={{ height: "33px", display: "flex", alignItems: "center" }}
+            >
+              <div
+                className="d-flex align-items-center "
+                style={{ display: "flex", alignItems: "center" }}
+              >
                 <div className="mx-1">
                   <Button
                     type="primary"
@@ -220,6 +235,7 @@ const CustomEdit = ({
                     icon={<CheckOutlined />}
                     loading={loading}
                     id="custom-edit-submit-btn"
+                    data-testid={`${name}-save`}
                   />
                 </div>
                 <div className="mx-1">
@@ -229,16 +245,17 @@ const CustomEdit = ({
                     onClick={onCancel}
                     icon={<CloseOutlined />}
                     id="custom-edit-cancel-btn"
+                    data-testid={`${name}-cancel`}
                   />
                 </div>
               </div>
             </div>
-          </form>
+          </div>
         </>
       )}
     </>
-  )
-}
+  );
+};
 
 CustomEdit.propTypes = {
   onSubmit: PropTypes.func.isRequired,
@@ -267,8 +284,6 @@ CustomEdit.propTypes = {
   isHidden: PropTypes.bool,
   setSubmitDisable: PropTypes.func.isRequired,
   isSubmitDisable: PropTypes.bool,
-}
+};
 
-
-
-export default CustomEdit
+export default CustomEdit;

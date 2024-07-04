@@ -45,20 +45,20 @@
 
 // export const valuesToKeys = (obj, values) => Object.keys(obj).filter((k) => values.includes(obj[k]))
 
-export const arrayToString = (value:any) => {
+export const arrayToString = (value: any) => {
   if (value) {
-    let newValue = value
+    let newValue = value;
     if (Array.isArray(value)) {
       newValue = value.map((data, i) => {
-        if (i === value.length - 1) return data
-        return `${data},  `
-      })
-    } else if (value.toString() === 'true') newValue = 'Yes'
-    else if (value.toString() === 'false') newValue = 'No'
-    return newValue
+        if (i === value.length - 1) return data;
+        return `${data},  `;
+      });
+    } else if (value.toString() === "true") newValue = "Yes";
+    else if (value.toString() === "false") newValue = "No";
+    return newValue;
   }
-  return value
-}
+  return value;
+};
 
 // export default userDefineFieldTypeConversion
 

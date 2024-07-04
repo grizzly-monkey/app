@@ -1,109 +1,79 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { Card, Col, Row } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { Spin } from "antd";
 import Fields from "@/utilities/fields/field";
 import FarmSelectors from "@/redux/farm/FarmSelectors";
+import FarmActions from "@/redux/farm/action";
+import { deviceValue } from "./utilities";
+import { getTranslation } from "@/translation/i18n";
+import requestingSelector from "@/redux/requesting/requestingSelector";
+import { LoadingOutlined } from "@ant-design/icons";
+import Card from "@/components/ui/card";
+import { Farm } from "./types";
+import { makeSelectErrorModel } from "@/redux/error/errorSelector";
+import FullAlertError from "@/components/common/error/FullAlertError";
+
+const selectError = makeSelectErrorModel();
 
 const FarmCard = () => {
+  const dispatch = useDispatch();
   const farms = useSelector(FarmSelectors.SelectDenormalizeFarm);
-  console.log("farms in card", farms);
-  const cardData = [
-    {
-      name: "Farm name 1",
-      area: 500,
-      cultivableArea: 400,
-      deviceStatus: "Active",
-    },
+  const loading = useSelector((state) =>
+    requestingSelector(state, [FarmActions.REQUEST_FARMS])
+  );
 
-    {
-      name: "Farm name 2",
-      area: 500,
-      cultivableArea: 400,
-      deviceStatus: "Active",
-    },
-
-    {
-      name: "Farm name 3",
-      area: 500,
-      cultivableArea: 400,
-      deviceStatus: "Active",
-    },
-
-    {
-      name: "Farm name 4",
-      area: 500,
-      cultivableArea: 400,
-      deviceStatus: "Active",
-    },
-
-    {
-      name: "Farm name 5",
-      area: 500,
-      cultivableArea: 400,
-      deviceStatus: "Active",
-    },
-  ];
-
-  // if (farm && !farm?.device) {
-  //   deviceStatus = <Chip label="Not configured" color="warning" />;
-  // } else if (farm?.device?.status === "up") {
-  //   deviceStatus = <Chip label="Active" color="success" />;
-  // } else if (farm?.device?.status === "down") {
-  //   deviceStatus = <Chip label="Down" color="error" />;
-  // }
-
-  const deviceValue = (device) => {
-    if (!device)
-      return (
-        <span className="activeTag" style={{ backgroundColor: "orange" }}>
-          Not configured
-        </span>
-      );
-    else if (device?.status === "up")
-      return (
-        <span className="activeTag" style={{ backgroundColor: "green" }}>
-          Active
-        </span>
-      );
-    else if (device?.status === "down")
-      return (
-        <span className="activeTag" style={{ backgroundColor: "red" }}>
-          Down
-        </span>
-      );
-
-    return <></>;
-  };
+  const error = useSelector((state) =>
+    selectError(state, FarmActions.REQUEST_FARMS_FINISHED)
+  );
 
   return (
     <div>
-      <div className="grid-container">
-        {farms &&
-          farms.map((card, i) => (
+      {loading && (
+        <span style={{ display: "flex", justifyContent: "center" }}>
+          <Spin indicator={<LoadingOutlined spin />} size="large" />
+        </span>
+      )}
+
+      {error && <FullAlertError error={error} />}
+
+      {!loading && !error && farms.length === 0 && (
+        <span
+          style={{ color: "gray", display: "flex", justifyContent: "center" }}
+        >
+          {getTranslation("farm.noFarms")}
+        </span>
+      )}
+      {!loading && farms && (
+        <div className="grid-container">
+          {farms.map((card: Farm, i: string) => (
             <div key={i} className="grid-item">
               <Card
                 title={card?.name}
                 bordered={false}
-                style={{
-                  borderRadius: "10px",
-                  boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-                }}
+                className="cursor_pointer shadow-box"
+                onClick={() => dispatch(FarmActions.setSelectedFarm(card))}
               >
                 <div>
                   <Fields
                     info={[
-                      { label: "Farm Area", value: <span>{card.area}</span> },
                       {
-                        label: "Cultivable Area",
+                        label: `${getTranslation("farm.farmArea")}`,
+                        value: <span>{card?.area}</span>,
+                      },
+                      {
+                        label: `${getTranslation("farm.cultivableArea")}`,
                         value: (
                           <span style={{ flex: "2" }}>
-                            {card.cultivableArea}
+                            {card?.cultivableArea}
                           </span>
                         ),
                       },
                       {
-                        label: "Device status",
-                        value: deviceValue(card.device),
+                        label: `${getTranslation("farm.deviceStatus")}`,
+                        value: (
+                          <span style={{ flexWrap: "wrap" }}>
+                            {deviceValue(card?.device)}
+                          </span>
+                        ),
                       },
                     ]}
                   />
@@ -111,9 +81,8 @@ const FarmCard = () => {
               </Card>
             </div>
           ))}
-
-        {!farms && <span style={{ backgroundColor: "gray" }}>No farms</span>}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

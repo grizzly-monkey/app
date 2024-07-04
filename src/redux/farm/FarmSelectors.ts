@@ -10,9 +10,10 @@ export default class FarmSelectors {
 
   static SelectDenormalizeFarm = createSelector(
     (state) => state?.farms?.farms,
-    (normalizedFarms) => farmDenormalizeSchema(normalizedFarms)
+    (normalizedFarms) => farmDenormalizeSchema(normalizedFarms) || []
   );
 
+  static SelectSelectedFarm = (state: RootState) => state?.farms?.selectedFarm;
   static SelectActiveFarmOptions = createSelector(
     this.SelectDenormalizeFarm,
     (farms: FarmModel[]) => {

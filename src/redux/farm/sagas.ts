@@ -1,8 +1,3 @@
-import { all, call, cancel, put, select, takeEvery } from "redux-saga/effects";
-import { runEffect } from "@/utilities/actionUtility";
-import { SagaAction } from "@/types/redux";
-import FarmActions from "./action";
-import FarmsEffects from "./effects";
 import { resultHasError } from "@/utilities/onError";
 import URLParamsConstant from "@/config/URLParamsConstant";
 import {
@@ -11,16 +6,97 @@ import {
 } from "@/utilities/localStorage";
 import FarmSelectors from "./FarmSelectors";
 import { LOCAL_STORAGE_KEYS } from "@/config/consts";
+import { all, call, takeEvery, select, cancel, put } from "redux-saga/effects";
+import { runEffect } from "@/utilities/actionUtility";
+import { SagaAction } from "@/types/redux";
+import FarmActions from "./action";
+import FarmsEffects from "./effects";
+import { Farm } from "@/pages/farm/types";
+import { normalizeData } from "@/types/normalize";
+import ErrorModel from "@/models/error/errorModel";
+import { successToast } from "@/utilities/toast";
 
-function* REQUEST_FARMS(action: SagaAction): Generator {
-  const result: any = yield call(runEffect, action, FarmsEffects.getFarms);
-
-  if (resultHasError(result)) {
-    yield cancel();
-  }
+function* REQUEST_FARMS(action: SagaAction) {
+  const farms: Farm[] = yield select(FarmSelectors.SelectDenormalizeFarm);
+  if (farms.length === 0 || action.payload)
+    yield call(runEffect, action, FarmsEffects.getFarms);
 
   yield put(FarmActions.getFarmFromStorage());
 }
+
+function* ADD_FARM(action: SagaAction) {
+  const { payload } = action;
+  yield call(runEffect, action, FarmsEffects.addFarm, payload);
+}
+
+function* ADD_POLYHOUSE_TO_FARM(action: SagaAction) {
+  const { payload } = action;
+  const { farmId } = yield select(FarmSelectors.SelectSelectedFarm);
+  yield call(
+    runEffect,
+    action,
+    FarmsEffects.addPolyhouseToFarm,
+    farmId,
+    payload
+  );
+}
+
+function* UPDATE_FARM(action: SagaAction) {
+  const { payload } = action;
+  const { farmId } = yield select(FarmSelectors.SelectSelectedFarm);
+  const result: Farm | ErrorModel = yield call(
+    runEffect,
+    action,
+    FarmsEffects.updateFarm,
+    farmId,
+    payload
+  );
+  if (resultHasError(result as ErrorModel)) yield cancel();
+
+  const farms: normalizeData = yield select(FarmSelectors.SelectFarmList);
+  const updatedFarms = {
+    entities: {
+      farms : {
+        ...farms.entities.farms,
+        [farmId]: result,
+      }
+    },
+    result: farms.result,
+  };
+
+
+  yield put(FarmActions.updateFarmLocally(result as Farm, updatedFarms));
+}
+
+
+function* DELETE_FARM(action: SagaAction) {
+  const { farmId } = yield select(FarmSelectors.SelectSelectedFarm);
+
+  const result: Farm | ErrorModel = yield call(
+    runEffect,
+    action,
+    FarmsEffects.deleteFarm,
+    farmId,
+  );
+  if (resultHasError(result as ErrorModel)) yield cancel();
+
+  const farms: normalizeData = yield select(FarmSelectors.SelectFarmList);
+  
+  const updatedResult = (farms.result as string[]).filter((id: string) => id !== farmId);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { [farmId]: _, ...newFarmsEntities } = farms.entities.farms;
+
+  const updatedFarms = {
+    entities: {
+      farms: {...newFarmsEntities},
+    },
+    result: updatedResult,
+  };
+
+  successToast("Farm is successfully deleted")
+  yield put(FarmActions.updateFarmLocally(null, updatedFarms));
+}
+
 
 function* GET_FARM_FROM_STORAGE(): Generator {
   const searchParams = new URLSearchParams(window.location.search);
@@ -59,43 +135,14 @@ function* GET_FARM_FROM_STORAGE_FINISHED(action: SagaAction) {
   );
 }
 
-function* ADD_FARM(action: SagaAction): Generator {
-  const { payload } = action;
-  const { nutrientType, nutrientDilutionRatio, ...remainingFields } = payload;
-  const [numerator, denominator] = nutrientDilutionRatio.split(":").map(Number);
-  const farmPayload = {
-    ...remainingFields,
-    nutrient: {
-      type: nutrientType,
-      dilutionRatio: {
-        numerator: parseInt(numerator),
-        denominator: parseInt(denominator),
-      },
-    },
-    area: parseFloat(remainingFields.area),
-    cultivableArea: parseFloat(remainingFields.cultivableArea),
-  };
-  console.log(
-    "ADD_FARM",
-    action,
-    payload,
-    nutrientType,
-    nutrientDilutionRatio,
-    farmPayload
-  );
-
-  const result = yield call(
-    runEffect,
-    action,
-    FarmsEffects.addFarm,
-    farmPayload
-  );
-}
 
 export default function* rootSaga() {
   yield all([
     takeEvery(FarmActions.REQUEST_FARMS, REQUEST_FARMS),
     takeEvery(FarmActions.ADD_FARM, ADD_FARM),
+    takeEvery(FarmActions.ADD_POLYHOUSE_TO_FARM, ADD_POLYHOUSE_TO_FARM),
+    takeEvery(FarmActions.UPDATE_FARM, UPDATE_FARM),
+    takeEvery(FarmActions.DELETE_FARM, DELETE_FARM),
     takeEvery(FarmActions.GET_FARM_FROM_STORAGE, GET_FARM_FROM_STORAGE),
     takeEvery(
       FarmActions.GET_FARM_FROM_STORAGE_FINISHED,

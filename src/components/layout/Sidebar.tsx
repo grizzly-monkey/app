@@ -30,7 +30,7 @@ function Sidenav() {
         <SubMenu
           key="farm"
           className={
-            location.pathname === routePaths.farm
+            location.pathname.includes(routePaths.farm)
               ? "selectedFarmTitle farmTitle"
               : "farmTitle"
           }
@@ -60,7 +60,7 @@ function Sidenav() {
           <Menu.Item
             key="polyhouses"
             className={
-              routePaths.polyhouse === location.pathname
+              location.pathname.includes(routePaths.polyhouse)
                 ? "ant-menu-item-selected"
                 : ""
             }
@@ -77,7 +77,7 @@ function Sidenav() {
           <Menu.Item
             key="reservoirs"
             className={
-              routePaths.reservoirs === location.pathname
+              location.pathname.includes(routePaths.reservoirs)
                 ? "ant-menu-item-selected"
                 : ""
             }
@@ -94,7 +94,7 @@ function Sidenav() {
           <Menu.Item
             key="inventory"
             className={
-              routePaths.inventory === location.pathname
+              location.pathname.includes(routePaths.inventory)
                 ? "ant-menu-item-selected"
                 : ""
             }
@@ -111,7 +111,7 @@ function Sidenav() {
           <Menu.Item
             key="tasks"
             className={
-              routePaths.tasks === location.pathname
+              location.pathname.includes(routePaths.tasks)
                 ? "ant-menu-item-selected"
                 : ""
             }
@@ -130,7 +130,7 @@ function Sidenav() {
         <Menu.Item
           key="/workflow"
           className={
-            routePaths.workflow === location.pathname
+            location.pathname.includes(routePaths.workflow)
               ? "ant-menu-item-selected"
               : ""
           }
@@ -147,7 +147,7 @@ function Sidenav() {
         <Menu.Item
           key="/users"
           className={
-            routePaths.userManagement === location.pathname
+            location.pathname.includes(routePaths.userManagement)
               ? "ant-menu-item-selected"
               : ""
           }
