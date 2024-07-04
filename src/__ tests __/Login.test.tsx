@@ -1,101 +1,115 @@
-// import { fireEvent, screen, waitFor } from "@testing-library/react";
-// import Login from "@/pages/auth/login";
-// import "@testing-library/jest-dom";
-// import { setupDefaultStore } from "./utils/setupTests";
-// import { renderWithProvider } from "./utils/testUtils";
-// import SessionActions from "@/redux/session/actions";
-// import { errorToast } from "@/utilities/toast";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
+import Login from "@/pages/auth/login";
+import "@testing-library/jest-dom";
+import { setupDefaultStore } from "./utils/setupTests";
+import { renderWithProvider } from "./utils/testUtils";
+import SessionActions from "@/redux/session/actions";
+import { errorToast } from "@/utilities/toast";
+import { getTranslation } from "@/translation/i18n";
 
-// jest.mock("@/utilities/toast", () => ({
-//   errorToast: jest.fn(),
-// }));
+jest.mock("@/utilities/toast", () => ({
+  errorToast: jest.fn(),
+}));
 
-// describe("Login Page", () => {
-//   let store: any;
+describe("Login Page", () => {
+  let store: any;
 
-//   beforeEach(() => {
-//     store = setupDefaultStore();
-//   });
+  beforeEach(() => {
+    store = setupDefaultStore();
+  });
 
-//   test("should render the login form", () => {
-//     renderWithProvider(<Login />, { store });
+  test("should render the login form", () => {
+    renderWithProvider(<Login />, { store });
 
-//     expect(screen.getByText("Welcome Back!")).toBeInTheDocument();
-//     expect(screen.getByText("Please Sign in to continue")).toBeInTheDocument();
-//     expect(screen.getByText("Phone number")).toBeInTheDocument();
-//     expect(screen.getByText("Password")).toBeInTheDocument();
-//     expect(screen.getByText("Remember me")).toBeInTheDocument();
-//     expect(screen.getByRole("button", { name: "Sign in" })).toBeInTheDocument();
-//   });
+    expect(
+      screen.getByText(getTranslation("login.welcomeBack"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("login.pleaseSignToContinue"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("global.phoneNumber"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("global.password"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(getTranslation("login.rememberMe"))
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: getTranslation("global.signIn") })
+    ).toBeInTheDocument();
+  });
 
-//   test("should display error messages when inputs are empty and form is submitted", async () => {
-//     renderWithProvider(<Login />, { store });
+  test("should display error messages when inputs are empty and form is submitted", async () => {
+    renderWithProvider(<Login />, { store });
 
-//     fireEvent.click(screen.getByText("Sign in"));
-//     expect(
-//       await screen.findByText("Please input your phone number!")
-//     ).toBeInTheDocument();
-//     expect(
-//       await screen.findByText("Please input your password!")
-//     ).toBeInTheDocument();
-//   });
+    fireEvent.click(screen.getByText(getTranslation("global.signIn")));
 
-//   test("should dispatch login action with valid inputs", async () => {
-//     renderWithProvider(<Login />, { store });
+    expect(
+      await screen.findByText(getTranslation("global.phoneNumberErrMsg"))
+    ).toBeInTheDocument();
+    expect(
+      await screen.findByText(getTranslation("global.passwordErrMsg"))
+    ).toBeInTheDocument();
+  });
 
-//     fireEvent.change(screen.getByTestId("phone-number-input"), {
-//       target: { value: "1234567890" },
-//     });
-//     fireEvent.change(screen.getByTestId("password-input"), {
-//       target: { value: "password" },
-//     });
+  test("should dispatch login action with valid inputs", async () => {
+    renderWithProvider(<Login />, { store });
 
-//     fireEvent.click(screen.getByText("Sign in"));
+    fireEvent.change(screen.getByTestId("phone-number-input"), {
+      target: { value: "1234567890" },
+    });
+    fireEvent.change(screen.getByTestId("password-input"), {
+      target: { value: "password" },
+    });
 
-//     await waitFor(() => {
-//       expect(store.dispatch).toHaveBeenCalledWith(
-//         SessionActions.login({
-//           phoneNumber: "1234567890",
-//           password: "password",
-//         })
-//       );
-//     });
-//   });
+    fireEvent.click(screen.getByText(getTranslation("global.signIn")));
 
-//   test("should show loading state when login is in progress", () => {
-//     store = setupDefaultStore({
-//       requesting: {
-//         [SessionActions.REQUEST_LOGIN]: true,
-//       },
-//     });
+    await waitFor(() => {
+      expect(store.dispatch).toHaveBeenCalledWith(
+        SessionActions.login({
+          phoneNumber: "1234567890",
+          password: "password",
+        })
+      );
+    });
+  });
 
-//     renderWithProvider(<Login />, { store });
-//     expect(screen.getByRole("button", { name: /sign in/i })).toBeDisabled();
-//   });
+  test("should show loading state when login is in progress", () => {
+    store = setupDefaultStore({
+      requesting: {
+        [SessionActions.REQUEST_LOGIN]: true,
+      },
+    });
 
-//   test("should display error toast on login error", async () => {
-//     store = setupDefaultStore({
-//       error: {
-//         [SessionActions.REQUEST_LOGIN_FINISHED]: {
-//           errors: [{ message: "Invalid credentials" }],
-//         },
-//       },
-//     });
+    renderWithProvider(<Login />, { store });
+    expect(screen.getByRole("button", { name: /sign in/i })).toBeDisabled();
+  });
 
-//     renderWithProvider(<Login />, { store });
+  test("should display error toast on login error", async () => {
+    store = setupDefaultStore({
+      error: {
+        [SessionActions.REQUEST_LOGIN_FINISHED]: {
+          errors: [{ message: "Invalid credentials" }],
+        },
+      },
+    });
 
-//     expect(errorToast).toHaveBeenCalledWith("Invalid credentials");
-//   });
+    renderWithProvider(<Login />, { store });
 
-//   test("should display account approval status error", () => {
-//     store = setupDefaultStore({
-//       session: {
-//         accountApprovalStatus: "Account not approved",
-//       },
-//     });
+    expect(errorToast).toHaveBeenCalledWith("Invalid credentials");
+  });
 
-//     renderWithProvider(<Login />, { store });
+  test("should display account approval status error", () => {
+    store = setupDefaultStore({
+      session: {
+        accountApprovalStatus: "Account not approved",
+      },
+    });
 
-//     expect(screen.getByText("Account not approved")).toBeInTheDocument();
-//   });
-// });
+    renderWithProvider(<Login />, { store });
+
+    expect(screen.getByText("Account not approved")).toBeInTheDocument();
+  });
+});

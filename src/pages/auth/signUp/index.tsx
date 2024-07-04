@@ -16,6 +16,7 @@ import AccountActions from "@/redux/account/actions";
 import { removeByActionType } from "@/redux/error/errorAction";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import { makeRequestingSelector } from "@/redux/requesting/requestingSelector";
+import { getTranslation } from "@/translation/i18n";
 import { registerType } from "@/types/auth";
 import { getKeyForAction } from "@/utilities/actionUtility";
 // import { applyFieldErrorsToForm, hasFieldErrors } from "@/utilities/formUtils";
@@ -71,7 +72,11 @@ const SignUp = () => {
   );
 
   const onFinish = (values: registerType) => {
-    const payload = { ...values };
+    const payload = {
+      ...values,
+      email: "dummy@gmail.com",
+      address: "pune,maharashtra",
+    };
     payload.phone = `+${payload.phone}`;
     delete payload.confirmPassword;
 
@@ -86,7 +91,7 @@ const SignUp = () => {
       if (!value || value.length === 0 || isPasswordValid) {
         resolve();
       } else {
-        reject(new Error("Password does not agree to the policy"));
+        reject(new Error(getTranslation("global.passwordPolicyNotAgree")));
       }
     });
   };
@@ -126,10 +131,11 @@ const SignUp = () => {
               <img src={Images.LOGO} />
             </div>
             <div className="form_header_content">
-              <p className="heading1">Create Your Account</p>
+              <p className="heading1">
+                {getTranslation("signUp.createYourAccount")}
+              </p>
               <p className="description">
-                Fill in the details blow to register your absolutely free
-                account.
+                {getTranslation("signUp.createYourAccountTagLine")}
               </p>
             </div>
           </div>
@@ -139,62 +145,54 @@ const SignUp = () => {
           <Form form={form} onFinish={onFinish} layout="vertical">
             <div className="input_row">
               <PhoneInput
-                label="Phone number"
+                label={getTranslation("global.phoneNumber")}
                 name="phone"
                 rules={[
                   {
                     required: true,
-                    message: "Please input your phone number!",
+                    message: getTranslation("global.phoneNumberErrMsg"),
                   },
                 ]}
               />
 
-              {/* <Input
-                label="email"
-                name="email"
-                placeholder="Enter your email"
-              />
               <Input
-                label="Address"
-                name="address"
-                placeholder="Enter your address"
-              /> */}
-              <Input
-                label="Organization name"
+                label={getTranslation("signUp.organizationName")}
                 name="organisationName"
                 testId="organisation-name"
                 rules={[
                   {
                     required: true,
-                    message: "Please input your organization name!",
+                    message: getTranslation("signUp.organizationNameErrMsg"),
                   },
                 ]}
-                placeholder="Enter your organization name"
+                placeholder={getTranslation(
+                  "signUp.organizationNamePlaceholder"
+                )}
               />
 
               <Input
-                label="First name"
+                label={getTranslation("global.firstName")}
                 name="firstName"
                 testId="first-name"
                 rules={[
                   {
                     required: true,
-                    message: "Please input your first name!",
+                    message: getTranslation("global.firstNameErrMsg"),
                   },
                 ]}
-                placeholder="Enter your first name"
+                placeholder={getTranslation("global.firstNamePlaceholder")}
               />
               <Input
-                label="Last name"
+                label={getTranslation("global.lastName")}
                 name="lastName"
                 testId="last-name"
                 rules={[
                   {
                     required: true,
-                    message: "Please input your last name!",
+                    message: getTranslation("global.lastNameErrMsg"),
                   },
                 ]}
-                placeholder="Enter your last name"
+                placeholder={getTranslation("global.lastNamePlaceholder")}
               />
 
               <Tooltip
@@ -208,16 +206,16 @@ const SignUp = () => {
                     policy={passwordPolicy}
                   />
                 }
-                placement="right"
+                placement="top"
               >
                 <Input
-                  label="Password"
+                  label={getTranslation("global.password")}
                   name="password"
                   testId="password"
                   rules={[
                     {
                       required: true,
-                      message: "Please input your password!",
+                      message: getTranslation("global.passwordErrMsg"),
                     },
                     { validator: (_, value) => validatePassword(value) },
                   ]}
@@ -232,55 +230,59 @@ const SignUp = () => {
                   }}
                   iconRender={renderPasswordIcon()}
                   isPasswordInput
-                  placeholder="Enter your password"
+                  placeholder={getTranslation("global.passwordPlaceholder")}
                 />
               </Tooltip>
               <Input
-                label="Confirm Password"
+                label={getTranslation("global.confirmPassword")}
                 name="confirmPassword"
                 testId="confirm-password"
                 rules={[
                   {
                     required: true,
-                    message: "Please input your confirm password!",
+                    message: getTranslation("global.confirmPasswordErrMsg"),
                   },
                   ({ getFieldValue }) => ({
                     validator(_, value) {
                       if (!value || getFieldValue("password") === value) {
                         return Promise.resolve();
                       }
-                      return Promise.reject("Password don't match");
+                      return Promise.reject(
+                        getTranslation("global.passwordDontMatch")
+                      );
                     },
                   }),
                 ]}
                 iconRender={renderPasswordIcon()}
                 isPasswordInput
-                placeholder="Enter your confirm password"
+                placeholder={getTranslation(
+                  "global.confirmPasswordPlaceholder"
+                )}
               />
             </div>
 
             <Button
               loading={loading}
               htmlType="submit"
-              label="Sign up"
+              label={getTranslation("global.signUp")}
               type="primary"
+              className="submit_btn"
             />
           </Form>
 
           <Link to={routePaths.login}>
             <p className="not_a_memeber_text">
-              Already have an account?{" "}
-              <span className="register_text">Sign In</span>
+              {getTranslation("signUp.alreadyHaveAnAccount")}{" "}
+              <span className="register_text">
+                {getTranslation("global.signIn")}
+              </span>
             </p>
           </Link>
         </div>
       </div>
       <div className="image_main_container">
         <div className="image_container">
-          <img
-            alt="not found"
-            src="https://images.unsplash.com/photo-1535379453347-1ffd615e2e08?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          />
+          <img alt="not found" src={Images.SIGN_UP_BG} />
         </div>
       </div>
     </div>

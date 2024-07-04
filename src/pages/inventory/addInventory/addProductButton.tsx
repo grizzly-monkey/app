@@ -4,24 +4,55 @@ import { Modal, Form as AntdForm, Row, Col, Select } from "antd";
 import Form from "@/components/common/form";
 import Input from "@/components/common/input";
 import { getTranslation } from "@/translation/i18n";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import InventoryActions from "@/redux/inventory/actions";
 import requestingSelector from "@/redux/requesting/requestingSelector";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import FullAlertError from "@/components/common/error/FullAlertError";
+import InventorySelectors from "@/redux/inventory/selectors";
 
 const selectError = makeSelectErrorModel();
 const AddProductButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [prevLoading, setPrevLoading] = useState(false);
-  const loading = useSelector(state=>requestingSelector(state,[InventoryActions.CREATE_PRODUCT],""))
-  const error = useSelector(state=>selectError(state,[InventoryActions.CREATE_PRODUCT_FINISHED],""))
+  const [selectedCategory, setSelectedCategory] = useState<any>(null);
+  const loading = useSelector((state) =>
+    requestingSelector(state, [InventoryActions.CREATE_PRODUCT], "")
+  );
+  const error = useSelector((state) =>
+    selectError(state, [InventoryActions.CREATE_PRODUCT_FINISHED], "")
+  );
+  const categories = useSelector(InventorySelectors.selectSubCategories);
   const [form] = AntdForm.useForm();
+  const dispatch  = useDispatch();
+
+  const categoryOptions = categories.map((category: any) => ({
+    label: category.name,
+    value: category.subCategoryId,
+  }));
+
+  const unitOptions = selectedCategory?.units.map((unit: string) => ({
+    label: unit,
+    value: unit,
+  }));
+
+  const onCategoryChange = (value: any) => {
+    const selectedCategory = categories.find(
+      (category: any) => category.subCategoryId === value
+    );
+    if (selectedCategory) {
+      setSelectedCategory(selectedCategory);
+    }
+    form.setFieldsValue({ unit: undefined });
+  };
 
   const handleOk = () => {
-    form.validateFields().then((values) => {
-      console.log(values);
-    }).catch((err) => console.log(err));
+    form
+      .validateFields()
+      .then((values) => {
+        dispatch(InventoryActions.createProduct(values));
+      })
+      .catch((err) => console.log(err));
   };
   const handleCancel = () => {
     form.resetFields();
@@ -29,12 +60,13 @@ const AddProductButton = () => {
   };
 
   useEffect(() => {
-    if (prevLoading && !loading) {
+    if (prevLoading && !loading && !error) {
       handleCancel();
     }
     setPrevLoading(loading);
   }, [loading]);
-  
+
+ 
   return (
     <>
       <Button
@@ -54,7 +86,8 @@ const AddProductButton = () => {
         okText={getTranslation("global.add")}
         cancelText={getTranslation("global.cancel")}
         onClose={handleCancel}
-      >{error && <FullAlertError error={error}/>}
+      >
+        {error && <FullAlertError error={error} />}
         <Form form={form} layout="vertical">
           <Row gutter={24}>
             <Col span={24}>
@@ -75,7 +108,7 @@ const AddProductButton = () => {
             <Col span={24}>
               <AntdForm.Item
                 label={getTranslation("global.category")}
-                name="category"
+                name="subCategoryId"
                 rules={[
                   {
                     required: true,
@@ -84,21 +117,11 @@ const AddProductButton = () => {
                 ]}
               >
                 <Select
-                  options={[
-                    {
-                      label: "Fertilizer",
-                      value: "fertilizer",
-                    },
-                    {
-                      label: "Pesticide",
-                      value: "pesticide",
-                    },
-                    {
-                      label: "Seed",
-                      value: "seed",
-                    },
-                  ]}
-                  placeholder={getTranslation("global.categorySelectPlaceholder")}
+                  onChange={onCategoryChange}
+                  options={categoryOptions}
+                  placeholder={getTranslation(
+                    "global.categorySelectPlaceholder"
+                  )}
                 />
               </AntdForm.Item>
             </Col>
@@ -117,21 +140,10 @@ const AddProductButton = () => {
                 ]}
               >
                 <Select
-                  options={[
-                    {
-                      label: "nos",
-                      value: "nos",
-                    },
-                    {
-                      label: "kg",
-                      value: "kg",
-                    },
-                    {
-                      label: "gm",
-                      value: "gm",
-                    },
-                  ]}
-                  placeholder={getTranslation("inventoryManagement.unitSelectPlaceholder")}
+                  options={unitOptions}
+                  placeholder={getTranslation(
+                    "inventoryManagement.unitSelectPlaceholder"
+                  )}
                 />
               </AntdForm.Item>
             </Col>

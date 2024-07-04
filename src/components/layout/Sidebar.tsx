@@ -1,15 +1,16 @@
-import routePaths from "@/config/routePaths";
-import { Images } from "@/utilities/imagesPath";
-import { Menu } from "antd";
-import { BsGraphUp } from "react-icons/bs";
-import { FaTractor, FaWarehouse, FaWater } from "react-icons/fa";
-import {
-  FaBarsProgress,
-  FaListCheck,
-  FaUsers,
-  FaWheatAwn,
-} from "react-icons/fa6";
+import { useState } from "react";
+import { Menu, Button } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
+import { BsGraphUp } from "react-icons/bs";
+import { FaWheatAwn } from "react-icons/fa6";
+import { FaWater } from "react-icons/fa";
+import { FaWarehouse } from "react-icons/fa";
+import { FaListCheck } from "react-icons/fa6";
+import { FaTractor } from "react-icons/fa";
+import { FaBarsProgress } from "react-icons/fa6";
+import { FaUsers } from "react-icons/fa6";
+import { Images } from "@/utilities/imagesPath";
+import routePaths from "@/config/routePaths";
 
 const { SubMenu } = Menu;
 
@@ -17,17 +18,7 @@ function Sidenav() {
   const location = useLocation();
 
   return (
-    <div
-      style={{
-        height: "100vh",
-        overflow: "auto",
-        display: "flex",
-        flexDirection: "column",
-        backgroundColor: "#FAFAFA",
-        paddingLeft: "20px",
-        paddingRight: "20px",
-      }}
-    >
+    <div className="sideBar">
       <div
         style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
         className="brand"
@@ -58,10 +49,7 @@ function Sidenav() {
         >
           <Menu.Item key="/dashboard">
             <NavLink to="/">
-              <div
-                className={"menuTitle"}
-                style={{ display: "flex", alignItems: "center" }}
-              >
+              <div style={{ display: "flex", alignItems: "center" }}>
                 <span className="icon">
                   <BsGraphUp />
                 </span>
@@ -78,10 +66,7 @@ function Sidenav() {
             }
           >
             <NavLink to={routePaths.polyhouse}>
-              <div
-                className={"menuTitle"}
-                style={{ display: "flex", alignItems: "center" }}
-              >
+              <div style={{ display: "flex", alignItems: "center" }}>
                 <span className="icon">
                   <FaWheatAwn />
                 </span>
@@ -98,10 +83,7 @@ function Sidenav() {
             }
           >
             <NavLink to={routePaths.reservoirs}>
-              <div
-                className={"menuTitle"}
-                style={{ display: "flex", alignItems: "center" }}
-              >
+              <div style={{ display: "flex", alignItems: "center" }}>
                 <span className="icon">
                   <FaWater />
                 </span>
@@ -118,10 +100,7 @@ function Sidenav() {
             }
           >
             <NavLink to={routePaths.inventory}>
-              <div
-                className={"menuTitle"}
-                style={{ display: "flex", alignItems: "center" }}
-              >
+              <div style={{ display: "flex", alignItems: "center" }}>
                 <span className="icon">
                   <FaWarehouse />
                 </span>
@@ -138,10 +117,7 @@ function Sidenav() {
             }
           >
             <NavLink to={routePaths.tasks}>
-              <div
-                className={"menuTitle"}
-                style={{ display: "flex", alignItems: "center" }}
-              >
+              <div style={{ display: "flex", alignItems: "center" }}>
                 <span className="icon">
                   <FaListCheck />
                 </span>
@@ -160,10 +136,7 @@ function Sidenav() {
           }
         >
           <NavLink to={routePaths.workflow}>
-            <div
-              className={"menuTitle"}
-              style={{ display: "flex", alignItems: "center" }}
-            >
+            <div style={{ display: "flex", alignItems: "center" }}>
               <span className="icon">
                 <FaBarsProgress />
               </span>
@@ -180,10 +153,7 @@ function Sidenav() {
           }
         >
           <NavLink to={routePaths.userManagement}>
-            <div
-              className={"menuTitle"}
-              style={{ display: "flex", alignItems: "center" }}
-            >
+            <div style={{ display: "flex", alignItems: "center" }}>
               <span className="icon">
                 <FaUsers />
               </span>

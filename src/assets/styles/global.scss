@@ -75,13 +75,88 @@ a {
   cursor: pointer;
 }
 
+.btn-success {
+  background-color: $primary-extra-light;
+}
+
+.btn-success:hover {
+  background-color: $primary-extra-light !important;
+}
 .image {
   height: 100%;
   width: 100%;
   object-fit: cover;
 }
 
-button:disabled {
+.ant-btn-primary:disabled {
   background: $primary !important;
   color: white !important;
+  opacity: 0.55;
+}
+
+.ant-btn-dashed:disabled {
+  background: white !important;
+  color: rgba(0, 0, 0, 0.88) !important;
+  opacity: 0.55;
+}
+
+.ant-btn-default:disabled {
+  background: white !important;
+  color: rgba(0, 0, 0, 0.5) !important;
+  opacity: 0.55;
+}
+
+.ant-btn-link:disabled {
+  color: $primary !important;
+  opacity: 0.55;
+}
+
+.ant-btn-text:disabled {
+  color: $primary !important;
+  opacity: 0.55;
+}
+.ant-btn-dangerous:disabled {
+  background: $red !important;
+  opacity: 0.55;
+}
+.ant-btn-dashed.ant-btn-dangerous:disabled {
+  border-color: $red !important;
+  color: $red !important;
+  background: transparent !important;
+  opacity: 0.55;
+}
+.ant-btn-default.ant-btn-dangerous:disabled {
+  border-color: $red !important;
+  color: $red !important;
+  background: transparent !important;
+  opacity: 0.55;
+}
+.ant-btn-link.ant-btn-dangerous:disabled {
+  color: $red !important;
+  background: transparent !important;
+  opacity: 0.55;
+}
+.ant-btn-text.ant-btn-dangerous:disabled {
+  color: $red !important;
+  background: transparent !important;
+  opacity: 0.55;
+}
+.ant-btn-primary.ant-btn-dangerous:disabled {
+  color: white !important;
+  background: $red !important;
+  opacity: 0.55;
+}
+
+.ant-dropdown-menu-item-selected {
+  background-color: rgba($primary, 0.1) !important;
+}
+.ant-table-row-selected > td {
+  background-color: rgba($primary, 0.1) !important;
+}
+.ant-select-item-option-active {
+  background-color: rgba($primary, 0.1) !important;
+}
+.ant-select-item-option-selected {
+  background-color: rgba($primary, 0.1) !important;
+  font-weight: 500 !important;
 }

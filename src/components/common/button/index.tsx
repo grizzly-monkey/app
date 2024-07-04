@@ -2,7 +2,7 @@ import { Button as AntdButton } from "antd";
 import { ButtonProps as AntdButtonProps } from "antd/es/button/button";
 
 interface ButtonProps extends AntdButtonProps {
-  label: string;
+  label?: string;
   loading?: boolean;
   style?: React.CSSProperties;
   onClick?: () => void;

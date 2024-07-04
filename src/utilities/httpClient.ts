@@ -4,8 +4,10 @@ import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import logger from "./logger";
 import onError from "./onError";
 import ErrorModel from "@/models/error/errorModel";
-// import SessionSelectors from "@/redux/session/selectors";
-// import { store } from "@/redux/store";
+import SessionSelectors from "@/redux/session/selectors";
+import { store } from "@/redux/store";
+import { LOCAL_STORAGE_KEYS } from "@/config/consts";
+import { getPreferenceValueFromStorage } from "./localStorage";
 // import SessionSelectors from "../redux/session/sessionSelector";
 
 interface ErrorContext {
@@ -55,9 +57,8 @@ const RequestMethod = {
 };
 
 export function getAuthToken() {
-  // const { idToken } = SessionSelectors.SelectToken(store.getState());
-  // return idToken;
-  return "eyJraWQiOiJGWGI3MlNwV21HdjJjWHo3QmZkRHlIdTAyWk9mNGVYWEZacEFZcE1kZElFPSIsImFsZyI6IlJTMjU2In0.eyJjdXN0b206Y3JlYXRlZF9hdCI6IjE3MTgxMDM5MjA2NTYiLCJzdWIiOiIyMWYzYmQzYS05MDExLTcwZmQtOGFiYS04ZWQ2MTg5YWYwZmUiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuYXAtc291dGgtMS5hbWF6b25hd3MuY29tXC9hcC1zb3V0aC0xXzZleERyb0I1NCIsInVwZGF0ZWRfYXQiOjE3MTgxMDM5MjA2NTYsImF1dGhfdGltZSI6MTcyMDA3MzY4MCwiZXhwIjoxNzIwMDc3MjgwLCJjdXN0b206cm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzIwMDczNjgwLCJqdGkiOiI3Y2E0MzczOC1jNzFjLTRmNDQtODBhNS1jOTQ1ZDBmNjAyY2YiLCJlbWFpbCI6InJhdmlAZ3Jvd2xvYy5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImFkZHJlc3MiOnsiZm9ybWF0dGVkIjoiYmhpbHdhcmEgIn0sImN1c3RvbTpvcmdhbmlzYXRpb25OYW1lIjoiVlIiLCJwaG9uZV9udW1iZXJfdmVyaWZpZWQiOnRydWUsImN1c3RvbTppc1ZlcmlmaWVkQnlBZG1pbiI6IjAiLCJjb2duaXRvOnVzZXJuYW1lIjoiMjFmM2JkM2EtOTAxMS03MGZkLThhYmEtOGVkNjE4OWFmMGZlIiwiZ2l2ZW5fbmFtZSI6IlJhdmkiLCJjdXN0b206b3JnYW5pc2F0aW9uSWQiOiJvcjYzYmNjM2E0Iiwib3JpZ2luX2p0aSI6IjFjNGNhN2E0LTYwN2ItNGJlMy1hMzQ2LTIxOTU0MWM3NDFhYiIsImF1ZCI6IjdkOWEwNzRubGt0OG5tbG91dW9udmk5MmQzIiwiZXZlbnRfaWQiOiI2ZGI3YTA1Yi1hZjI3LTQ1OTQtODk1NS0zYTJkYTNhZTYzMjEiLCJ0b2tlbl91c2UiOiJpZCIsInBob25lX251bWJlciI6Iis5MTk3ODI1NDY1NDkiLCJmYW1pbHlfbmFtZSI6IlNvbmkifQ.uSdFnZriDlAE2tNmBo3-m6aJfwB594P_8eNzK7G12_4PikbUpHvXPeB2xuq3knMeGhjWW_wQM84uL7ljFXnWyG5CPor6Yz4nE4aUsHe6EgWh77cUz2dCxXW7pOobV5RVIJRAK0hQpojdvrnYdteO5oZWIpqg4pe8BWPgZ8FOkHT3sSPrvRURW4m9y0xtTqMQ1s9L3OwO1HnDsrzVVsms-JwzwY_TjpYueHkxcmxAnG1Z34cPS-7NyYx_vLOFX6mYjAvMnPNhe-NNZER4WKw1aP6rYaKSsU2ytdnpoYdY789RkSaMyU8GlFOqmB4JQPKalmatf5eUitIFmKngyK2Tfg";
+  const tokens = SessionSelectors.SelectToken(store.getState());
+  return tokens?.idToken;
 }
 
 function dofillInErrorWithDefaults(
@@ -102,10 +103,11 @@ async function doRequest(
       method: restRequest.method,
       url: restRequest.url,
       headers: {
-        // auth
         ...(isAuthenticated && { Authorization: `Bearer ${getAuthToken()}` }),
         "Content-Type": "application/json",
-        ACTIVE_ORGANISATION_ID: "or63bcc3a4",
+        ACTIVE_ORGANISATION_ID: getPreferenceValueFromStorage(
+          LOCAL_STORAGE_KEYS.organization
+        ),
         ...config?.headers,
       },
     };

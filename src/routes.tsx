@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Layout from "./components/layout";
-// import Dashboard from "./pages/dashboard";
+import Dashboard from "./pages/dashboard";
 import Login from "./pages/auth/login";
 import routePaths from "./config/routePaths";
 import UserManagement from "./pages/userManagement";
@@ -10,11 +10,13 @@ import ForgotPassword from "./pages/auth/forgotPassword";
 import Farm from "./pages/farm";
 import Polyhouse from "./pages/polyhouse";
 import Reservoirs from "./pages/reservoirs";
-import Inventory from "./pages/inventory";
 import Tasks from "./pages/tasks";
 import Workflow from "./pages/workflow";
+import CreateFarm from "./pages/farm/CreateFarm";
 import Organization from "./pages/organization";
 import AddInventory from "./pages/inventory/addInventory";
+import Inventory from "./pages/inventory";
+import Profile from "./pages/profile";
 
 export const router = createBrowserRouter([
   {
@@ -22,12 +24,24 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: routePaths.organization,
-        element: <Organization />,
+        path: "/",
+        element: <Dashboard />,
       },
       {
         path: routePaths.userManagement,
         element: <UserManagement />,
+      },
+      {
+        path: routePaths.farm,
+        element: <Farm />,
+      },
+      {
+        path: routePaths.polyhouse,
+        element: <Polyhouse />,
+      },
+      {
+        path: routePaths.reservoirs,
+        element: <Reservoirs />,
       },
       {
         path: routePaths.inventory,
@@ -37,7 +51,27 @@ export const router = createBrowserRouter([
         path: routePaths.addInventory,
         element: <AddInventory />,
       },
+      {
+        path: routePaths.tasks,
+        element: <Tasks />,
+      },
+      {
+        path: routePaths.workflow,
+        element: <Workflow />,
+      },
+      {
+        path: routePaths.farmCreate,
+        element: <CreateFarm />,
+      },
+      {
+        path: routePaths.profile,
+        element: <Profile />,
+      },
     ],
+  },
+  {
+    path: routePaths.organization,
+    element: <Organization />,
   },
   {
     path: routePaths.login,
@@ -50,56 +84,6 @@ export const router = createBrowserRouter([
   {
     path: routePaths.forgotPassword,
     element: <ForgotPassword />,
-  },
-  {
-    path: routePaths.farm,
-    element: <Layout />,
-    children: [
-      {
-        path: routePaths.farm,
-        element: <Farm />,
-      },
-    ],
-  },
-  {
-    path: routePaths.polyhouse,
-    element: <Layout />,
-    children: [
-      {
-        path: routePaths.polyhouse,
-        element: <Polyhouse />,
-      },
-    ],
-  },
-  {
-    path: routePaths.reservoirs,
-    element: <Layout />,
-    children: [
-      {
-        path: routePaths.reservoirs,
-        element: <Reservoirs />,
-      },
-    ],
-  },
-  {
-    path: routePaths.tasks,
-    element: <Layout />,
-    children: [
-      {
-        path: routePaths.tasks,
-        element: <Tasks />,
-      },
-    ],
-  },
-  {
-    path: routePaths.workflow,
-    element: <Layout />,
-    children: [
-      {
-        path: routePaths.workflow,
-        element: <Workflow />,
-      },
-    ],
   },
 ]);
 

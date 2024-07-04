@@ -5,8 +5,8 @@ const theme = {
     Table: {},
   },
   token: {
-    fontFamily: "Mukta, sans-serif",
-    fontFamilyCode: "Source Sans Pro, sans-serif",
+    fontFamily: "LufgaRegular, sans-seriff",
+    fontFamilyCode: "LufgaRegular, sans-serif",
 
     borderRadius: 4,
 

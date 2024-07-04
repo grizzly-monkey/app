@@ -1,31 +1,42 @@
+import FarmCard from "./farmCard";
+import "./style.scss";
+import { Card, Flex } from "antd";
+import { GrRefresh } from "react-icons/gr";
+import Button from "@/components/common/button";
+import { useNavigate } from "react-router-dom";
+import routePaths from "@/config/routePaths";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import FarmActions from "@/redux/farm/action";
+
 const Farm = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(FarmActions.fetchFarms());
+  });
+
   return (
-    <div
-      style={{
-        backgroundColor: "#fff",
-        marginRight: "20px",
-        borderRadius: "10px",
-        padding:'10px'
-      }}
-    >
-      <p className="heading1">Farm</p>
-      <br/>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed officia
-        numquam distinctio, quidem quisquam quos vero possimus temporibus
-        quibusdam maxime magni, perferendis eaque totam dolore, ut molestias.
-        Tempora, consequatur iure. Lorem ipsum, dolor sit amet consectetur
-        adipisicing elit. Sunt voluptatibus facilis soluta eos? Consectetur odit
-        laboriosam culpa recusandae mollitia at unde in, quis odio. Eligendi
-        nulla ad repellendus delectus fuga.
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed officia
-        numquam distinctio, quidem quisquam quos vero possimus temporibus
-        quibusdam maxime magni, perferendis eaque totam dolore, ut molestias.
-        Tempora, consequatur iure. Lorem ipsum, dolor sit amet consectetur
-        adipisicing elit. Sunt voluptatibus facilis soluta eos? Consectetur odit
-        laboriosam culpa recusandae mollitia at unde in, quis odio. Eligendi
-        nulla ad repellendus delectus fuga.
-      </p>
+    <div className="farm">
+      <Card
+        bordered={false}
+        title="Farm"
+        style={{ borderRadius: "10px" }}
+        extra={
+          <Flex gap={20}>
+            <GrRefresh style={{ fontSize: "30px" }} />
+            <Button
+              label="Add farm"
+              onClick={() => {
+                navigate(routePaths.farmCreate);
+              }}
+              style={{ padding: "none" }}
+            />
+          </Flex>
+        }
+      >
+        <FarmCard />
+      </Card>
     </div>
   );
 };
