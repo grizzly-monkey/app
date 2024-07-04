@@ -49,6 +49,7 @@ const getSession = async () => {
       });
     } else {
       reject();
+      store.dispatch(SessionActions.logout(false));
     }
   });
 };
@@ -66,7 +67,7 @@ function* REFRESH_TOKEN_SILENTLY(): Generator {
     yield put(SessionActions.setUserDetails(result?.idToken?.payload));
     yield call(SCHEDULE_REFRESH);
   } catch (error) {
-    console.log(error);
+    yield put(SessionActions.logout(false));
   }
 }
 
@@ -175,6 +176,10 @@ function* LOGOUT(action: SagaAction) {
 
 function* UPDATE_USER_DETAILS(action: SagaAction): Generator {
   const user = getCurrentUser();
+
+  if (!user) {
+    yield put(SessionActions.logout(false));
+  }
 
   const result: any = yield call(
     runEffect,
