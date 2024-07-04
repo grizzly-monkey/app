@@ -23,6 +23,7 @@ const InventoryTable = () => {
   const [categoryFilteredInventories, setCategoryFilteredInventories] = useState([]);
   const [productFilteredInventories, setProductFilteredInventories] = useState([]);
   const [searchFilteredInventories, setSearchFilteredInventories] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -81,7 +82,7 @@ const InventoryTable = () => {
   };
 
   const onRowSelectionChange = (selectedRowKeys: any, selectedRows: any) => {
-    console.log(selectedRowKeys, selectedRows);
+    setSelectedRows(selectedRows);
     setDeleteButtonDisabled(selectedRowKeys.length === 0);
   };
 
@@ -121,6 +122,12 @@ const InventoryTable = () => {
   const onRowClick = (record: any) => {
     dispatch(InventoryActions.selectInventory(record));
   };
+
+  const onDeleteButtonClick = () => {
+    selectedRows.forEach((inventory: any) => {
+      dispatch(InventoryActions.deleteInventory(inventory.inventoryId));
+    });
+  }
 
   useEffect(() => {
     if (!inventories.length) dispatch(InventoryActions.fetchInventories());
@@ -201,6 +208,7 @@ const InventoryTable = () => {
                 danger
                 style={{ width: "20%" }}
                 disabled={deleteButtonDisabled}
+                onClick={onDeleteButtonClick}
               />
             </Flex>
           </Flex>

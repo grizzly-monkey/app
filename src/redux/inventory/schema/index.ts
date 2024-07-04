@@ -6,7 +6,9 @@ const inventory = new schema.Entity("inventories", {}, { idAttribute: "inventory
 
 const inventoryListSchema = [inventory];
 
-const invertoryNormalizeSchema = (data: normalizeData) => normalize(data, inventoryListSchema);
+const invertoryNormalizeSchema = (data: normalizeData | any) =>{
+  if(!Array.isArray(data)) return {};
+  return normalize(data, inventoryListSchema)};
 
 export const inventoryDenormalizeSchema = (data: normalizeData) => {
   const { result, entities } = data;
