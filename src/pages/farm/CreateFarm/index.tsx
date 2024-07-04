@@ -8,7 +8,7 @@ import AddPolyhouses from "./Steps/AddPolyhouses";
 import StepperNavigation from "./StepperNavigation";
 import Card from "@/components/ui/card";
 import { useForm } from "@/components/common/form";
- 
+
 const CreateFarm = () => {
   const [form] = useForm();
   const [reservoirForm] = useForm();
@@ -23,7 +23,10 @@ const CreateFarm = () => {
       <Card
         bordered={false}
         title="Farm creation"
-        style={{ borderRadius: "10px", marginRight: "20px" }}
+        style={{
+          borderRadius: "10px",
+          marginRight: "20px",
+        }}
       >
         <div className="createForm">
           <div className="stepper">

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Col, Row } from "antd";
 import Button from "@/components/common/button";
@@ -10,10 +10,21 @@ import { REGEX, applyErrorsToFields } from "../const";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import FarmActions from "@/redux/farm/action";
 import { getTranslation } from "@/translation/i18n";
+import { FormInstance } from "antd/lib";
 
 const selectError = makeSelectErrorModel();
 
-const AddReservoirs = ({ form, reservoirs, setReservoirs }) => {
+interface Reservoir {
+  key: number;
+}
+
+interface AddReservoirs {
+  form: FormInstance;
+  reservoirs: Reservoir[];
+  setReservoirs: React.Dispatch<React.SetStateAction<Reservoir[]>>;
+}
+
+const AddReservoirs = ({ form, reservoirs, setReservoirs }: AddReservoirs) => {
   const error = useSelector((state) =>
     selectError(state, FarmActions.ADD_FARM_FINISHED)
   );
@@ -26,14 +37,14 @@ const AddReservoirs = ({ form, reservoirs, setReservoirs }) => {
     setReservoirs([...reservoirs, { key: reservoirs.length }]);
   };
 
-  const deleteReservoir = (key) => {
+  const deleteReservoir = (key: number) => {
     setReservoirs(reservoirs.filter((reservoir) => reservoir.key !== key));
   };
 
   return (
     <div className="addForm">
       <div style={{ width: "150px", marginLeft: "auto" }}>
-        <Button label="Add Reservoir" onClick={addReservoir} />
+        <Button label="Add Reservoir" onClick={addReservoir} loading={false} />
       </div>
       <div className="reservoir">
         <Form form={form} layout="vertical">

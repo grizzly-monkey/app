@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Form as AntdForm } from "antd";
-// import PropTypes from "prop-types";
 import Form from "@/components/common/form";
 import CustomEdit from "@/components/common/CustomEditable/CustomEdit";
 import FarmActions from "@/redux/farm/action";

@@ -14,6 +14,7 @@ import FarmsEffects from "./effects";
 import { Farm } from "@/pages/farm/types";
 import { normalizeData } from "@/types/normalize";
 import ErrorModel from "@/models/error/errorModel";
+import { successToast } from "@/utilities/toast";
 
 function* REQUEST_FARMS(action: SagaAction) {
   const farms: Farm[] = yield select(FarmSelectors.SelectDenormalizeFarm);
@@ -92,6 +93,7 @@ function* DELETE_FARM(action: SagaAction) {
     result: updatedResult,
   };
 
+  successToast("Farm is successfully deleted")
   yield put(FarmActions.updateFarmLocally(null, updatedFarms));
 }
 

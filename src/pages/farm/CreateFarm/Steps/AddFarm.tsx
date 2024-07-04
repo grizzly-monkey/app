@@ -1,19 +1,23 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Col, Row, Form as AntdForm } from "antd";
-import Button from "@/components/common/button";
 import Form from "@/components/common/form";
 import Input from "@/components/common/input";
-import PhoneInput from "@/components/common/input/phoneInput";
 import Select from "@/components/ui/select";
 import { REGEX, applyErrorsToFields } from "../const";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import FarmActions from "@/redux/farm/action";
 import { getTranslation } from "@/translation/i18n";
+import { FormInstance } from "antd";
+import { errorDetail } from "@/types/error";
 
 const selectError = makeSelectErrorModel();
 
-function AddFarm({ form }) {
+interface AddFarm {
+  form: FormInstance;
+}
+
+function AddFarm({ form }: AddFarm) {
   const error = useSelector((state) =>
     selectError(state, FarmActions.ADD_FARM_FINISHED)
   );
@@ -21,7 +25,7 @@ function AddFarm({ form }) {
   useEffect(() => {
     if (error) {
       applyErrorsToFields(form, error.errors);
-      error.errors.forEach((err) => {
+      error.errors.forEach((err: errorDetail) => {
         if (err.location.includes("nutrient.dilutionRatio")) {
           form.setFields([
             {
