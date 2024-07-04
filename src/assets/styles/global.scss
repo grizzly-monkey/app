@@ -92,6 +92,46 @@ a {
   background: $primary !important;
   color: white !important;
 }
+
+.ant-btn-dashed:disabled {
+  background: white !important;
+  color: rgba(0, 0, 0, 0.88) !important;
+}
+
+.ant-btn-default:disabled {
+  background: white !important;
+  color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.ant-btn-link:disabled {
+  color: $primary !important;
+}
+
+.ant-btn-text:disabled {
+  color: $primary !important;
+}
+.ant-btn-dangerous:disabled {
+  background: $red !important;
+}
+.ant-btn-dashed.ant-btn-dangerous:disabled {
+  border-color: $red !important;
+  color: $red !important;
+  background: transparent !important;
+}
+.ant-btn-default.ant-btn-dangerous:disabled {
+  border-color: $red !important;
+  color: $red !important;
+  background: transparent !important;
+}
+.ant-btn-link.ant-btn-dangerous:disabled {
+  color: $red !important;
+  background: transparent !important;
+}
+.ant-btn-text.ant-btn-dangerous:disabled {
+  color: $red !important;
+  background: transparent !important;
+}
+
 .ant-dropdown-menu-item-selected {
   background-color: rgba($primary, 0.1) !important;
 }
