@@ -213,7 +213,7 @@ const ForgotPassword = () => {
                     policy={passwordPolicy}
                   />
                 }
-                placement="right"
+                placement="top"
               >
                 <Input
                   label={getTranslation("global.password")}
