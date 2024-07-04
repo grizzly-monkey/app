@@ -253,6 +253,8 @@
 
  "farm.createFarm.polyhouse.nursery.wateringSchedule": "Watering schedule",
  "farm.createFarm.polyhouse.nursery.wateringScheduleMessage": "Please input watering schedule",
- "farm.createFarm.polyhouse.nursery.wateringSchedulePlaceholder": "Enter watering schedule"
+ "farm.createFarm.polyhouse.nursery.wateringSchedulePlaceholder": "Enter watering schedule",
 
+ "farm.numberValidator": "Please enter a valid number",
+ "farm.ratioValidator": "Please provide farm dilution ratio in the format: numerator:denominator (e.g., 2:3)"
 }

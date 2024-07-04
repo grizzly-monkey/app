@@ -1,27 +1,21 @@
-import React, { useState } from "react";
 import FarmSelectors from "@/redux/farm/FarmSelectors";
 import UserSelectors from "@/redux/user/selectors";
 import Fields from "@/utilities/fields/field";
-import { Form as AntdForm } from "antd";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import moment from "moment";
 import { getTranslation } from "@/translation/i18n";
 import { deviceValue } from "../utilities";
-import CustomEdit from "@/components/common/CustomEditable/CustomEdit";
-import FarmActions from "@/redux/farm/action";
-import Form from "@/components/common/form";
 import EditableFarmField from "./EdititableFarmField";
 import { numberValidator, ratioValidationRegex } from "../CreateFarm/const";
+import { User } from "@/pages/userManagement/types";
 
 const FarmDetails = () => {
-  const dispatch = useDispatch();
-  const [form] = AntdForm.useForm();
   const selectedFarm = useSelector(FarmSelectors.SelectSelectedFarm);
   const users = useSelector(UserSelectors.selectUsers);
 
-  const getSelectedUser = (userId) => {
+  const getSelectedUser = (userId: string) => {
     let selectedUserName = "";
-    users.forEach((user) => {
+    users.forEach((user: User) => {
       if (user.userId === userId)
         selectedUserName = `${user.firstName} ${user.lastName}`;
     });
@@ -59,6 +53,7 @@ const FarmDetails = () => {
           value={selectedFarm?.name}
           placeholder="Enter the name"
           farmId={selectedFarm.farmId}
+          data-testid="editable-farm-field-name"
         >
           {selectedFarm?.name}
         </EditableFarmField>
@@ -69,7 +64,7 @@ const FarmDetails = () => {
       value: (
         <EditableFarmField
           fieldName="area"
-          value={selectedFarm?.area}
+          value={`${selectedFarm?.area}`}
           placeholder="Enter the area"
           farmId={selectedFarm.farmId}
           isParseField={true}
@@ -84,7 +79,7 @@ const FarmDetails = () => {
       value: (
         <EditableFarmField
           fieldName="cultivableArea"
-          value={selectedFarm?.cultivableArea}
+          value={`${selectedFarm?.cultivableArea}`}
           placeholder="Enter the cultivable area"
           farmId={selectedFarm.farmId}
           isParseField={true}
@@ -99,7 +94,7 @@ const FarmDetails = () => {
       value: (
         <EditableFarmField
           fieldName="nutrient.type"
-          value={selectedFarm?.nutrient.type}
+          value={selectedFarm?.nutrient?.type}
           placeholder="Enter the nutrient type"
           farmId={selectedFarm.farmId}
           udf={{
@@ -188,9 +183,7 @@ const FarmDetails = () => {
 
   return (
     <>
-      {/* <Form form={form}> */}
       <Fields info={fileds} />
-      {/* </Form> */}
     </>
   );
 };

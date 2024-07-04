@@ -9,6 +9,10 @@ import requestingSelector from "@/redux/requesting/requestingSelector";
 import { LoadingOutlined } from "@ant-design/icons";
 import Card from "@/components/ui/card";
 import { Farm } from "./types";
+import { makeSelectErrorModel } from "@/redux/error/errorSelector";
+import FullAlertError from "@/components/common/error/FullAlertError";
+
+const selectError = makeSelectErrorModel();
 
 const FarmCard = () => {
   const dispatch = useDispatch();
@@ -17,8 +21,9 @@ const FarmCard = () => {
     requestingSelector(state, [FarmActions.REQUEST_FARMS])
   );
 
-
-  console.log("farms in farm card", farms)
+  const error = useSelector((state) =>
+    selectError(state, FarmActions.REQUEST_FARMS_FINISHED)
+  );
 
   return (
     <div>
@@ -28,7 +33,9 @@ const FarmCard = () => {
         </span>
       )}
 
-      {!loading && farms.length === 0 && (
+      {error && <FullAlertError error={error} />}
+
+      {!loading && !error && farms.length === 0 && (
         <span
           style={{ color: "gray", display: "flex", justifyContent: "center" }}
         >

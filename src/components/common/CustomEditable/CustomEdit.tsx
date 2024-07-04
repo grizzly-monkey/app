@@ -42,13 +42,14 @@ interface CustomEditProps {
   emptyLabel?: any;
   placeholder?: string;
   error?: any;
-  customValidator?: () => void;
+  customValidator?: (context: object, value: string) => Promise<void>;
   disabled?: boolean;
   tooltip?: React.FC;
   isFullWidth?: boolean;
   tagRender?: ReactNode;
   isHidden?: boolean;
   setSubmitDisable: (arg: boolean) => void;
+  containerDataTestId?: string;
   isSubmitDisable?: boolean;
   bottomMarginLevel?: number;
 }
@@ -76,6 +77,7 @@ const CustomEdit = ({
   disabled,
   bottomMarginLevel = 4,
   isSubmitDisable,
+  containerDataTestId,
   setSubmitDisable,
   customValidator,
 }: CustomEditProps) => {
@@ -140,6 +142,7 @@ const CustomEdit = ({
     <>
       {!isActive ? (
         <div
+          data-testid={containerDataTestId}
           className={classNames({
             "editable-trigger": true,
             [`${style.grid} mb-${bottomMarginLevel}`]: isLabel,
@@ -182,7 +185,7 @@ const CustomEdit = ({
         </div>
       ) : (
         <>
-          <form
+          <div
             onBlur={_onSubmit}
             className={` ${isFullWidth ? styles.fillWidth : ""}`}
             style={{ display: "flex" }}
@@ -198,6 +201,7 @@ const CustomEdit = ({
                   defaultValue: defaultValues,
                   onlyFromLov: userDefineField?.onlyFromLov,
                   listOfValues: userDefineField?.listOfValues,
+                  inputDataTestId: userDefineField.inputDataTestId,
                   options: userDefineField.options,
                   onChange: _onChange,
                   searchable: !!userDefineField.searchable,
@@ -230,6 +234,7 @@ const CustomEdit = ({
                     icon={<CheckOutlined />}
                     loading={loading}
                     id="custom-edit-submit-btn"
+                    data-testid={`${name}-save`}
                   />
                 </div>
                 <div className="mx-1">
@@ -239,11 +244,12 @@ const CustomEdit = ({
                     onClick={onCancel}
                     icon={<CloseOutlined />}
                     id="custom-edit-cancel-btn"
+                    data-testid={`${name}-cancel`}
                   />
                 </div>
               </div>
             </div>
-          </form>
+          </div>
         </>
       )}
     </>

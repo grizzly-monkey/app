@@ -33,7 +33,7 @@ const FarmActions = {
     return createAction(this.SET_SELECTED_FARM, farm)
   },
 
-  updateFarm (fieldName:string,updatedFarmValue:Farm) {
+  updateFarm (fieldName:string,updatedFarmValue:object) {
     return createAction(this.UPDATE_FARM, updatedFarmValue, false,
       {
         scope: fieldName,

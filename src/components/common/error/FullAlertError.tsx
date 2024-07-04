@@ -29,9 +29,9 @@ const FullAlertError = ({ error }: AlertErrorProps) => {
   const dispatch = useAppDispatch();
 
   const description = (
-    <>
+    <div>
       {error?.errors.map((err: errorDetail, index: number) => (
-        <div className="error_alert_container">
+        <div className="error_alert_container" key={index}>
           <p className="heading3 error_count_text">#{index}</p>
           <div>
             <ErrorContent label="Error" value={err.error} />
@@ -42,7 +42,7 @@ const FullAlertError = ({ error }: AlertErrorProps) => {
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 
   const handleClose = () => {

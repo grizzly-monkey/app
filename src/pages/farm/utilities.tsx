@@ -1,6 +1,6 @@
 import { Device } from "./types";
 
-export const deviceValue = (device: Device) => {
+export const deviceValue = (device: Device | null) => {
   if (!device)
     return (
       <span className="activeTag" style={{ backgroundColor: "orange" }}>

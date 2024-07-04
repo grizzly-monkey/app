@@ -1,3 +1,7 @@
+import { getTranslation } from "@/translation/i18n";
+import { errorDetail } from "@/types/error";
+import { FormInstance } from "antd";
+
 export const stepperNames = {
   FARM_CREATION: "Form",
   RESERVOIRS: "Reservoirs",
@@ -19,27 +23,27 @@ export const REGEX = {
   number: /^(?:[1-9]\d{0,4}|50000)$/,
 };
 
-export const isNumber = (value) => REGEX.number.test(value);
-export const isRatioValidationRegex = (value) =>
+export const isNumber = (value: string) => REGEX.number.test(value);
+export const isRatioValidationRegex = (value: string) =>
   REGEX.ratioValidationRegex.test(value);
 
-export const numberValidator = (_, value) => {
+export const numberValidator = (_: object, value: string) => {
   if (value && !isNumber(value))
-    return Promise.reject(new Error("please enter a number"));
+    return Promise.reject(new Error(getTranslation("farm.numberValidator")));
   return Promise.resolve();
 };
 
-export const ratioValidationRegex = (_, value) => {
+export const ratioValidationRegex = (_: object, value: string) => {
   if (value && !isRatioValidationRegex(value))
-    return Promise.reject(
-      new Error(
-        "Please provide farm dilution ratio in the format: numerator:denominator (e.g., 2:3)"
-      )
-    );
+    return Promise.reject(new Error(getTranslation("farm.ratioValidator")));
   return Promise.resolve();
 };
 
-export const applyErrorsToFields = (form, errors, errRefrence = "") => {
+export const applyErrorsToFields = (
+  form: FormInstance,
+  errors: errorDetail[],
+  errRefrence = ""
+) => {
   errors.forEach((err) => {
     if (!err.location) return;
 
@@ -82,10 +86,10 @@ export const applyErrorsToFields = (form, errors, errRefrence = "") => {
 };
 
 export const applyErrorsToCardFields = (
-  form,
-  errors,
-  currentZoneKey,
-  cardType
+  form: FormInstance,
+  errors: errorDetail[],
+  currentZoneKey: string,
+  cardType: string
 ) => {
   errors.forEach((err) => {
     if (!err.location) return;
@@ -95,14 +99,13 @@ export const applyErrorsToCardFields = (
     const isNursariesError = fieldParts.includes("nurseries");
 
     if (isZonesError && cardType === "zones") {
-      const polyhouseIndex = fieldParts[0];
       const zonesIndex = fieldParts[2];
       const fieldName = fieldParts[fieldParts.length - 1];
       const fieldType = fieldParts.includes("growingArea")
         ? `growingArea.${fieldName}`
         : fieldName;
 
-      if (currentZoneKey === parseInt(zonesIndex, 10)) {
+      if (parseInt(currentZoneKey, 10) === parseInt(zonesIndex, 10)) {
         form.setFields([
           {
             name: fieldType,
@@ -114,11 +117,10 @@ export const applyErrorsToCardFields = (
     }
 
     if (isNursariesError && cardType === "nurseries") {
-      const polyhouseIndex = fieldParts[0];
       const nurseryIndex = fieldParts[2];
       const fieldName = fieldParts[fieldParts.length - 1];
 
-      if (currentZoneKey === parseInt(nurseryIndex, 10)) {
+      if (parseInt(currentZoneKey, 10) === parseInt(nurseryIndex, 10)) {
         form.setFields([
           {
             name: fieldName,

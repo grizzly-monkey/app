@@ -44,8 +44,8 @@ export interface Farm {
     lat: number;
     long: number;
   };
-  polyhouses: Polyhouse;
-  reservoirs: Reservoir;
+  polyhouses: Polyhouse[];
+  reservoirs: Reservoir[];
   nutrient: {
     type: string;
     dilutionRatio: {
@@ -53,7 +53,7 @@ export interface Farm {
       numerator: number;
     };
   };
-  device: Device;
+  device: Device | null;
   state: string;
   createdBy: string;
   updatedBy: string;

@@ -1,6 +1,6 @@
 import FarmCard from "./farmCard";
 import "./style.scss";
-import { Flex, Tooltip } from "antd";
+import { Flex } from "antd";
 import { ReloadOutlined } from "@ant-design/icons";
 import Card from "@/components/ui/card";
 import Button from "@/components/common/button";
@@ -13,6 +13,7 @@ import FarmSideBar from "./SideBar";
 import FarmSelectors from "@/redux/farm/FarmSelectors";
 import requestingSelector from "@/redux/requesting/requestingSelector";
 import { getTranslation } from "@/translation/i18n";
+import Tooltip from "@/components/common/tooltip";
 
 const Farm = () => {
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ const Farm = () => {
                 loading={loading}
                 icon={<ReloadOutlined style={{ color: "green" }} />}
                 label={""}
+                data-testid="refresh-button"
               />
             </Tooltip>
             <Button

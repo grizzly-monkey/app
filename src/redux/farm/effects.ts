@@ -18,7 +18,6 @@ export default class FarmsEffects {
   }
 
   static deleteFarm(farmId: string) {
-    console.log("farmId", farmId)
     return delToModel(FarmModel, api.FARM.replace(':farmId', farmId))
   }
 

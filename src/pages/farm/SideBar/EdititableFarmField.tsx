@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Form as AntdForm } from "antd";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import Form from "@/components/common/form";
 import CustomEdit from "@/components/common/CustomEditable/CustomEdit";
 import FarmActions from "@/redux/farm/action";
 import requestingSelector from "@/redux/requesting/requestingSelector";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import { applyErrorsToFields } from "../CreateFarm/const";
+import { errorDetail } from "@/types/error";
+import FarmSelectors from "@/redux/farm/FarmSelectors";
 
 interface EditableFarmFieldProps {
   fieldName: string;
@@ -15,8 +17,9 @@ interface EditableFarmFieldProps {
   placeholder?: string;
   farmId: string;
   isParseField?: boolean;
-  customValidator?: () => void;
+  customValidator?: (context: object, value: string) => Promise<void>;
   udf?: object;
+  children?: React.ReactNode;
 }
 
 const selectError = makeSelectErrorModel();
@@ -28,9 +31,12 @@ const EditableFarmField = ({
   isParseField,
   customValidator,
   udf,
+  children,
 }: EditableFarmFieldProps) => {
   const dispatch = useDispatch();
   const [form] = AntdForm.useForm();
+
+  const selectedFarm = useSelector(FarmSelectors.SelectSelectedFarm);
 
   const loading = useSelector((state) =>
     requestingSelector(state, [FarmActions.UPDATE_FARM], fieldName)
@@ -46,14 +52,14 @@ const EditableFarmField = ({
   useEffect(() => {
     if (error) {
       applyErrorsToFields(form, error.errors);
-      console.log("errors in useEffect", error, form, form.getFieldValue());
-      error.errors.forEach((err) => {
+      console.log("errors in useEffect", error, form);
+      error.errors.forEach((err: errorDetail) => {
         if (err.location.includes("nutrient.dilutionRatio")) {
           form.setFields([
             {
-              name: fieldName[fieldName],
+              name: fieldName,
               errors: [err.message || "Please enter valid value"],
-              value: form.getFieldValue(fieldName[fieldName]),
+              value: form.getFieldValue(fieldName),
             },
           ]);
         }
@@ -61,11 +67,15 @@ const EditableFarmField = ({
     }
   }, [error]);
 
-  const updateFarm = (value) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const updateFarm = <T extends { [key: string]: any }>(value: T) => {
     if (fieldName.includes("nutrient")) {
       const fieldArray = fieldName.split(".");
       let updatedValue = {
-        nutrient: { [fieldArray[fieldArray.length - 1]]: value[fieldName] },
+        nutrient: {
+          ...selectedFarm.nutrient,
+          [fieldArray[fieldArray.length - 1]]: value[fieldName],
+        },
       };
       if (fieldName.includes("dilutionRatio")) {
         const [numerator, denominator] = value[fieldName]
@@ -73,6 +83,7 @@ const EditableFarmField = ({
           .map(Number);
         updatedValue = {
           nutrient: {
+            ...selectedFarm.nutrient,
             [fieldArray[fieldArray.length - 1]]: {
               numerator: parseInt(numerator),
               denominator: parseInt(denominator),
@@ -109,31 +120,19 @@ const EditableFarmField = ({
         setSubmitDisable={setIsSubmitDisable}
         onCancel={() => setIsActive(false)}
         setActive={() => setIsActive(!isActive)}
-        userDefineField={{ ...udf, fieldId: farmId }}
+        userDefineField={{
+          ...udf,
+          fieldId: farmId,
+          inputDataTestId: `${fieldName}-input`,
+        }}
         isSubmitDisable={isSubmitDisable}
         customValidator={customValidator}
+        containerDataTestId={`${fieldName}-container`}
       >
-        {value}
+        {children}
       </CustomEdit>
     </Form>
   );
-};
-
-EditableFarmField.propTypes = {
-  fieldName: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  placeholder: PropTypes.string,
-  farmId: PropTypes.string.isRequired,
-  isParseField: PropTypes.bool,
-  customValidator: PropTypes.func,
-  udf: PropTypes.object,
-};
-
-EditableFarmField.defaultProps = {
-  placeholder: "",
-  isParseField: false,
-  customValidator: () => Promise.resolve,
-  udf: {},
 };
 
 export default EditableFarmField;

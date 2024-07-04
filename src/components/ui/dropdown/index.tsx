@@ -11,6 +11,7 @@ interface DropdownProps extends AntdDropdownProps {
   label: string | React.ReactNode;
   value?: string | undefined;
   onChange?: (e: string) => void;
+  isDownDropIconHide?: boolean;
 }
 
 const Dropdown = (props: DropdownProps) => {
@@ -27,7 +28,7 @@ const Dropdown = (props: DropdownProps) => {
     >
       <Space>
         <div className="bodyText">{props.label}</div>
-        <FaCaretDown />
+        {!props.isDownDropIconHide && <FaCaretDown />}
       </Space>
     </AntdDropdown>
   );
