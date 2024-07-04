@@ -44,6 +44,7 @@ const Farm = () => {
                 icon={<ReloadOutlined style={{ color: "green" }} />}
                 label={""}
                 data-testid="refresh-button"
+                type="default"
               />
             </Tooltip>
             <Button

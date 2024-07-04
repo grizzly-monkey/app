@@ -8,6 +8,7 @@ import AddPolyhouses from "./Steps/AddPolyhouses";
 import StepperNavigation from "./StepperNavigation";
 import Card from "@/components/ui/card";
 import { useForm } from "@/components/common/form";
+import { getTranslation } from "@/translation/i18n";
 
 const CreateFarm = () => {
   const [form] = useForm();
@@ -22,7 +23,7 @@ const CreateFarm = () => {
     <div>
       <Card
         bordered={false}
-        title="Farm creation"
+        title={`${getTranslation("farm.farmCreation")}`}
         style={{
           borderRadius: "10px",
           marginRight: "20px",

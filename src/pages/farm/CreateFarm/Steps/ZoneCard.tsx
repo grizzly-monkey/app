@@ -59,7 +59,9 @@ const ZoneCard = ({ zones, onEdit, onDelete, errors }) => {
             />
           </Card>
           {hasErrors(zone) && (
-            <span style={{ color: "red" }}>Error occured</span>
+            <span style={{ color: "red" }}>
+              {getTranslation("global.errorOccured")}
+            </span>
           )}
         </div>
       ))}

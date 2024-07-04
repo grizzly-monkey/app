@@ -20,6 +20,7 @@
   "global.yes": "Yes",
   "global.areYouSure": "Are you sure",
   "global.delete":"delete",
+  "global.errorOccured":"Error occured",
 
   "global.phoneNumber": "Phone number",
   "global.phoneNumberErrMsg": "Please input your phone number",
@@ -71,6 +72,7 @@
   "organization.selectYourOrganization": "Select your organization",
 
 
+  "farm.farmCreation":"Farm creation",
   "farm.addFarm": "Add farm",
   "farm.farmArea": "Farm Area",
   "farm.cultivableArea": "Cultivable Area",

@@ -12,6 +12,7 @@ import { REGEX, applyErrorsToFields } from "../const";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import FarmActions from "@/redux/farm/action";
 import { getTranslation } from "@/translation/i18n";
+import { errorDetail } from "@/types/error";
 
 const selectError = makeSelectErrorModel();
 
@@ -19,6 +20,9 @@ const { Panel } = Collapse;
 const { TabPane } = Tabs;
 
 const AddPolyhouses = ({ form, polyhouses, setPolyhouses }) => {
+  const [zoneColor, setZoneColor] = useState("inherit");
+  const [nurseryColor, setNurseryColor] = useState("inherit");
+
   const error = useSelector((state) =>
     selectError(state, FarmActions.ADD_POLYHOUSE_TO_FARM_FINISHED)
   );
@@ -33,8 +37,40 @@ const AddPolyhouses = ({ form, polyhouses, setPolyhouses }) => {
     ]);
   };
 
+  useEffect(() => {
+    let newZoneColor = "inherit";
+    let newNurseryColor = "inherit";
+    if (error) {
+      error.errors.forEach((err: errorDetail) => {
+        if (err.location.includes("nurseries")) {
+          newNurseryColor = "red";
+        }
+        if (err.location.includes("zones")) {
+          newZoneColor = "red";
+        }
+      });
+
+      setZoneColor(newZoneColor);
+      setNurseryColor(newNurseryColor);
+    } else {
+      setZoneColor(newZoneColor);
+      setNurseryColor(newNurseryColor);
+    }
+  }, [error]);
+
+  console.log("form initial", form.getFieldsValue());
+
   const deletePolyhouse = (key) => {
     setPolyhouses(polyhouses.filter((polyhouse) => polyhouse.key !== key));
+
+    const updatedFields = { ...form.getFieldsValue() };
+    Object.keys(updatedFields).forEach((field) => {
+      if (field.includes(`_${key}`)) {
+        delete updatedFields[field];
+      }
+    });
+    form.resetFields();
+    form.setFieldsValue(updatedFields);
   };
 
   const addZoneToPolyhouse = (polyhouseKey, newZone) => {
@@ -185,9 +221,13 @@ const AddPolyhouses = ({ form, polyhouses, setPolyhouses }) => {
                   <Col span={24}>
                     <Tabs defaultActiveKey="1">
                       <TabPane
-                        tab={getTranslation(
-                          "farm.createFarm.polyhouse.configureZones"
-                        )}
+                        tab={
+                          <div style={{ color: zoneColor }}>
+                            {getTranslation(
+                              "farm.createFarm.polyhouse.configureZones"
+                            )}
+                          </div>
+                        }
                         key="1"
                       >
                         <AddZones
@@ -199,9 +239,13 @@ const AddPolyhouses = ({ form, polyhouses, setPolyhouses }) => {
                         />
                       </TabPane>
                       <TabPane
-                        tab={getTranslation(
-                          "farm.createFarm.polyhouse.configureNurseries"
-                        )}
+                        tab={
+                          <div style={{ color: nurseryColor }}>
+                            {getTranslation(
+                              "farm.createFarm.polyhouse.configureNurseries"
+                            )}
+                          </div>
+                        }
                         key="2"
                       >
                         <AddNursery
