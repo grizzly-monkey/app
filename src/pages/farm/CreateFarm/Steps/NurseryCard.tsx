@@ -1,11 +1,12 @@
-import React from "react";
 import Card from "@/components/ui/card";
 import { MdDelete } from "react-icons/md";
 import Fields from "@/utilities/fields/field";
 
-const NuseryCard = ({ nurseries, onEdit, onDelete, errors }) => {
-  const hasErrors = (nursary) =>
-    errors.some((error) => error.location.includes(`nurseries.${nursary.key}`));
+const NuseryCard = ({ nurseries, onEdit, onDelete, errors }: any) => {
+  const hasErrors = (nursary: any) =>
+    errors.some((error: any) =>
+      error.location.includes(`nurseries.${nursary.key}`)
+    );
 
   return (
     <div
@@ -16,7 +17,7 @@ const NuseryCard = ({ nurseries, onEdit, onDelete, errors }) => {
         padding: "10px",
       }}
     >
-      {nurseries.map((nusery, index) => (
+      {nurseries.map((nusery: any, index: any) => (
         <div key={index} onClick={() => onEdit(nusery)}>
           <Card
             bordered={false}

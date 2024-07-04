@@ -96,8 +96,8 @@ export interface Polyhouse {
   polyhouseId: string;
   structureExpectedLife: number;
   plasticExpectedLife: number;
-  zones: Zone[];
-  nurseries: Nursery[];
+  zones?: Zone[];
+  nurseries?: Nursery[];
   createdBy: string;
   updatedBy: string;
   createdDate: string;

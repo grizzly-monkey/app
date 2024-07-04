@@ -1,12 +1,11 @@
-import React from "react";
 import Card from "@/components/ui/card";
 import { MdDelete } from "react-icons/md";
 import Fields from "@/utilities/fields/field";
 import { getTranslation } from "@/translation/i18n";
 
-const ZoneCard = ({ zones, onEdit, onDelete, errors }) => {
-  const hasErrors = (zone) =>
-    errors.some((error) => error.location.includes(`zones.${zone.key}`));
+const ZoneCard = ({ zones, onEdit, onDelete, errors }: any) => {
+  const hasErrors = (zone: any) =>
+    errors.some((error: any) => error.location.includes(`zones.${zone.key}`));
 
   return (
     <div
@@ -17,7 +16,7 @@ const ZoneCard = ({ zones, onEdit, onDelete, errors }) => {
         padding: "10px",
       }}
     >
-      {zones.map((zone, index) => (
+      {zones.map((zone: any, index: any) => (
         <div onClick={() => onEdit(zone)}>
           <Card
             bordered={false}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Col, Row, Form as AntdForm } from "antd";
 import Input from "@/components/common/input";
 import Button from "@/components/common/button";
@@ -7,13 +7,19 @@ import Form from "@/components/common/form";
 import Card from "@/components/ui/card";
 import ZoneCard from "./ZoneCard";
 import Select from "@/components/ui/select";
-import { REGEX, applyErrorsToCardFields, applyErrorsToFields } from "../const";
+import { REGEX, applyErrorsToCardFields } from "../const";
 import { getTranslation } from "@/translation/i18n";
 
-const AddZones = ({ polyhouseKey, zones, addZone, updateZones, errors }) => {
+const AddZones = ({
+  polyhouseKey,
+  zones,
+  addZone,
+  updateZones,
+  errors,
+}: any) => {
   const [form] = AntdForm.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentZone, setCurrentZone] = useState(null);
+  const [currentZone, setCurrentZone] = useState<any>(null);
 
   const systemType = [
     {
@@ -76,7 +82,7 @@ const AddZones = ({ polyhouseKey, zones, addZone, updateZones, errors }) => {
         };
 
         if (currentZone) {
-          const updatedZones = zones.map((zone) =>
+          const updatedZones = zones.map((zone: any) =>
             zone.key === currentZone.key ? newZone : zone
           );
           updateZones(polyhouseKey, updatedZones);
@@ -91,7 +97,7 @@ const AddZones = ({ polyhouseKey, zones, addZone, updateZones, errors }) => {
       .catch(() => {});
   };
 
-  const handleEdit = (zone) => {
+  const handleEdit = (zone: any) => {
     form.setFieldsValue({
       ...zone,
       "growingArea.area": zone.growingArea.area,
@@ -106,8 +112,8 @@ const AddZones = ({ polyhouseKey, zones, addZone, updateZones, errors }) => {
     setIsModalOpen(true);
   };
 
-  const handleDelete = (zoneKey) => {
-    const updatedZones = zones.filter((zone) => zone.key !== zoneKey);
+  const handleDelete = (zoneKey: any) => {
+    const updatedZones = zones.filter((zone: any) => zone.key !== zoneKey);
     updateZones(polyhouseKey, updatedZones);
   };
 

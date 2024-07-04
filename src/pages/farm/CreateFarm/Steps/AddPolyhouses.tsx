@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Col, Row, Collapse, Tabs } from "antd";
+import { Col, Row, Tabs } from "antd";
 import Button from "@/components/common/button";
 import Form from "@/components/common/form";
 import Input from "@/components/common/input";
@@ -15,10 +15,9 @@ import { getTranslation } from "@/translation/i18n";
 
 const selectError = makeSelectErrorModel();
 
-const { Panel } = Collapse;
 const { TabPane } = Tabs;
 
-const AddPolyhouses = ({ form, polyhouses, setPolyhouses }) => {
+const AddPolyhouses = ({ form, polyhouses, setPolyhouses }: any) => {
   const error = useSelector((state) =>
     selectError(state, FarmActions.ADD_POLYHOUSE_TO_FARM_FINISHED)
   );
@@ -33,13 +32,13 @@ const AddPolyhouses = ({ form, polyhouses, setPolyhouses }) => {
     ]);
   };
 
-  const deletePolyhouse = (key) => {
-    setPolyhouses(polyhouses.filter((polyhouse) => polyhouse.key !== key));
+  const deletePolyhouse = (key: any) => {
+    setPolyhouses(polyhouses.filter((polyhouse: any) => polyhouse.key !== key));
   };
 
-  const addZoneToPolyhouse = (polyhouseKey, newZone) => {
+  const addZoneToPolyhouse = (polyhouseKey: any, newZone: any) => {
     setPolyhouses(
-      polyhouses.map((polyhouse) => {
+      polyhouses.map((polyhouse: any) => {
         if (polyhouse.key === polyhouseKey) {
           return { ...polyhouse, zones: [...polyhouse.zones, newZone] };
         }
@@ -48,9 +47,9 @@ const AddPolyhouses = ({ form, polyhouses, setPolyhouses }) => {
     );
   };
 
-  const addNurseryToPolyhouse = (polyhouseKey, newNursery) => {
+  const addNurseryToPolyhouse = (polyhouseKey: any, newNursery: any) => {
     setPolyhouses(
-      polyhouses.map((polyhouse) => {
+      polyhouses.map((polyhouse: any) => {
         if (polyhouse.key === polyhouseKey) {
           return {
             ...polyhouse,
@@ -62,9 +61,9 @@ const AddPolyhouses = ({ form, polyhouses, setPolyhouses }) => {
     );
   };
 
-  const updateZonesInPolyhouse = (polyhouseKey, updatedZones) => {
+  const updateZonesInPolyhouse = (polyhouseKey: any, updatedZones: any) => {
     setPolyhouses(
-      polyhouses.map((polyhouse) => {
+      polyhouses.map((polyhouse: any) => {
         if (polyhouse.key === polyhouseKey) {
           return { ...polyhouse, zones: updatedZones };
         }
@@ -73,9 +72,12 @@ const AddPolyhouses = ({ form, polyhouses, setPolyhouses }) => {
     );
   };
 
-  const updateNurseryInPolyhouse = (polyhouseKey, updatedNurseries) => {
+  const updateNurseryInPolyhouse = (
+    polyhouseKey: any,
+    updatedNurseries: any
+  ) => {
     setPolyhouses(
-      polyhouses.map((polyhouse) => {
+      polyhouses.map((polyhouse: any) => {
         if (polyhouse.key === polyhouseKey) {
           return { ...polyhouse, nurseries: updatedNurseries };
         }
@@ -91,7 +93,7 @@ const AddPolyhouses = ({ form, polyhouses, setPolyhouses }) => {
       </div>
       <div className="reservoir">
         <Form form={form} layout="vertical">
-          {polyhouses.map((polyhouse, index) => (
+          {polyhouses.map((polyhouse: any, index: any) => (
             <div key={polyhouse.key}>
               <Card
                 bordered={false}

@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Col, Row, Form as AntdForm } from "antd";
 import Input from "@/components/common/input";
-import { MdDelete } from "react-icons/md";
 import Button from "@/components/common/button";
 import Modal from "@/components/ui/modal";
 import Form from "@/components/common/form";
@@ -17,10 +16,10 @@ const AddNursery = ({
   addNursery,
   updateNurseries,
   errors,
-}) => {
+}: any) => {
   const [form] = AntdForm.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentNursery, setCurrentNursery] = useState(null);
+  const [currentNursery, setCurrentNursery] = useState<any>(null);
 
   const nurseryType = [
     {
@@ -82,7 +81,7 @@ const AddNursery = ({
         };
 
         if (currentNursery) {
-          const updatedNurseries = nurseries.map((nursery) =>
+          const updatedNurseries = nurseries.map((nursery: any) =>
             nursery.key === currentNursery.key ? newNursery : nursery
           );
           updateNurseries(polyhouseKey, updatedNurseries);
@@ -97,15 +96,15 @@ const AddNursery = ({
       .catch(() => {});
   };
 
-  const handleEdit = (nursery) => {
+  const handleEdit = (nursery: any) => {
     form.setFieldsValue(nursery);
     setCurrentNursery(nursery);
     setIsModalOpen(true);
   };
 
-  const handleDelete = (nurseryKey) => {
+  const handleDelete = (nurseryKey: any) => {
     const updatedNurseries = nurseries.filter(
-      (nursery) => nursery.key !== nurseryKey
+      (nursery: any) => nursery.key !== nurseryKey
     );
     updateNurseries(polyhouseKey, updatedNurseries);
   };
