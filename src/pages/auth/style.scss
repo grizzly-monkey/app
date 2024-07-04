@@ -48,7 +48,7 @@
     .forget_password_container {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 25px;
+      margin: 25px 0;
       gap: 10px;
       flex-wrap: wrap;
       .forget_password_text {
@@ -115,7 +115,12 @@
   margin-bottom: 20px;
   margin-top: 0 !important;
   text-align: right !important;
+  cursor: pointer;
 }
+.submit_btn {
+  margin-top: 10px;
+}
+
 @media (max-width: 900px) {
   .image_main_container {
     display: none;

@@ -1,11 +1,13 @@
-import { TOKEN_EXPIRE_TIME } from "@/config/consts";
+import { LOCAL_STORAGE_KEYS, TOKEN_EXPIRE_TIME } from "@/config/consts";
 import routePaths from "@/config/routePaths";
 import { router } from "@/routes";
 import { SagaAction } from "@/types/redux";
 import { runEffect } from "@/utilities/actionUtility";
 import {
   getIsAuthenticated,
+  getPreferenceValueFromStorage,
   setAuthStatusInLocalStorage,
+  setPreferenceValueInStorage,
 } from "@/utilities/localStorage";
 import { resultHasError } from "@/utilities/onError";
 import { CognitoUser } from "amazon-cognito-identity-js";
@@ -15,6 +17,12 @@ import SessionActions from "./actions";
 import SessionEffects from "./effects";
 import UserPool from "./UserPool";
 import CognitoSessionModel from "./models/login/CognitoSessionModel";
+import URLParamsConstant from "@/config/URLParamsConstant";
+import { changeLanguage } from "i18next";
+import AppActions from "../actions";
+import OrganizationActions from "../organization/actions";
+import { getTranslation } from "@/translation/i18n";
+import { errorToast, successToast } from "@/utilities/toast";
 
 export function getCognitoUserObject(phoneNumber: string) {
   return new CognitoUser({
@@ -52,10 +60,10 @@ function* REFRESH_TOKEN_SILENTLY(): Generator {
       refreshToken: result?.refreshToken?.token,
       idToken: result?.idToken?.jwtToken,
       accessToken: result?.accessToken?.jwtToken,
-      userDetails: result?.idToken?.payload,
     });
 
     yield put(SessionActions.setUserTokens(cognitoSession));
+    yield put(SessionActions.setUserDetails(result?.idToken?.payload));
     yield call(SCHEDULE_REFRESH);
   } catch (error) {
     console.log(error);
@@ -93,29 +101,100 @@ function* REQUEST_LOGIN(action: SagaAction): Generator {
     const isVerifiedByAdmin = result.userDetails?.["custom:isVerifiedByAdmin"];
 
     if (isVerifiedByAdmin === "0") {
-      yield put(SessionActions.setUserTokens(result));
+      yield put(SessionActions.setUserTokens(result.tokens));
+      yield put(SessionActions.setUserDetails(result.userDetails));
+
       yield call(SCHEDULE_REFRESH);
+      yield call(GET_LANGUAGE_FROM_STORAGE);
       setAuthStatusInLocalStorage(true);
       router.navigate(routePaths.organization);
     } else if (isVerifiedByAdmin === "1") {
       yield put(
         SessionActions.setAccountApprovalStatus(
-          "You are not authorized to login. Please wait for admin approval."
+          getTranslation("login.adminApprovalPending")
         )
       );
     } else if (isVerifiedByAdmin === "2") {
       yield put(
         SessionActions.setAccountApprovalStatus(
-          "Your account approval is rejected by admin. Please contact to admin at app-approvals@growloc.com."
+          getTranslation("login.adminApprovalRejected")
         )
       );
     }
   }
 }
 
+function* GET_LANGUAGE_FROM_STORAGE(): Generator {
+  const searchParams = new URLSearchParams(window.location.search);
+  const language = searchParams.get(URLParamsConstant.LANGUAGE);
+
+  if (language) {
+    yield put(SessionActions.changeLanguage(language));
+    yield cancel();
+  }
+
+  const languagePreference: any = yield getPreferenceValueFromStorage(
+    LOCAL_STORAGE_KEYS.language
+  );
+
+  yield put(
+    SessionActions.changeLanguage(
+      languagePreference ? languagePreference : "en"
+    )
+  );
+}
+
+function* GET_LANGUAGE_FROM_STORAGE_FINISHED(action: SagaAction) {
+  // const urlParameter = {
+  //   [URLParamsConstant.FARM_ID]: action.payload,
+  // }
+  // setURLParameters(urlParameter)
+
+  changeLanguage(action.payload);
+
+  yield call(
+    setPreferenceValueInStorage,
+    LOCAL_STORAGE_KEYS.language,
+    action.payload
+  );
+}
+
+function* LOGOUT(action: SagaAction) {
+  const user = getCurrentUser();
+
+  user?.signOut();
+  yield put(AppActions.resetStore());
+  yield call(setAuthStatusInLocalStorage, false);
+  localStorage.clear();
+  router.navigate(routePaths.login);
+
+  if (!action.payload) {
+    errorToast(getTranslation("global.unauthorizedErr"));
+  }
+}
+
+function* UPDATE_USER_DETAILS(action: SagaAction): Generator {
+  const user = getCurrentUser();
+
+  const result: any = yield call(
+    runEffect,
+    action,
+    SessionEffects.updateUserDetails,
+    user,
+    action.payload
+  );
+
+  if (resultHasError(result)) yield cancel();
+
+  successToast(getTranslation("profile.updateMsg"));
+  yield call(REFRESH_TOKEN_SILENTLY);
+}
+
 function* INIT() {
   if (getIsAuthenticated()) {
     yield call(REFRESH_TOKEN_SILENTLY);
+    yield call(GET_LANGUAGE_FROM_STORAGE);
+    yield put(OrganizationActions.getOrganizationFromStorage());
   }
 }
 
@@ -125,6 +204,16 @@ function* LOGINFLOW() {
     SessionActions.REQUEST_REFRESH_TOKEN_SILENTLY,
     REFRESH_TOKEN_SILENTLY
   );
+  yield takeEvery(
+    SessionActions.GET_LANGUAGE_FROM_STORAGE,
+    GET_LANGUAGE_FROM_STORAGE
+  );
+  yield takeEvery(
+    SessionActions.GET_LANGUAGE_FROM_STORAGE_FINISHED,
+    GET_LANGUAGE_FROM_STORAGE_FINISHED
+  );
+  yield takeEvery(SessionActions.LOGOUT, LOGOUT);
+  yield takeEvery(SessionActions.UPDATE_USER_DETAILS, UPDATE_USER_DETAILS);
 }
 
 export default function* rootSaga() {

@@ -10,7 +10,9 @@ const routePaths = {
   addInventory:'/inventory/add',
   tasks:'/tasks',
   workflow:'/workflow',
+  farmCreate: "/farm/create",
   organization: "/organization",
+  profile: "/profile",
 };
 
 export default routePaths;

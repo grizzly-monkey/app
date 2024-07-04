@@ -2,6 +2,7 @@ import { store } from "@/redux/store";
 import ErrorModel from "@/models/error/errorModel";
 import RequestingActions from "@/redux/requesting/actions";
 import logger from "./logger";
+import SessionActions from "@/redux/session/actions";
 
 type action = { type: string; meta?: any };
 type effect = (...args: any[]) => Promise<any>;
@@ -40,6 +41,11 @@ export async function runEffectAndGetMeta(
   if (isError) {
     model.actionType = `${actionType}_FINISHED`;
     model.scope = action.meta?.scope;
+
+    if (model.code === 401) {
+      dispatch(SessionActions.logout(false));
+      return;
+    }
   }
 
   dispatch(
@@ -57,6 +63,7 @@ export async function runEffectAndGetMeta(
       meta
     )
   );
+
   return model;
 }
 

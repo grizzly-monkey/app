@@ -9,6 +9,8 @@ export type registerType = {
   lastName: string;
   password: string;
   confirmPassword?: string;
+  address?: string;
+  email?: string;
 };
 export type sendOTPType = {
   phone: string;

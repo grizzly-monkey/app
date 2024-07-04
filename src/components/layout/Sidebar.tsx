@@ -19,7 +19,7 @@ function Sidenav({ collapsed, toggleSidebar }) {
   const location = useLocation();
 
   return (
-    <div style={{ height: '100vh', overflow: 'auto', display: 'flex', flexDirection: 'column', backgroundColor:'#FAFAFA', paddingLeft:'20px', paddingRight:'20px' }}>
+    <div className="sideBar">
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }} className="brand">
         <img src={Images.LOGO} alt="Growloc" />
       </div>
@@ -108,8 +108,8 @@ function Sidenav({ collapsed, toggleSidebar }) {
             </div>
           </NavLink>
         </Menu.Item>
-        <Menu.Item key="/users">
-          <NavLink to="/users">
+        <Menu.Item key="/users" className={routePaths.userManagement === location.pathname ? 'ant-menu-item-selected' :''}>
+          <NavLink to={routePaths.userManagement}>
             <div className={collapsed ? 'menuTitle' :''} style={{ display: 'flex', alignItems: 'center' }}>
               <span className="icon">
                 <FaUsers />

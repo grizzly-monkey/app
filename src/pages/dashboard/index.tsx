@@ -1,6 +1,6 @@
 const Dashboard = () => {
   return (
-    <div>
+    <div style={{backgroundColor:'#fff'}}>
       <p className="heading1">The quick brown fox jumps over the lazy dog.</p>
       <p className="heading2">The quick brown fox jumps over the lazy dog.</p>
       <p className="heading3">The quick brown fox jumps over the lazy dog.</p>

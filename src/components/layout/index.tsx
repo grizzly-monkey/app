@@ -1,9 +1,11 @@
-import { Outlet } from "react-router-dom";
+import Main from "./Main";
+import "./style.scss";
+import "./responsive.scss";
 
 const Layout = () => {
   return (
     <div>
-      <Outlet />
+      <Main />
     </div>
   );
 };

@@ -38,7 +38,7 @@ const Input = ({
       label={label}
       className={className}
       rules={rules}
-      style={{ marginBottom: "20px" }}
+      style={{ marginBottom: "25px" }}
     >
       <RenderInput
         value={value}

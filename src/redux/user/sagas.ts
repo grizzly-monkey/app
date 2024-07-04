@@ -11,6 +11,7 @@ import { resultHasError } from "@/utilities/onError";
 import { successToast } from "@/utilities/toast";
 import { router } from "@/routes";
 import UserSelectors from "./selectors";
+import { getTranslation } from "@/translation/i18n";
 
 function* FETCH_USERS(action: SagaAction) {
   yield call(runEffect, action, UserEffects.getUsers);
@@ -26,17 +27,21 @@ function* CREATE_USER(action: SagaAction) {
   );
 }
 
-function* REQUEST_RESET_PASSWORD_OTP(action: SagaAction) {
+function* REQUEST_RESET_PASSWORD_OTP(action: SagaAction): Generator {
   const cognitoUserObject: CognitoUser = getCognitoUserObject(
     `+${action.payload.phone}`
   );
 
-  yield call(
+  const result: any = yield call(
     runEffect,
     action,
     UserEffects.sendResetPasswordOTP,
     cognitoUserObject
   );
+
+  if (resultHasError(result)) yield cancel();
+
+  successToast(getTranslation("forgotPassword.otpSentSuccessfully"));
 }
 
 function* RESET_PASSWORD(action: SagaAction): Generator {
