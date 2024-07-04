@@ -1,13 +1,11 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
-import { FaRegUser } from "react-icons/fa";
+import routePaths from "@/config/routePaths";
 import { DownOutlined } from "@ant-design/icons";
-import { Space, Tag, Menu, List } from "antd";
+import { List } from "antd";
 import { FaUser } from "react-icons/fa";
 import { IoIosNotifications } from "react-icons/io";
-import Dropdown from "../ui/dropdown";
 import { RiLogoutBoxRLine } from "react-icons/ri";
-import routePaths from "@/config/routePaths";
+import { useLocation } from "react-router-dom";
+import Dropdown from "../ui/dropdown";
 
 const Header = () => {
   const location = useLocation();
@@ -31,7 +29,7 @@ const Header = () => {
       case routePaths.workflow:
         return "Workflow";
         break;
-        case routePaths.userManagement:
+      case routePaths.userManagement:
         return "Users";
         break;
       default:
@@ -41,12 +39,20 @@ const Header = () => {
 
   const data = [
     {
-      title: <span>Profile</span> ,
-      avatar: <span style={{ fontSize:'18px'}}><FaUser /></span>,
+      title: <span>Profile</span>,
+      avatar: (
+        <span style={{ fontSize: "18px" }}>
+          <FaUser />
+        </span>
+      ),
     },
     {
-      title:<span className="colorRed">Logout</span> ,
-      avatar: <span className="colorRed" style={{fontSize:'18px'}}><RiLogoutBoxRLine /></span>,
+      title: <span className="colorRed">Logout</span>,
+      avatar: (
+        <span className="colorRed" style={{ fontSize: "18px" }}>
+          <RiLogoutBoxRLine />
+        </span>
+      ),
     },
   ];
   const menu = (
@@ -57,17 +63,12 @@ const Header = () => {
       dataSource={data}
       renderItem={(item) => (
         <List.Item>
-          <List.Item.Meta
-            avatar={item.avatar}
-            title={item.title}
-            description={item.description}
-          />
+          <List.Item.Meta avatar={item.avatar} title={item.title} />
         </List.Item>
       )}
     />
   );
 
- 
   return (
     <div className="topBar">
       <div
@@ -118,7 +119,12 @@ const Header = () => {
           </span>
 
           <span style={{ fontSize: "10px" }}>
-            <Dropdown children={<DownOutlined />} overlay={menu} trigger={["click"]} placement="bottomLeft" />
+            <Dropdown
+              children={<DownOutlined />}
+              overlay={menu}
+              trigger={["click"]}
+              placement="bottomLeft"
+            />
           </span>
         </div>
       </div>

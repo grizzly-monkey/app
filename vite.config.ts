@@ -47,7 +47,15 @@ const manifestForPlugin: Partial<VitePWAOptions> = {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), VitePWA(manifestForPlugin), EnvironmentPlugin("all")],
+  plugins: [
+    react(),
+    VitePWA(manifestForPlugin),
+    EnvironmentPlugin([
+      "VITE_COGNITO_POOL_ID",
+      "VITE_COGNITO_CLIENT_ID",
+      "VITE_BASE_URL",
+    ]),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src/"),
