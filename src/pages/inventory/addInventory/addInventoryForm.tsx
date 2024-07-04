@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from "react-redux";
 import InventorySelectors from "@/redux/inventory/selectors";
 import { useEffect } from "react";
 import InventoryActions from "@/redux/inventory/actions";
-import requestingSelector from "@/redux/requesting/requestingSelector";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import FullAlertError from "@/components/common/error/FullAlertError";
 
@@ -19,9 +18,7 @@ const selectError = makeSelectErrorModel();
 const AddInventoryForm = () => {
   const dispatch = useDispatch();
   const [form] = AntdForm.useForm();
-  const loading = useSelector((state) =>
-    requestingSelector(state, [InventoryActions.CREATE_INVENTORY], "")
-  );
+
   const createInventoryError = useSelector((state) =>
     selectError(state, [InventoryActions.CREATE_INVENTORY_FINISHED], "")
   );

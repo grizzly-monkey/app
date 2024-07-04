@@ -1,25 +1,14 @@
-import { useState } from "react";
+import { Layout } from "antd";
 import { Outlet } from "react-router-dom";
-import { Layout, Button } from "antd";
-import Sidenav from "./Sidebar";
 import Header from "./Header";
-import { Images } from "@/utilities/imagesPath";
+import Sidenav from "./Sidebar";
 
 const { Content, Sider } = Layout;
 
 function Main() {
-  const [collapsed, setCollapsed] = useState(false);
-
-  const toggleSidebar = () => {
-    setCollapsed(!collapsed);
-  };
-
   return (
     <Layout>
-      <Sider
-        width={300}
-        theme="light"
-      >
+      <Sider width={300} theme="light">
         <Sidenav />
       </Sider>
       <Layout>

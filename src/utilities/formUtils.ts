@@ -1,4 +1,3 @@
-import { errorDetail } from "@/types/error";
 import get from "lodash/get";
 
 type Form = {
