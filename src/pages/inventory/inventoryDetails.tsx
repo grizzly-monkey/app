@@ -7,7 +7,7 @@ import requestingSelector from "@/redux/requesting/requestingSelector";
 import { getTranslation } from "@/translation/i18n";
 import Fields from "@/utilities/fields/field";
 import { Form, FormInstance } from "antd";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 interface inventoryDetailsProps {
@@ -22,6 +22,10 @@ const InventoryDetails = ({
   field,
   form,
 }: inventoryDetailsProps) => {
+  const [descriptionSubmitDisable, setDescriptionSubmitDisable] = useState(false);
+  const [providerSubmitDisable, setProviderSubmitDisable] = useState(false);
+  const [quantitySubmitDisable, setQuantitySubmitDisable] = useState(false);
+  const [wastageSubmitDisable, setWastageSubmitDisable] = useState(false);
   const dispatch = useDispatch();
   const descriptionUdating = useSelector((state) =>
     requestingSelector(state, [InventoryActions.PATCH_INVENTORY], "description")
@@ -79,6 +83,8 @@ const InventoryDetails = ({
     if (!descriptionUdating) {
       if (!descriptionError) {
         toggleField("description", false);
+      } else{
+        setDescriptionSubmitDisable(true);
       }
     }
   }, [descriptionError, descriptionUdating]);
@@ -86,6 +92,8 @@ const InventoryDetails = ({
     if (!providerUdating) {
       if (!providerError) {
         toggleField("provider", false);
+      }else{
+        setProviderSubmitDisable(true);
       }
     }
   }, [providerUdating, providerError]);
@@ -94,6 +102,8 @@ const InventoryDetails = ({
     if (!quantityUdating) {
       if (!quantityError) {
         toggleField("quantity", false);
+      }else{
+        setQuantitySubmitDisable(true);
       }
     }
   }, [quantityUdating, quantityError]);
@@ -101,11 +111,12 @@ const InventoryDetails = ({
     if (!wastageUdating) {
       if (!wastageError) {
         toggleField("wastage", false);
+      }else{
+        setWastageSubmitDisable(true);
       }
     }
   }, [wastageUdating, wastageError]);
 
-  console.log("selectedInventory", selectedInventory);
   return (
     <Form form={form}>
       <div className="user-details-sidebar" style={{ width: "100%" }}>
@@ -131,12 +142,13 @@ const InventoryDetails = ({
                     isActive={field.description}
                     loading={descriptionUdating}
                     value={selectedInventory?.description}
-                    setSubmitDisable={(value) => console.log(value)}
+                    setSubmitDisable={setDescriptionSubmitDisable}
                     onCancel={() => toggleField("description", false)}
                     setActive={() => toggleField("description", true)}
                     userDefineField={{
                       inputDataTestId: "first-name-input",
                     }}
+                    isSubmitDisable={descriptionSubmitDisable}
                     containerDataTestId="first-name-container"
                     placeholder={getTranslation("global.description")}
                   >
@@ -158,11 +170,17 @@ const InventoryDetails = ({
                     isActive={field.provider}
                     loading={providerUdating}
                     value={selectedInventory?.provider}
-                    setSubmitDisable={(value) => console.log(value)}
+                    setSubmitDisable={setProviderSubmitDisable}
+                    isSubmitDisable={providerSubmitDisable}
                     onCancel={() => toggleField("provider", false)}
                     setActive={() => toggleField("provider", true)}
                     userDefineField={{
                       inputDataTestId: "last-name-input",
+                      rules:[{
+                        required: true,
+                        message: "Please enter provider"
+                      
+                      }]
                     }}
                     containerDataTestId="last-name-container"
                     placeholder={getTranslation(
@@ -185,13 +203,19 @@ const InventoryDetails = ({
                     onSubmit={(value) =>
                       updateInventory({ fieldName: "quantity", value: value })
                     }
+                    
                     isActive={field.quantity}
                     loading={quantityUdating}
                     value={selectedInventory?.quantity}
-                    setSubmitDisable={(value) => console.log(value)}
+                    setSubmitDisable={setQuantitySubmitDisable}
+                    isSubmitDisable={quantitySubmitDisable}
                     onCancel={() => toggleField("quantity", false)}
                     setActive={() => toggleField("quantity", true)}
                     userDefineField={{
+                      rules:[{
+                        required: true,
+                        message: "Please enter quantity"
+                      }],
                       type: "INT",
                       inputDataTestId: "quantity-input",
                     }}
@@ -216,13 +240,19 @@ const InventoryDetails = ({
                     onSubmit={(value) =>
                       updateInventory({ fieldName: "wastage", value: value })
                     }
+
                     isActive={field.wastage}
                     loading={wastageUdating}
                     value={selectedInventory?.wastage}
-                    setSubmitDisable={(value) => console.log(value)}
+                    setSubmitDisable={setWastageSubmitDisable}
+                    isSubmitDisable={wastageSubmitDisable}
                     onCancel={() => toggleField("wastage", false)}
                     setActive={() => toggleField("wastage", true)}
                     userDefineField={{
+                      rules:[{
+                        required: true,
+                        message: "Please enter wastage"
+                      }],
                       inputDataTestId: "wastage-input",
                     }}
                     containerDataTestId="wastage-container"

@@ -8,7 +8,7 @@ import UserActions from "@/redux/user/actions";
 import Fields from "@/utilities/fields/field";
 import requestingSelector from "@/redux/requesting/requestingSelector";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface userDetailsProps {
   toggleField: Function;
@@ -18,6 +18,10 @@ interface userDetailsProps {
 
 const selectError = makeSelectErrorModel();
 const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
+  const [firstNameSubmitDisable, setFirstNameSubmitDisable] = useState(false);
+  const [lastNameSubmitDisable, setLastNameSubmitDisable] = useState(false);
+  const [rolesSubmitDisable, setRolesSubmitDisable] = useState(false);
+
   const dispatch = useDispatch();
   const selectedUser = useSelector(UserSelectors.selectSelectedUser);
 
@@ -89,22 +93,34 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
   };
 
   useEffect(() => {
-    if (!updateUserFirstNameError && !firstNameUdating) {
-      toggleField("firstName", false);
+    if (!firstNameUdating) {
+      if (!updateUserFirstNameError) {
+        toggleField("firstName", false);
+      } else {
+        setFirstNameSubmitDisable(true);
+      }
     }
-  }, [updateUserFirstNameError,firstNameUdating]);
+  }, [updateUserFirstNameError, firstNameUdating]);
 
   useEffect(() => {
-    if (!updateUserLastNameError && !lastNameUdating) {
-      toggleField("lastName", false);
+    if (!lastNameUdating) {
+      if (!updateUserLastNameError) {
+        toggleField("lastName", false);
+      } else {
+        setLastNameSubmitDisable(true);
+      }
     }
-  }, [updateUserLastNameError,lastNameUdating]);
+  }, [updateUserLastNameError, lastNameUdating]);
 
   useEffect(() => {
-    if (!updateUserRolesError && !rolesUdating) {
-      toggleField("roles", false);
+    if ( !rolesUdating) {
+      if (!updateUserRolesError) {
+        toggleField("roles", false);
+      } else {
+        setRolesSubmitDisable(true);
+      }
     }
-  }, [updateUserRolesError,rolesUdating]);
+  }, [updateUserRolesError, rolesUdating]);
   return (
     <Form form={form}>
       <div className="user-details-sidebar" style={{ width: "100%" }}>
@@ -121,7 +137,8 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
                     isActive={field.firstName}
                     loading={firstNameUdating}
                     value={selectedUser?.firstName}
-                    setSubmitDisable={(value) => console.log(value)}
+                    setSubmitDisable={setFirstNameSubmitDisable}
+                    isSubmitDisable={firstNameSubmitDisable}
                     onCancel={() => toggleField("firstName", false)}
                     setActive={() => toggleField("firstName", true)}
                     userDefineField={{
@@ -152,7 +169,8 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
                     isActive={field.lastName}
                     loading={lastNameUdating}
                     value={selectedUser?.lastName}
-                    setSubmitDisable={(value) => console.log(value)}
+                    setSubmitDisable={setLastNameSubmitDisable}
+                    isSubmitDisable={lastNameSubmitDisable}
                     onCancel={() => toggleField("lastName", false)}
                     setActive={() => toggleField("lastName", true)}
                     userDefineField={{
@@ -189,7 +207,8 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
                     isActive={field.roles}
                     loading={rolesUdating}
                     value={selectedUser?.roles}
-                    setSubmitDisable={(value) => console.log(value)}
+                    setSubmitDisable={setRolesSubmitDisable}
+                    isSubmitDisable={rolesSubmitDisable}
                     onCancel={() => toggleField("roles", false)}
                     setActive={() => toggleField("roles", true)}
                     userDefineField={{
