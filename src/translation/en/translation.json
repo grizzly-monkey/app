@@ -123,6 +123,7 @@
   "forgotPassword.backTo": "Back to",
   "forgotPassword.passwordUpdatedSuccess": "Password updated successfully!!",
   "organization.selectYourOrganization": "Select your organization",
+  "profile.updateMsg": "profile updated successfully!!",
 
   "farm.farmCreation": "Farm creation",
   "farm.addFarm": "Add farm",
