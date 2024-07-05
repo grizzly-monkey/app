@@ -45,7 +45,7 @@ const initialState = {
   //   updatedBy: '21f3bd3a-9011-70fd-8aba-8ed6189af0fe',
   //   createdDate: '2024-06-26T11:46:18.381Z',
   //   updatedDate: '2024-06-26T11:46:18.381Z'
-  // }
+  // },
   selectedFarmId: null,
 };
 

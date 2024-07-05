@@ -1,6 +1,7 @@
 import Card from "@/components/ui/card";
 import { MdDelete } from "react-icons/md";
 import Fields from "@/utilities/fields/field";
+import { getTranslation } from "@/translation/i18n";
 
 const NuseryCard = ({ nurseries, onEdit, onDelete, errors }: any) => {
   const hasErrors = (nursary: any) =>
@@ -48,13 +49,22 @@ const NuseryCard = ({ nurseries, onEdit, onDelete, errors }: any) => {
             <Fields
               info={[
                 {
-                  label: "Name",
+                  label: `${getTranslation("global.name")}`,
                   value: <span style={{ width: "100%" }}>{nusery.name}</span>,
                 },
-                { label: "Area", value: `${nusery.area}` },
+                {
+                  label: `${getTranslation("global.area")}`,
+                  value: `${nusery.area}`,
+                },
               ]}
             />
           </Card>
+
+          {hasErrors(nusery) && (
+            <span style={{ color: "red" }}>
+              {getTranslation("global.errorOccured")}
+            </span>
+          )}
         </div>
       ))}
     </div>

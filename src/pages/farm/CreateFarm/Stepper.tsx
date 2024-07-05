@@ -42,13 +42,13 @@ const Stepper = ({ current, setCurrent }: stepperProps) => {
 
       setFarmColor(newFarmColor);
       setReservoirColor(newReservoirColor);
-    }else {
+    } else {
       setFarmColor(newFarmColor);
       setReservoirColor(newReservoirColor);
     }
   }, [error]);
 
-  const stepsComponent = (orientation: 'horizontal' | 'vertical') => (
+  const stepsComponent = (orientation: "horizontal" | "vertical") => (
     <Steps
       current={current}
       onChange={changeStep}
