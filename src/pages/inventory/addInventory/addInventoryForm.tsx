@@ -2,7 +2,7 @@ import Form from "@/components/common/form";
 import { Form as AntdForm } from "antd";
 import Button from "@/components/common/button";
 import Input from "@/components/common/input";
-import { Col, Flex, InputNumber, Row, Select } from "antd";
+import { Col, Flex, InputNumber, Row } from "antd";
 import AddProductButton from "./addProductButton";
 import { useNavigate } from "react-router-dom";
 import routePaths from "@/config/routePaths";
@@ -14,6 +14,7 @@ import InventoryActions from "@/redux/inventory/actions";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import FullAlertError from "@/components/common/error/FullAlertError";
 import requestingSelector from "@/redux/requesting/requestingSelector";
+import Select from "@/components/ui/select";
 
 const selectError = makeSelectErrorModel();
 

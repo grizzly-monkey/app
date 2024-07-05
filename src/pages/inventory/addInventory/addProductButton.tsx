@@ -1,6 +1,6 @@
 import Button from "@/components/common/button";
 import { useEffect, useState } from "react";
-import { Modal, Form as AntdForm, Row, Col, Select } from "antd";
+import { Modal, Form as AntdForm, Row, Col } from "antd";
 import Form from "@/components/common/form";
 import Input from "@/components/common/input";
 import { getTranslation } from "@/translation/i18n";
@@ -10,6 +10,7 @@ import requestingSelector from "@/redux/requesting/requestingSelector";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import FullAlertError from "@/components/common/error/FullAlertError";
 import InventorySelectors from "@/redux/inventory/selectors";
+import Select from "@/components/ui/select";
 
 const selectError = makeSelectErrorModel();
 const AddProductButton = () => {

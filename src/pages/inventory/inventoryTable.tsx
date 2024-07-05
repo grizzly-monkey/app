@@ -2,7 +2,7 @@ import Card from "@/components/ui/card";
 import Table from "@/components/ui/table";
 import columns from "./columns";
 // import Input from "@/components/common/input";
-import { Divider, Flex, Select, Input as AntdInput } from "antd";
+import { Divider, Flex, Input as AntdInput } from "antd";
 import Button from "@/components/common/button";
 import { useNavigate } from "react-router-dom";
 import routePaths from "@/config/routePaths";
@@ -15,6 +15,8 @@ import requestingSelector from "@/redux/requesting/requestingSelector";
 import FullAlertError from "@/components/common/error/FullAlertError";
 import { getTranslation } from "@/translation/i18n";
 import { DeleteOutlined } from "@ant-design/icons";
+import FarmSelectors from "@/redux/farm/FarmSelectors";
+import Select from "@/components/ui/select";
 
 const { Search } = AntdInput;
 
@@ -35,6 +37,7 @@ const InventoryTable = () => {
   const error = useSelector((state) =>
     selectError(state, InventoryActions.FETCH_INVENTORIES_FINISHED)
   );
+  const selectedFarmId = useSelector(FarmSelectors.SelectSelectedFarmId);
   const selectedInventory = useSelector(
     InventorySelectors.selectSelectedInventory
   );
@@ -139,6 +142,12 @@ const InventoryTable = () => {
     setProductFilteredInventories(inventories);
     setSearchFilteredInventories(inventories);
   }, [inventories]);
+
+  useEffect(() => {
+    if (selectedFarmId) {
+      dispatch(InventoryActions.fetchInventories());
+    }
+  }, [selectedFarmId]);
 
   return (
     <Card

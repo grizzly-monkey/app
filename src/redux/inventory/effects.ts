@@ -2,10 +2,13 @@ import api from "@/utilities/api";
 import { delToModel, getToModel, postToModel, putToModel } from "@/utilities/effectUtility";
 import InventoryModel from "./models/getModels/inventoryModel";
 import { SubCategoryModel } from "./models/getModels/subCategoryModel";
+import FarmSelectors from "../farm/FarmSelectors";
+import { store } from "../store";
 
 class InventoryEffects {
   static getInventories() {
-    return getToModel(InventoryModel, api.INVENTORIES);
+    const selectedFarmId = FarmSelectors.SelectSelectedFarmId(store.getState())
+    return getToModel(InventoryModel, `${api.INVENTORIESWITHOUTFARMID}/${selectedFarmId}`);
   }
 
   static getSubCategories() {

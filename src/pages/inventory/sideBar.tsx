@@ -20,6 +20,7 @@ import InventoryActions from "@/redux/inventory/actions";
 import InventoryDetails from "./inventoryDetails";
 import requestingSelector from "@/redux/requesting/requestingSelector";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
+import FarmSelectors from "@/redux/farm/FarmSelectors";
 
 const { useToken } = theme;
 const selectError = makeSelectErrorModel();
@@ -40,6 +41,7 @@ const InventorySidebar = () => {
   const errorDeletingInventory = useSelector((state) =>
     selectError(state, InventoryActions.DELETE_INVENTORY_FINISHED)
   );
+  const selectedFarmId = useSelector(FarmSelectors.SelectSelectedFarmId);
   const { token } = useToken();
   const [form] = AntdForm.useForm();
   const dispatch = useDispatch();
@@ -67,6 +69,12 @@ const InventorySidebar = () => {
     }
     setPrevDeleteUserLoading(deleteLoading);
   }, [deleteLoading]);
+
+  useEffect(() => {
+    if (selectedFarmId) {
+      dispatch(InventoryActions.unselectInventory())
+    }
+  }, [selectedFarmId]);
   return (
     <SideBar isOpen={!!selectedInventory}>
       <div style={{ padding: "20px 20px", width: "100%" }}>
