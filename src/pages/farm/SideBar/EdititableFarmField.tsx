@@ -19,6 +19,7 @@ interface EditableFarmFieldProps {
   customValidator?: (context: object, value: string) => Promise<void>;
   udf?: object;
   children?: React.ReactNode;
+  type?: string;
 }
 
 const selectError = makeSelectErrorModel();
@@ -31,6 +32,7 @@ const EditableFarmField = ({
   customValidator,
   udf,
   children,
+  type,
 }: EditableFarmFieldProps) => {
   const dispatch = useDispatch();
   const [form] = AntdForm.useForm();
@@ -127,6 +129,7 @@ const EditableFarmField = ({
         isSubmitDisable={isSubmitDisable}
         customValidator={customValidator}
         containerDataTestId={`${fieldName}-container`}
+        type={type}
       >
         {children}
       </CustomEdit>

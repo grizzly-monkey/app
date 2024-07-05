@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Popconfirm, Space } from "antd";
-// import { CloseOutlined } from "@ant-design/icons";
+import { Divider, Popconfirm } from "antd";
 import SideBar from "@/components/ui/sidebar";
 import FarmSelectors from "@/redux/farm/FarmSelectors";
 import FarmActions from "@/redux/farm/action";
@@ -14,6 +13,7 @@ import Button from "@/components/common/button";
 import { DeleteOutlined } from "@ant-design/icons";
 import { BsThreeDots } from "react-icons/bs";
 import { IoClose } from "react-icons/io5";
+import requestingSelector from "@/redux/requesting/requestingSelector";
 
 const FarmSideBar = () => {
   const dispatch = useDispatch();
@@ -24,9 +24,17 @@ const FarmSideBar = () => {
     dispatch(FarmActions.setSelectedFarm(null));
   };
 
+  const loading = useSelector((state) =>
+    requestingSelector(state, [FarmActions.DELETE_FARM])
+  );
+
   useEffect(() => {
     if (users) dispatch(UserActions.fetchUsers());
   }, []);
+
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [selectedFarm]);
 
   const deleteFarm = () => {
     dispatch(FarmActions.deleteFarm());
@@ -53,26 +61,23 @@ const FarmSideBar = () => {
                   open={isMenuOpen}
                   onOpenChange={setIsMenuOpen}
                   dropdownRender={() => (
-                    <div>
-                      <Space>
-                        <Popconfirm
-                          title={getTranslation("global.areYouSure")}
-                          okText={getTranslation("global.yes")}
-                          cancelText={getTranslation("global.cancel")}
-                          onCancel={() => setIsMenuOpen(false)}
-                          onConfirm={deleteFarm}
-                        >
-                          <Button
-                            icon={<DeleteOutlined />}
-                            type="primary"
-                            label={getTranslation("global.delete")}
-                            // loading={deleteUserLoading}
-                            style={{ padding: "0px 15px" }}
-                            danger
-                            loading={false}
-                          />
-                        </Popconfirm>
-                      </Space>
+                    <div style={{ marginRight: "10px" }}>
+                      <Popconfirm
+                        title={getTranslation("global.areYouSure")}
+                        okText={getTranslation("global.yes")}
+                        cancelText={getTranslation("global.cancel")}
+                        onCancel={() => setIsMenuOpen(false)}
+                        onConfirm={deleteFarm}
+                      >
+                        <Button
+                          icon={<DeleteOutlined />}
+                          type="primary"
+                          label={getTranslation("global.delete")}
+                          loading={loading}
+                          style={{ padding: "0px 15px" }}
+                          danger
+                        />
+                      </Popconfirm>
                     </div>
                   )}
                   label={

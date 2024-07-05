@@ -102,6 +102,7 @@ const FarmDetails = () => {
             onlyFromLov: true,
             listOfValues: nutrientType,
           }}
+          type="string"
         >
           {selectedFarm?.nutrient?.type}
         </EditableFarmField>
