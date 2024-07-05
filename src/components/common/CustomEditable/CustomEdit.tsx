@@ -285,23 +285,23 @@ CustomEdit.propTypes = {
   isSubmitDisable: PropTypes.bool,
 };
 
-CustomEdit.defaultProps = {
-  disabled: false,
-  tooltip: null,
-  preset: false,
-  type: "string",
-  label: "",
-  isEmpty: false,
-  emptyLabel: "",
-  children: null,
-  placeholder: "",
-  customValidator: () => Promise.resolve(),
-  onChange: null,
-  isFullWidth: null,
-  tagRender: null,
-  isHidden: false,
-  isSubmitDisable: false,
-  setSubmitDisable: () => {},
-};
+// CustomEdit.defaultProps = {
+//   disabled: false,
+//   tooltip: null,
+//   preset: false,
+//   type: "string",
+//   label: "",
+//   isEmpty: false,
+//   emptyLabel: "",
+//   children: null,
+//   placeholder: "",
+//   customValidator: () => Promise.resolve(),
+//   onChange: null,
+//   isFullWidth: null,
+//   tagRender: null,
+//   isHidden: false,
+//   isSubmitDisable: false,
+//   setSubmitDisable: () => {},
+// };
 
 export default CustomEdit;
