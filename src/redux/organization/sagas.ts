@@ -1,14 +1,16 @@
+import { LOCAL_STORAGE_KEYS } from "@/config/consts";
+import URLParamsConstant from "@/config/URLParamsConstant";
 import { SagaAction } from "@/types/redux";
-import { runEffect } from "@/utilities/actionUtility";
-import { all, call, cancel, put, takeEvery } from "redux-saga/effects";
-import OrganizationActions from "./actions";
-import OrganizationEffects from "./effects";
+import { createAction, runEffect } from "@/utilities/actionUtility";
 import {
   getPreferenceValueFromStorage,
   setPreferenceValueInStorage,
 } from "@/utilities/localStorage";
-import { LOCAL_STORAGE_KEYS } from "@/config/consts";
-import URLParamsConstant from "@/config/URLParamsConstant";
+import { all, call, cancel, put, takeEvery } from "redux-saga/effects";
+import FarmActions from "../farm/action";
+import { store } from "../store";
+import OrganizationActions from "./actions";
+import OrganizationEffects from "./effects";
 
 function* REQUEST_ORGANIZATION(action: SagaAction): Generator {
   yield call(runEffect, action, OrganizationEffects.requestOrganization);
@@ -27,6 +29,8 @@ function* SELECT_ORGANIZATION(action: SagaAction): Generator {
     LOCAL_STORAGE_KEYS.organization,
     action.payload
   );
+
+  store.dispatch(createAction(FarmActions.REQUEST_FARMS_FINISHED, []));
 }
 
 function* GET_ORGANIZATION_FROM_STORAGE(): Generator {
