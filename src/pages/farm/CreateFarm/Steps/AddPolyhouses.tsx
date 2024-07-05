@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Col, Row, Tabs } from "antd";
 import Button from "@/components/common/button";
@@ -12,19 +12,23 @@ import { REGEX, applyErrorsToFields } from "../const";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import FarmActions from "@/redux/farm/action";
 import { getTranslation } from "@/translation/i18n";
-import { errorDetail } from "@/types/error";
 
 const selectError = makeSelectErrorModel();
 
 const { TabPane } = Tabs;
 
 const AddPolyhouses = ({ form, polyhouses, setPolyhouses }: any) => {
-  const [zoneColor, setZoneColor] = useState<string>("inherit");
-  const [nurseryColor, setNurseryColor] = useState<string>("inherit");
-
   const error = useSelector((state) =>
     selectError(state, FarmActions.ADD_POLYHOUSE_TO_FARM_FINISHED)
   );
+
+  const hasZoneErrors = (key: string) =>
+    error?.errors?.some((err: any) => err.location.includes(`zones.${key}`));
+
+  const hasNursaryErrors = (key: string) =>
+    error?.errors?.some((err: any) =>
+      err.location.includes(`nurseries.${key}`)
+    );
 
   useEffect(() => {
     if (error) applyErrorsToFields(form, error.errors);
@@ -35,27 +39,6 @@ const AddPolyhouses = ({ form, polyhouses, setPolyhouses }: any) => {
       { key: polyhouses.length, zones: [], nurseries: [] },
     ]);
   };
-
-  useEffect(() => {
-    let newZoneColor = "inherit";
-    let newNurseryColor = "inherit";
-    if (error) {
-      error.errors.forEach((err: errorDetail) => {
-        if (err.location.includes("nurseries")) {
-          newNurseryColor = "red";
-        }
-        if (err.location.includes("zones")) {
-          newZoneColor = "red";
-        }
-      });
-
-      setZoneColor(newZoneColor);
-      setNurseryColor(newNurseryColor);
-    } else {
-      setZoneColor(newZoneColor);
-      setNurseryColor(newNurseryColor);
-    }
-  }, [error]);
 
   const deletePolyhouse = (key: any) => {
     setPolyhouses(polyhouses.filter((polyhouse: any) => polyhouse.key !== key));
@@ -123,7 +106,11 @@ const AddPolyhouses = ({ form, polyhouses, setPolyhouses }: any) => {
   return (
     <div className="addForm">
       <div style={{ width: "150px", marginLeft: "auto" }}>
-        <Button label="Add polyhouse" onClick={addPolyhouse} />
+        <Button
+          label={getTranslation("farm.createFarm.polyhouse.addPolyhouse")}
+          onClick={addPolyhouse}
+          loading={false}
+        />
       </div>
       <div className="reservoir">
         <Form form={form} layout="vertical">
@@ -222,7 +209,11 @@ const AddPolyhouses = ({ form, polyhouses, setPolyhouses }: any) => {
                     <Tabs defaultActiveKey="1">
                       <TabPane
                         tab={
-                          <div style={{ color: zoneColor }}>
+                          <div
+                            style={{
+                              color: hasZoneErrors(index) ? "red" : "inherit",
+                            }}
+                          >
                             {getTranslation(
                               "farm.createFarm.polyhouse.configureZones"
                             )}
@@ -240,7 +231,13 @@ const AddPolyhouses = ({ form, polyhouses, setPolyhouses }: any) => {
                       </TabPane>
                       <TabPane
                         tab={
-                          <div style={{ color: nurseryColor }}>
+                          <div
+                            style={{
+                              color: hasNursaryErrors(index)
+                                ? "red"
+                                : "inherit",
+                            }}
+                          >
                             {getTranslation(
                               "farm.createFarm.polyhouse.configureNurseries"
                             )}

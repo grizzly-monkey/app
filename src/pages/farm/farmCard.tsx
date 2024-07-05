@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Spin } from "antd";
+import { Spin, Card } from "antd";
 import Fields from "@/utilities/fields/field";
 import FarmSelectors from "@/redux/farm/FarmSelectors";
 import FarmActions from "@/redux/farm/action";
@@ -7,7 +7,6 @@ import { deviceValue } from "./utilities";
 import { getTranslation } from "@/translation/i18n";
 import requestingSelector from "@/redux/requesting/requestingSelector";
 import { LoadingOutlined } from "@ant-design/icons";
-import Card from "@/components/ui/card";
 import { Farm } from "./types";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import FullAlertError from "@/components/common/error/FullAlertError";
@@ -16,6 +15,7 @@ const selectError = makeSelectErrorModel();
 
 const FarmCard = () => {
   const dispatch = useDispatch();
+  const selectedFarm = useSelector(FarmSelectors.SelectSelectedFarm);
   const farms = useSelector(FarmSelectors.SelectDenormalizeFarm);
   const loading = useSelector((state) =>
     requestingSelector(state, [FarmActions.REQUEST_FARMS])
@@ -49,7 +49,9 @@ const FarmCard = () => {
               <Card
                 title={card?.name}
                 bordered={false}
-                className="cursor_pointer shadow-box"
+                className={`cursor_pointer shadow-box ${
+                  selectedFarm?.farmId === card.farmId && "cardHighlight"
+                }`}
                 onClick={() => dispatch(FarmActions.setSelectedFarm(card))}
               >
                 <div>
@@ -57,13 +59,19 @@ const FarmCard = () => {
                     info={[
                       {
                         label: `${getTranslation("farm.farmArea")}`,
-                        value: <span>{card?.area}</span>,
+                        value: (
+                          <span style={{ display: "flex", gap: "5px" }}>
+                            {card?.area}
+                            <div>{getTranslation("global.sqMeter")}</div>
+                          </span>
+                        ),
                       },
                       {
                         label: `${getTranslation("farm.cultivableArea")}`,
                         value: (
-                          <span style={{ flex: "2" }}>
+                          <span style={{ display: "flex", gap: "5px" }}>
                             {card?.cultivableArea}
+                            <div>{getTranslation("global.sqMeter")}</div>
                           </span>
                         ),
                       },

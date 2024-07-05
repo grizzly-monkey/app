@@ -11,7 +11,7 @@ import { runEffect } from "@/utilities/actionUtility";
 import { SagaAction } from "@/types/redux";
 import FarmActions from "./action";
 import FarmsEffects from "./effects";
-import { Farm } from "@/pages/farm/types";
+import { Farm, Polyhouse } from "@/pages/farm/types";
 import { normalizeData } from "@/types/normalize";
 import ErrorModel from "@/models/error/errorModel";
 import { successToast } from "@/utilities/toast";
@@ -32,13 +32,27 @@ function* ADD_FARM(action: SagaAction) {
 function* ADD_POLYHOUSE_TO_FARM(action: SagaAction) {
   const { payload } = action;
   const { farmId } = yield select(FarmSelectors.SelectSelectedFarm);
-  yield call(
+  const result: Polyhouse | ErrorModel = yield call(
     runEffect,
     action,
     FarmsEffects.addPolyhouseToFarm,
     farmId,
     payload
   );
+
+  if (resultHasError(result as ErrorModel)) yield cancel();
+
+  const farms: normalizeData = yield select(FarmSelectors.SelectFarmList);
+
+  const updatedFarms = {
+    entities: {
+      farms: {...farms.entities.farms,[farmId]: {...farms.entities.farms[farmId], polyhouses: result} },
+    },
+    result: farms.result,
+  };
+
+
+  yield put(FarmActions.updateFarmLocally(null, updatedFarms));
 }
 
 function* UPDATE_FARM(action: SagaAction) {

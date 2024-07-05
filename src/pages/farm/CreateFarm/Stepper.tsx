@@ -48,7 +48,7 @@ const Stepper = ({
     let newFarmColor = "inherit";
     let newReservoirColor = "inherit";
     if (error) {
-      error.errors.forEach((err: errorDetail) => {
+      error?.errors?.forEach((err: errorDetail) => {
         if (err.location.includes("reservoirs")) {
           newReservoirColor = "red";
         } else {

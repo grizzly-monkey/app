@@ -11,9 +11,8 @@ const ZoneCard = ({ zones, onEdit, onDelete, errors }: any) => {
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+        gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))",
         gap: "10px",
-        padding: "10px",
       }}
     >
       {zones.map((zone: any, index: any) => (

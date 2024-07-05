@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./style.scss";
 import Stepper from "./Stepper";
 import { stepper, stepperNames } from "./const";
@@ -9,8 +9,12 @@ import StepperNavigation from "./StepperNavigation";
 import Card from "@/components/ui/card";
 import { useForm } from "@/components/common/form";
 import { getTranslation } from "@/translation/i18n";
+import { removeByActionType } from "@/redux/error/errorAction";
+import FarmActions from "@/redux/farm/action";
+import { useDispatch } from "react-redux";
 
 const CreateFarm = () => {
+  const dispatch = useDispatch();
   const [form] = useForm();
   const [reservoirForm] = useForm();
   const [reservoirs, setReservoirs] = useState([{ key: 0 }]);
@@ -19,6 +23,11 @@ const CreateFarm = () => {
   ]);
   const [current, setCurrent] = useState(0);
   const [farmValues, setFarmValues] = useState(null);
+
+  useEffect(() => {
+    dispatch(removeByActionType(FarmActions.ADD_FARM_FINISHED));
+    dispatch(removeByActionType(FarmActions.ADD_POLYHOUSE_TO_FARM_FINISHED));
+  }, []);
 
   return (
     <div>

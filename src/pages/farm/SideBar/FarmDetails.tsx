@@ -62,31 +62,37 @@ const FarmDetails = () => {
     {
       label: `${getTranslation("farm.farmArea")}`,
       value: (
-        <EditableFarmField
-          fieldName="area"
-          value={`${selectedFarm?.area}`}
-          placeholder="Enter the area"
-          farmId={selectedFarm.farmId}
-          isParseField={true}
-          customValidator={numberValidator}
-        >
-          {selectedFarm?.area}
-        </EditableFarmField>
+        <div style={{ display: "flex", gap: "10px" }}>
+          <EditableFarmField
+            fieldName="area"
+            value={`${selectedFarm?.area}`}
+            placeholder="Enter the area"
+            farmId={selectedFarm.farmId}
+            isParseField={true}
+            customValidator={numberValidator}
+          >
+            {selectedFarm?.area}
+          </EditableFarmField>
+          <div>{getTranslation("global.sqMeter")}</div>
+        </div>
       ),
     },
     {
       label: `${getTranslation("farm.cultivableArea")}`,
       value: (
-        <EditableFarmField
-          fieldName="cultivableArea"
-          value={`${selectedFarm?.cultivableArea}`}
-          placeholder="Enter the cultivable area"
-          farmId={selectedFarm.farmId}
-          isParseField={true}
-          customValidator={numberValidator}
-        >
-          {selectedFarm?.cultivableArea}
-        </EditableFarmField>
+        <div style={{ display: "flex", gap: "10px" }}>
+          <EditableFarmField
+            fieldName="cultivableArea"
+            value={`${selectedFarm?.cultivableArea}`}
+            placeholder="Enter the cultivable area"
+            farmId={selectedFarm.farmId}
+            isParseField={true}
+            customValidator={numberValidator}
+          >
+            {selectedFarm?.cultivableArea}
+          </EditableFarmField>
+          <div>{getTranslation("global.sqMeter")}</div>
+        </div>
       ),
     },
     {

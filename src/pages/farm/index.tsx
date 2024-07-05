@@ -1,8 +1,7 @@
 import FarmCard from "./farmCard";
 import "./style.scss";
-import { Flex } from "antd";
+import { Flex, Card } from "antd";
 import { ReloadOutlined } from "@ant-design/icons";
-import Card from "@/components/ui/card";
 import Button from "@/components/common/button";
 import { useNavigate } from "react-router-dom";
 import routePaths from "@/config/routePaths";

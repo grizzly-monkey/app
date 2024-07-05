@@ -76,6 +76,7 @@ const FarmSideBar = () => {
                           loading={loading}
                           style={{ padding: "0px 15px" }}
                           danger
+                          iconPosition="start"
                         />
                       </Popconfirm>
                     </div>
