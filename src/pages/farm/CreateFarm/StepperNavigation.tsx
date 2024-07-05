@@ -195,7 +195,7 @@ const StepperNavigation = ({
   const getPolyhousesData = () => {
     const values = form.getFieldsValue();
     const polyhousesData = polyhouses.map((polyhouse, index) => {
-      const polyhouseValues = {
+      const polyhouseValues: any = {
         name: values[`name_${index}`],
         structureExpectedLife: parseFloat(
           values[`structureExpectedLife_${index}`]
@@ -203,14 +203,16 @@ const StepperNavigation = ({
         plasticExpectedLife: parseFloat(values[`plasticExpectedLife_${index}`]),
         zones: polyhouse.zones
           ? polyhouse.zones.map((zone) => {
-              const { key, ...zoneWithoutKey } = zone;
-              return zoneWithoutKey;
+              const updatedZone: any = { ...zone };
+              delete updatedZone.key;
+              return updatedZone;
             })
           : [],
         nurseries: polyhouse.nurseries
           ? polyhouse.nurseries.map((nursery) => {
-              const { key, ...nurseryWithoutKey } = nursery;
-              return nurseryWithoutKey;
+              const updatedNursery: any = { ...nursery };
+              delete updatedNursery.key;
+              return updatedNursery;
             })
           : [],
       };
