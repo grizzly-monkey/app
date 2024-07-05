@@ -114,6 +114,7 @@
   "signUp.organizationNameErrMsg": "Please input your organization name",
   "signUp.organizationNamePlaceholder": "Enter your organization name",
   "signUp.alreadyHaveAnAccount": "Already have an account?",
+  "signUp.accountCreatedSuccessfully": "The account was successfully created! Await the approval of the admin.",
   "forgotPassword.otpSentSuccessfully": "OTP sent successfully!!",
   "forgotPassword.enterPhoneNumberToResetPassword": "Please enter your phone number to reset the password",
   "forgotPassword.resetPassword": "Reset Password",

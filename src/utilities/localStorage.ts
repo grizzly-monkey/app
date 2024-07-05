@@ -28,7 +28,10 @@ export const getPreferenceValueFromStorage = (key: string) => {
   return JSON.parse(preferences).current?.[key];
 };
 
-export const setPreferenceValueInStorage = (key: string, value: string) => {
+export const setPreferenceValueInStorage = (
+  key: string,
+  value: string | null
+) => {
   const userDetails = SessionSelectors.SelectUserDetails(store.getState());
   const phoneNumber = userDetails.phone_number;
 

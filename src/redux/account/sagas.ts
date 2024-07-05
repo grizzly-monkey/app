@@ -7,6 +7,7 @@ import AccountActions from "./actions";
 import AccountEffects from "./effects";
 import { successToast } from "@/utilities/toast";
 import routePaths from "@/config/routePaths";
+import { getTranslation } from "@/translation/i18n";
 
 function* REQUEST_REGISTER(action: SagaAction): Generator {
   const result = yield call(
@@ -18,9 +19,7 @@ function* REQUEST_REGISTER(action: SagaAction): Generator {
 
   if (result instanceof ErrorModel) yield cancel();
 
-  successToast(
-    "The account was successfully created! Await the approval of the admin."
-  );
+  successToast(getTranslation("signUp.accountCreatedSuccessfully"));
   router.navigate(routePaths.login);
 }
 
