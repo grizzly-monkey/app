@@ -23,7 +23,10 @@ const Farm = () => {
     dispatch(FarmActions.fetchFarms());
   });
 
-  const onRefresh = () => dispatch(FarmActions.fetchFarms(true));
+  const onRefresh = () => {
+    dispatch(FarmActions.fetchFarms(true));
+    dispatch(FarmActions.setSelectedFarm(null));
+  };
   const loading = useSelector((state) =>
     requestingSelector(state, [FarmActions.REQUEST_FARMS])
   );

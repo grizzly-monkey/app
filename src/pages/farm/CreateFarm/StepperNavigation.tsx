@@ -22,6 +22,8 @@ interface stepperNavigationProps {
   reservoirForm: FormInstance;
   reservoirs: { key: number }[];
   polyhouses: { key: number; zones: Zone[]; nurseries: Nursery[] }[];
+  farmValues: any;
+  setFarmValues: any;
 }
 
 const StepperNavigation = ({
@@ -31,11 +33,12 @@ const StepperNavigation = ({
   reservoirs,
   polyhouses,
   reservoirForm,
+  setFarmValues,
+  farmValues,
 }: stepperNavigationProps) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [farmValues, setFarmValues] = useState<any>();
   const [isFarmCreationDispatch, setIsFarmCreationDispatch] = useState(false);
   const [isPolyhouseDispatch, setIsPolyhouseDispatch] = useState(false);
 
@@ -198,8 +201,20 @@ const StepperNavigation = ({
           values[`structureExpectedLife_${index}`]
         ),
         plasticExpectedLife: parseFloat(values[`plasticExpectedLife_${index}`]),
-        zones: polyhouse.zones,
-        nurseries: polyhouse.nurseries,
+        zones: polyhouse.zones
+          ? polyhouse.zones.map((zone) => {
+              const updatedZone: any = { ...zone };
+              delete updatedZone.key;
+              return updatedZone;
+            })
+          : [],
+        nurseries: polyhouse.nurseries
+          ? polyhouse.nurseries.map((nursery) => {
+              const updatedNursery: any = { ...nursery };
+              delete updatedNursery.key;
+              return updatedNursery;
+            })
+          : [],
       };
 
       if (

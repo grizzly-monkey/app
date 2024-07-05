@@ -7,6 +7,7 @@ import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import FarmActions from "@/redux/farm/action";
 import { getTranslation } from "@/translation/i18n";
 import { errorDetail } from "@/types/error";
+import { FormInstance } from "antd/lib";
 
 const selectError = makeSelectErrorModel();
 const { Step } = Steps;
@@ -14,9 +15,16 @@ const { Step } = Steps;
 interface stepperProps {
   current: number;
   setCurrent: (current: number) => void;
+  setFarmValues: any;
+  form: FormInstance;
 }
 
-const Stepper = ({ current, setCurrent }: stepperProps) => {
+const Stepper = ({
+  current,
+  setCurrent,
+  setFarmValues,
+  form,
+}: stepperProps) => {
   const error = useSelector((state) =>
     selectError(state, FarmActions.ADD_FARM_FINISHED)
   );
@@ -25,7 +33,15 @@ const Stepper = ({ current, setCurrent }: stepperProps) => {
   const [reservoirColor, setReservoirColor] = useState("inherit");
 
   const changeStep = (index: number) => {
-    setCurrent(index);
+    if (index === 1) {
+      form
+        .validateFields()
+        .then(() => {
+          setFarmValues(form.getFieldsValue());
+          setCurrent(current + 1);
+        })
+        .catch(() => {});
+    } else setCurrent(index);
   };
 
   useEffect(() => {

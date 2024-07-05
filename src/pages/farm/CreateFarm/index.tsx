@@ -18,6 +18,7 @@ const CreateFarm = () => {
     { key: 0, zones: [], nurseries: [] },
   ]);
   const [current, setCurrent] = useState(0);
+  const [farmValues, setFarmValues] = useState(null);
 
   return (
     <div>
@@ -31,7 +32,12 @@ const CreateFarm = () => {
       >
         <div className="createForm">
           <div className="stepper">
-            <Stepper current={current} setCurrent={setCurrent} />
+            <Stepper
+              current={current}
+              setCurrent={setCurrent}
+              form={form}
+              setFarmValues={setFarmValues}
+            />
           </div>
 
           <div
@@ -68,6 +74,8 @@ const CreateFarm = () => {
               reservoirs={reservoirs}
               polyhouses={polyhouses}
               reservoirForm={reservoirForm}
+              farmValues={farmValues}
+              setFarmValues={setFarmValues}
             />
           </div>
         </div>

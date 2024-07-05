@@ -131,6 +131,7 @@ const AddZones = ({
           onClick={() => {
             setIsModalOpen(true);
           }}
+          loading={false}
         />
       </div>
 
