@@ -7,6 +7,8 @@ import { roles } from "./utils";
 import UserActions from "@/redux/user/actions";
 import Fields from "@/utilities/fields/field";
 import requestingSelector from "@/redux/requesting/requestingSelector";
+import { makeSelectErrorModel } from "@/redux/error/errorSelector";
+import { useEffect } from "react";
 
 interface userDetailsProps {
   toggleField: Function;
@@ -14,6 +16,7 @@ interface userDetailsProps {
   form: FormInstance;
 }
 
+const selectError = makeSelectErrorModel();
 const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
   const dispatch = useDispatch();
   const selectedUser = useSelector(UserSelectors.selectSelectedUser);
@@ -27,6 +30,15 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
   const rolesUdating = useSelector((state) =>
     requestingSelector(state, [UserActions.UPDATE_USER_ROLES])
   );
+  const updateUserFirstNameError = useSelector((state) =>
+    selectError(state, UserActions.UPDATE_USER_FIRST_NAME_FINISHED)
+  );
+  const updateUserLastNameError = useSelector((state) =>
+    selectError(state, UserActions.UPDATE_USER_LAST_NAME_FINISHED)
+  );
+  const updateUserRolesError = useSelector((state) =>
+    selectError(state, UserActions.UPDATE_USER_ROLES_FINISHED)
+  );
 
   const updateFirstName = () => {
     const firstName = form.getFieldValue([
@@ -36,7 +48,11 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
     dispatch(
       UserActions.updateUserFirstName({
         id: selectedUser?.userId,
-        data: { firstName },
+        data: {
+          firstName,
+          lastName: selectedUser?.lastName,
+          roles: selectedUser?.roles,
+        },
       })
     );
   };
@@ -49,7 +65,11 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
     dispatch(
       UserActions.updateUserLastName({
         id: selectedUser?.userId,
-        data: { lastName },
+        data: {
+          firstName: selectedUser?.firstName,
+          lastName,
+          roles: selectedUser?.roles,
+        },
       })
     );
   };
@@ -57,10 +77,34 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
   const updateRoles = () => {
     const roles = form.getFieldValue([`${selectedUser?.userId}`, "roles"]);
     dispatch(
-      UserActions.updateUserRoles({ id: selectedUser?.userId, data: { roles } })
+      UserActions.updateUserRoles({
+        id: selectedUser?.userId,
+        data: {
+          firstName: selectedUser?.firstName,
+          roles,
+          lastName: selectedUser?.lastName,
+        },
+      })
     );
   };
 
+  useEffect(() => {
+    if (!updateUserFirstNameError && !firstNameUdating) {
+      toggleField("firstName", false);
+    }
+  }, [updateUserFirstNameError,firstNameUdating]);
+
+  useEffect(() => {
+    if (!updateUserLastNameError && !lastNameUdating) {
+      toggleField("lastName", false);
+    }
+  }, [updateUserLastNameError,lastNameUdating]);
+
+  useEffect(() => {
+    if (!updateUserRolesError && !rolesUdating) {
+      toggleField("roles", false);
+    }
+  }, [updateUserRolesError,rolesUdating]);
   return (
     <Form form={form}>
       <div className="user-details-sidebar" style={{ width: "100%" }}>
@@ -69,7 +113,7 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
             {
               label: "First Name",
               value: (
-                <div style={{ height: "40px" }}>
+                <div style={{ minHeight: "40px" }}>
                   <CustomEdit
                     form={form}
                     name="firstName"
@@ -83,6 +127,12 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
                     userDefineField={{
                       fieldId: selectedUser?.userId,
                       inputDataTestId: "first-name-input",
+                      rules: [
+                        {
+                          required: true,
+                          message: "Please enter first name",
+                        },
+                      ],
                     }}
                     containerDataTestId="first-name-container"
                   >
@@ -94,7 +144,7 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
             {
               label: "Last Name",
               value: (
-                <div style={{ height: "40px" }}>
+                <div style={{ minHeight: "40px" }}>
                   <CustomEdit
                     form={form}
                     name="lastName"
@@ -108,6 +158,12 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
                     userDefineField={{
                       fieldId: selectedUser?.userId,
                       inputDataTestId: "last-name-input",
+                      rules: [
+                        {
+                          required: true,
+                          message: "Please enter last name",
+                        },
+                      ],
                     }}
                     containerDataTestId="last-name-container"
                   >
@@ -125,16 +181,14 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
             {
               label: "Roles",
               value: (
-                <div style={{ height: "40px" }}>
+                <div style={{ minHeight: "40px" }}>
                   <CustomEdit
                     form={form}
                     name="roles"
                     onSubmit={updateRoles}
                     isActive={field.roles}
                     loading={rolesUdating}
-                    value={[
-                      { label: selectedUser?.role, value: selectedUser?.role },
-                    ]}
+                    value={selectedUser?.roles}
                     setSubmitDisable={(value) => console.log(value)}
                     onCancel={() => toggleField("roles", false)}
                     setActive={() => toggleField("roles", true)}
@@ -142,11 +196,17 @@ const UserDetails = ({ toggleField, field, form }: userDetailsProps) => {
                       fieldId: selectedUser?.userId,
                       options: roles,
                       inputDataTestId: "roles-input",
+                      rules: [
+                        {
+                          required: true,
+                          message: "Please select a role",
+                        },
+                      ],
                     }}
                     type="multiple"
                     containerDataTestId="roles-container"
                   >
-                    {selectedUser?.role}
+                    {selectedUser?.roles}
                   </CustomEdit>
                 </div>
               ),

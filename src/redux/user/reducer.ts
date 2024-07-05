@@ -40,7 +40,8 @@ export default BaseReducer(initialState, {
   [UserActions.UPDATE_USERS_LOCALLY](state, action) {
     return {
       ...state,
-      users: action.payload,
+      selectedUser: action.payload?.selectedUser,
+      users: action.payload?.users,
     };
   }
 });

@@ -22,9 +22,15 @@ const { Search } = AntdInput;
 
 const selectError = makeSelectErrorModel();
 const InventoryTable = () => {
-  const [categoryFilteredInventories, setCategoryFilteredInventories] = useState([]);
-  const [productFilteredInventories, setProductFilteredInventories] = useState([]);
-  const [searchFilteredInventories, setSearchFilteredInventories] = useState([]);
+  const [categoryFilteredInventories, setCategoryFilteredInventories] =
+    useState([]);
+  const [productFilteredInventories, setProductFilteredInventories] = useState(
+    []
+  );
+  const [searchFilteredInventories, setSearchFilteredInventories] = useState(
+    []
+  );
+  const [prevFarmId, setPrevFarmId] = useState(null);
   const [selectedRows, setSelectedRows] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [products, setProducts] = useState([]);
@@ -42,7 +48,7 @@ const InventoryTable = () => {
     InventorySelectors.selectSelectedInventory
   );
   const loading = useSelector((state) =>
-    requestingSelector(state, [InventoryActions.FETCH_INVENTORIES], "")
+    requestingSelector(state, [InventoryActions.FETCH_INVENTORIES])
   );
   const onAddButtonClick = () => {
     navigate(routePaths.addInventory);
@@ -76,8 +82,10 @@ const InventoryTable = () => {
     }
     const products = selectedCategory?.products || [];
     const filteredData = inventories.filter((inventory: any) => {
-      return products.some((product: any) => product.id === inventory.productId);
-    })
+      return products.some(
+        (product: any) => product.id === inventory.productId
+      );
+    });
     setCategoryFilteredInventories(filteredData);
     setProductFilteredInventories(filteredData);
     setSearchFilteredInventories(filteredData);
@@ -115,7 +123,9 @@ const InventoryTable = () => {
       setSelectedProduct(null);
       return;
     }
-    const filteredData = categoryFilteredInventories.filter((inventory:any )=> inventory.productId === value);
+    const filteredData = categoryFilteredInventories.filter(
+      (inventory: any) => inventory.productId === value
+    );
     setProductFilteredInventories(filteredData);
     setSearchFilteredInventories(filteredData);
     setSearchText("");
@@ -130,11 +140,15 @@ const InventoryTable = () => {
     selectedRows.forEach((inventory: any) => {
       dispatch(InventoryActions.deleteInventory(inventory.inventoryId));
     });
-  }
+  };
 
   useEffect(() => {
-    if (!inventories.length) dispatch(InventoryActions.fetchInventories());
-    if (!categories.length) dispatch(InventoryActions.fetchSubCategories());
+    if (!inventories.length && selectedFarmId) {
+      dispatch(InventoryActions.fetchInventories());
+    }
+    if (!categories.length && selectedFarmId) {
+      dispatch(InventoryActions.fetchSubCategories());
+    }
   }, []);
 
   useEffect(() => {
@@ -144,9 +158,12 @@ const InventoryTable = () => {
   }, [inventories]);
 
   useEffect(() => {
-    if (selectedFarmId) {
+    if (selectedFarmId && prevFarmId && prevFarmId !== selectedFarmId || !prevFarmId && selectedFarmId
+    ) {
       dispatch(InventoryActions.fetchInventories());
     }
+
+    setPrevFarmId(selectedFarmId);
   }, [selectedFarmId]);
 
   return (
@@ -162,7 +179,7 @@ const InventoryTable = () => {
     >
       {error && <FullAlertError error={error} />}
       <Flex style={{ width: "100%" }}>
-        <div  style={{ width: "100%" }}>
+        <div style={{ width: "100%" }}>
           <Flex
             justify="space-between"
             gap={20}
@@ -179,7 +196,7 @@ const InventoryTable = () => {
 
               /> */}
               <Search
-               className="inventory"
+                className="inventory"
                 placeholder={getTranslation(
                   "inventoryManagement.searchInventoryPlaceholder"
                 )}
@@ -188,7 +205,6 @@ const InventoryTable = () => {
                 value={searchText}
               />
               <Select
-              
                 placeholder={getTranslation("global.categorySelectPlaceholder")}
                 options={categoryOptions}
                 style={{ width: "27%" }}

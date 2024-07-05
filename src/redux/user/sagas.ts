@@ -68,11 +68,32 @@ function* RESET_PASSWORD(action: SagaAction): Generator {
   router.navigate("/login");
 }
 
-function* PATCH_USER(action: SagaAction) {
-  yield call(runEffect, action, UserEffects.updateUser, {
+function* PATCH_USER(action: SagaAction): Generator {
+  const result: any = yield call(runEffect, action, UserEffects.updateUser, {
     id: action.payload.id,
     data: action.payload.data,
   });
+
+  if (resultHasError(result)) yield cancel();
+
+  successToast("User updated successfully!!");
+
+  const users: any = yield select(UserSelectors.selectNormalizedUsers);
+
+  const updatedUsers = {
+    ...users.entities.users,
+    [action.payload.id]: { ...result, ...action.payload.data },
+  };
+
+  yield put(
+    UserActions.updateUsersLocally({
+      selectedUser: { ...result, ...action.payload.data },
+      users: {
+        result: users.result,
+        entities: { users: updatedUsers },
+      },
+    })
+  );
 }
 
 function* DELETE_USER(action: SagaAction): Generator {
@@ -83,7 +104,7 @@ function* DELETE_USER(action: SagaAction): Generator {
     action.payload
   );
   if (resultHasError(result)) yield cancel();
-  successToast("User deleted successfully!!");
+
   const users: any = yield select(UserSelectors.selectNormalizedUsers);
   const userIds = users.result.filter(
     (userId: string) => userId !== action.payload
@@ -91,11 +112,15 @@ function* DELETE_USER(action: SagaAction): Generator {
   const { [action.payload]: _, ...newUsers } = users?.entities?.users;
   yield put(
     UserActions.updateUsersLocally({
-      result: userIds,
-      entities: { users: newUsers },
+      selectedUser: null,
+      users: {
+        result: userIds,
+        entities: { users: newUsers },
+      },
     })
   );
   yield put(UserActions.unSelectUser());
+  successToast("User deleted successfully!!");
 }
 
 export default function* userSaga() {

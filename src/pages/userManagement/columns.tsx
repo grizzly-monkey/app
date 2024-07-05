@@ -49,10 +49,10 @@ const columns: TableProps<User>["columns"] = [
     //     )}
     // </>
     render: (_, record) => {
-      const roles = [record?.role];
+      const roles = record?.roles;
       return (
         <>
-          {roles.map((role: string) => {
+          {roles?.map((role: string) => {
             const color = getRoleColor(role);
             return (
               <Tag color={color} key={role}>

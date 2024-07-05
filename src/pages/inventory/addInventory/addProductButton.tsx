@@ -72,7 +72,7 @@ const AddProductButton = () => {
     <>
       <Button
         label={getTranslation("inventoryManagement.addProduct")}
-        style={{ padding: "22px 20px", width: "30%" }}
+        style={{ padding: "22px 20px", width: "100%" }}
         onClick={() => setIsModalOpen(true)}
       />
       <Modal

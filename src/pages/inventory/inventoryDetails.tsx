@@ -105,6 +105,7 @@ const InventoryDetails = ({
     }
   }, [wastageUdating, wastageError]);
 
+  console.log("selectedInventory", selectedInventory);
   return (
     <Form form={form}>
       <div className="user-details-sidebar" style={{ width: "100%" }}>
@@ -117,7 +118,7 @@ const InventoryDetails = ({
             {
               label: "Description",
               value: (
-                <div style={{ height: "40px" }}>
+                <div style={{ minHeight: "40px" }}>
                   <CustomEdit
                     form={form}
                     name="description"
@@ -139,7 +140,7 @@ const InventoryDetails = ({
                     containerDataTestId="first-name-container"
                     placeholder={getTranslation("global.description")}
                   >
-                    {selectedInventory?.description}
+                    {selectedInventory.description? selectedInventory.description : "No description"}
                   </CustomEdit>
                 </div>
               ),
@@ -147,7 +148,7 @@ const InventoryDetails = ({
             {
               label: "Provider",
               value: (
-                <div style={{ height: "40px" }}>
+                <div style={{  minHeight: "40px" }}>
                   <CustomEdit
                     form={form}
                     name="provider"
@@ -164,7 +165,9 @@ const InventoryDetails = ({
                       inputDataTestId: "last-name-input",
                     }}
                     containerDataTestId="last-name-container"
-                    placeholder={getTranslation("inventoryManagement.providerPlaceholder")}
+                    placeholder={getTranslation(
+                      "inventoryManagement.providerPlaceholder"
+                    )}
                   >
                     {selectedInventory?.provider}
                   </CustomEdit>
@@ -174,7 +177,7 @@ const InventoryDetails = ({
             {
               label: "Quantity",
               value: (
-                <div style={{ height: "40px" }}>
+                <div style={{  minHeight: "40px" }}>
                   <CustomEdit
                     form={form}
                     type="int"
@@ -193,9 +196,11 @@ const InventoryDetails = ({
                       inputDataTestId: "quantity-input",
                     }}
                     containerDataTestId="quantity-container"
-                    placeholder={getTranslation("inventoryManagement.quantityPlaceholder")}
+                    placeholder={getTranslation(
+                      "inventoryManagement.quantityPlaceholder"
+                    )}
                   >
-                    {selectedInventory?.quantity}
+                    {`${selectedInventory?.quantity} ${selectedInventory.unit}` }
                   </CustomEdit>
                 </div>
               ),
@@ -203,7 +208,7 @@ const InventoryDetails = ({
             {
               label: "Wastage",
               value: (
-                <div style={{ height: "40px" }}>
+                <div style={{  minHeight: "40px" }}>
                   <CustomEdit
                     type="int"
                     form={form}
@@ -221,9 +226,11 @@ const InventoryDetails = ({
                       inputDataTestId: "wastage-input",
                     }}
                     containerDataTestId="wastage-container"
-                    placeholder={getTranslation("inventoryManagement.wastagePlaceholder")}
+                    placeholder={getTranslation(
+                      "inventoryManagement.wastagePlaceholder"
+                    )}
                   >
-                    {selectedInventory?.wastage}
+                    {`${selectedInventory?.wastage} ${selectedInventory.unit}`}
                   </CustomEdit>
                 </div>
               ),

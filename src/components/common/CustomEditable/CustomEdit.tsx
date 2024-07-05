@@ -196,6 +196,7 @@ const CustomEdit = ({
               style={{ minWidth: 0, cursor: "text" }}
             >
               <UserDefineFields
+                rules={userDefineField.rules}
                 fieldDecorator={
                   userDefineField.fieldId
                     ? [`${userDefineField.fieldId}`, `${name}`]

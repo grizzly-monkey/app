@@ -136,9 +136,13 @@ const AddInventoryForm = () => {
                       onChange={onProductChange}
                       value={form.getFieldValue("productId")}
                     />
-                    <AddProductButton />
+                    
                   </Flex>
                 </AntdForm.Item>
+                <div style={{marginTop:'auto', width:'30%' ,paddingBottom:'5px'}}>
+                <AddProductButton />
+                </div>
+                
               </Flex>
             </Col>
           </Row>
