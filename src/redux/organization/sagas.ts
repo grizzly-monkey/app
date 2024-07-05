@@ -20,6 +20,8 @@ function* SELECT_ORGANIZATION(action: SagaAction): Generator {
   // }
   // setURLParameters(urlParameter)
 
+  yield call(setPreferenceValueInStorage, LOCAL_STORAGE_KEYS.farm, null);
+
   yield call(
     setPreferenceValueInStorage,
     LOCAL_STORAGE_KEYS.organization,

@@ -57,8 +57,8 @@ const RequestMethod = {
 };
 
 export function getAuthToken() {
-  const { idToken } = SessionSelectors.SelectToken(store.getState());
-  return idToken;
+  const tokens = SessionSelectors.SelectToken(store.getState());
+  return tokens?.idToken;
 }
 
 function dofillInErrorWithDefaults(

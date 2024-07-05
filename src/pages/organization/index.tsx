@@ -2,7 +2,6 @@ import AlertError from "@/components/common/error/AlertError";
 import routePaths from "@/config/routePaths";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
-import FarmActions from "@/redux/farm/action";
 import OrganizationActions from "@/redux/organization/actions";
 import OrganizationSelectors from "@/redux/organization/selectors";
 import { makeRequestingSelector } from "@/redux/requesting/requestingSelector";
@@ -44,7 +43,8 @@ const OrganizationCard = ({
         <>
           <div className="organization_logo">
             <img
-              src={data?.logo ? data.logo : Images.NO_IMAGE}
+              // src={data?.logo ? data.logo : Images.NO_IMAGE}
+              src={Images.NO_IMAGE}
               alt="logo"
               className="image"
             />

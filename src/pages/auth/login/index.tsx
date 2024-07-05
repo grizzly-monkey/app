@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Button from "@/components/common/button";
 import Checkbox from "@/components/common/checkbox";
 import AlertError from "@/components/common/error/AlertError";
@@ -6,7 +7,6 @@ import Input from "@/components/common/input";
 import PhoneInput from "@/components/common/input/phoneInput";
 import routePaths from "@/config/routePaths";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { removeByActionType } from "@/redux/error/errorAction";
 import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import { makeRequestingSelector } from "@/redux/requesting/requestingSelector";
 import SessionActions from "@/redux/session/actions";
@@ -14,8 +14,6 @@ import SessionSelectors from "@/redux/session/selectors";
 import { getTranslation } from "@/translation/i18n";
 import { loginType } from "@/types/auth";
 import { Images } from "@/utilities/imagesPath";
-import { errorToast } from "@/utilities/toast";
-import { useEffect } from "react";
 import { IoEye, IoEyeOff } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import "../style.scss";
@@ -46,21 +44,10 @@ const Login = () => {
     dispatch(SessionActions.login(payload));
   };
 
-  const clearError = () => {
-    dispatch(removeByActionType(SessionActions.REQUEST_LOGIN_FINISHED));
-  };
-
   function renderPasswordIcon() {
     return (visible: boolean) =>
       visible ? <IoEye style={iconStyle} /> : <IoEyeOff style={iconStyle} />;
   }
-
-  useEffect(() => {
-    if (error) {
-      errorToast(error.errors.map((item: any) => item.message)[0]);
-      clearError();
-    }
-  }, [error]);
 
   useEffect(() => {
     return () => {
@@ -87,6 +74,7 @@ const Login = () => {
           {accountApprovalStatus && (
             <AlertError message={accountApprovalStatus} />
           )}
+          <AlertError error={error} />
 
           <Form form={form} onFinish={onFinish} layout="vertical">
             <PhoneInput
