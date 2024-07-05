@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Col, Row, Tabs } from "antd";
 import Button from "@/components/common/button";
@@ -18,9 +18,9 @@ const selectError = makeSelectErrorModel();
 
 const { TabPane } = Tabs;
 
-const AddPolyhouses = ({ form, polyhouses, setPolyhouses }) => {
-  const [zoneColor, setZoneColor] = useState("inherit");
-  const [nurseryColor, setNurseryColor] = useState("inherit");
+const AddPolyhouses = ({ form, polyhouses, setPolyhouses }: any) => {
+  const [zoneColor, setZoneColor] = useState<string>("inherit");
+  const [nurseryColor, setNurseryColor] = useState<string>("inherit");
 
   const error = useSelector((state) =>
     selectError(state, FarmActions.ADD_POLYHOUSE_TO_FARM_FINISHED)
@@ -57,8 +57,8 @@ const AddPolyhouses = ({ form, polyhouses, setPolyhouses }) => {
     }
   }, [error]);
 
-  const deletePolyhouse = (key) => {
-    setPolyhouses(polyhouses.filter((polyhouse) => polyhouse.key !== key));
+  const deletePolyhouse = (key: any) => {
+    setPolyhouses(polyhouses.filter((polyhouse: any) => polyhouse.key !== key));
 
     const updatedFields = { ...form.getFieldsValue() };
     Object.keys(updatedFields).forEach((field) => {
