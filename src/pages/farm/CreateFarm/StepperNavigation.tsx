@@ -22,6 +22,8 @@ interface stepperNavigationProps {
   reservoirForm: FormInstance;
   reservoirs: { key: number }[];
   polyhouses: { key: number; zones: Zone[]; nurseries: Nursery[] }[];
+  farmValues: any;
+  setFarmValues: any;
 }
 
 const StepperNavigation = ({
@@ -31,13 +33,14 @@ const StepperNavigation = ({
   reservoirs,
   polyhouses,
   reservoirForm,
+  setFarmValues,
+  farmValues,
 }: stepperNavigationProps) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [farmValues, setFarmValues] = useState(null);
-  const [isFarmCreationDispatch, setIsFarmCreationDispatch] = useState(false)
-  const [isPolyhouseDispatch, setIsPolyhouseDispatch] = useState(false)
+  const [isFarmCreationDispatch, setIsFarmCreationDispatch] = useState(false);
+  const [isPolyhouseDispatch, setIsPolyhouseDispatch] = useState(false);
 
   const farmCreationError = useSelector((state) =>
     selectError(state, FarmActions.ADD_FARM_FINISHED)
@@ -58,19 +61,20 @@ const StepperNavigation = ({
   useEffect(() => {
     if (!farmLoading && isFarmCreationDispatch) {
       if (!farmCreationError) {
-        successToast("Farm is successfully created")
-        dispatch(removeByActionType(FarmActions.ADD_FARM_FINISHED))
-        setCurrent(current + 1)
+        successToast("Farm is successfully created");
+        dispatch(removeByActionType(FarmActions.ADD_FARM_FINISHED));
+        setCurrent(current + 1);
       }
     }
   }, [farmLoading, farmCreationError, isFarmCreationDispatch]);
 
-
   useEffect(() => {
     if (!polyhouseLoading && isPolyhouseDispatch) {
       if (!polyhouseError) {
-        successToast("Polyhouse added successfully")
-        dispatch(removeByActionType(FarmActions.ADD_POLYHOUSE_TO_FARM_FINISHED))
+        successToast("Polyhouse added successfully");
+        dispatch(
+          removeByActionType(FarmActions.ADD_POLYHOUSE_TO_FARM_FINISHED)
+        );
         navigate(routePaths.farm);
       }
     }
@@ -179,7 +183,7 @@ const StepperNavigation = ({
         getFarmData()
           .then((payload) => {
             dispatch(FarmActions.addFarm(payload));
-            setIsFarmCreationDispatch(true)
+            setIsFarmCreationDispatch(true);
           })
           .catch((error) => {
             console.error(error.message);
@@ -197,8 +201,18 @@ const StepperNavigation = ({
           values[`structureExpectedLife_${index}`]
         ),
         plasticExpectedLife: parseFloat(values[`plasticExpectedLife_${index}`]),
-        zones: polyhouse.zones,
-        nurseries: polyhouse.nurseries,
+        zones: polyhouse.zones
+          ? polyhouse.zones.map((zone) => {
+              const { key, ...zoneWithoutKey } = zone;
+              return zoneWithoutKey;
+            })
+          : [],
+        nurseries: polyhouse.nurseries
+          ? polyhouse.nurseries.map((nursery) => {
+              const { key, ...nurseryWithoutKey } = nursery;
+              return nurseryWithoutKey;
+            })
+          : [],
       };
 
       if (
@@ -226,7 +240,7 @@ const StepperNavigation = ({
       .then(() => {
         const payload = getPolyhousesData();
         dispatch(FarmActions.addPolyhousesToFarm(payload));
-        setIsPolyhouseDispatch(true)
+        setIsPolyhouseDispatch(true);
       })
       .catch(() => {});
   };
@@ -274,7 +288,9 @@ const StepperNavigation = ({
         <div style={{ width: "75px", display: "flex", gap: "10px" }}>
           <Button
             label={getTranslation("global.add")}
-            onClick={addPolyHousesToFarm} loading={polyhouseLoading}          />
+            onClick={addPolyHousesToFarm}
+            loading={polyhouseLoading}
+          />
         </div>
       )}
     </div>

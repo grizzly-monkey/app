@@ -125,6 +125,7 @@ const AddZones = ({ polyhouseKey, zones, addZone, updateZones, errors }) => {
           onClick={() => {
             setIsModalOpen(true);
           }}
+          loading={false}
         />
       </div>
 
