@@ -106,7 +106,7 @@
   "forgotPassword.dontReceiveOtp": "Don't receive the OTP?",
   "forgotPassword.resendOtp": "RESEND OTP",
   "forgotPassword.backTo": "Back to",
+  "forgotPassword.passwordUpdatedSuccess": "Password updated successfully!!",
   "organization.selectYourOrganization": "Select your organization",
   "profile.updateMsg": "Profile updated successfully!!"
 }
-  

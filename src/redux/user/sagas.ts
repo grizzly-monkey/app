@@ -64,7 +64,7 @@ function* RESET_PASSWORD(action: SagaAction): Generator {
     createAction(UserActions.REQUEST_RESET_PASSWORD_OTP_FINISHED, false)
   );
 
-  successToast("Password updated successfully!!");
+  successToast(getTranslation("forgotPassword.passwordUpdatedSuccess"));
   router.navigate("/login");
 }
 
