@@ -4,7 +4,6 @@ import "@testing-library/jest-dom";
 import { setupDefaultStore } from "./utils/setupTests";
 import { renderWithProvider } from "./utils/testUtils";
 import SessionActions from "@/redux/session/actions";
-import { errorToast } from "@/utilities/toast";
 import { getTranslation } from "@/translation/i18n";
 
 jest.mock("@/utilities/toast", () => ({
@@ -98,7 +97,7 @@ describe("Login Page", () => {
 
     renderWithProvider(<Login />, { store });
 
-    expect(errorToast).toHaveBeenCalledWith("Invalid credentials");
+    expect(screen.getByText("Invalid credentials")).toBeInTheDocument();
   });
 
   test("should display account approval status error", () => {

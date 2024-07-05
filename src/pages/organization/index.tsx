@@ -43,7 +43,8 @@ const OrganizationCard = ({
         <>
           <div className="organization_logo">
             <img
-              src={data?.logo ? data.logo : Images.NO_IMAGE}
+              // src={data?.logo ? data.logo : Images.NO_IMAGE}
+              src={Images.NO_IMAGE}
               alt="logo"
               className="image"
             />

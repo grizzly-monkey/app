@@ -21,7 +21,7 @@ const Farm = () => {
   const selectedFarm = useSelector(FarmSelectors.SelectSelectedFarm);
   useEffect(() => {
     dispatch(FarmActions.fetchFarms());
-  });
+  }, []);
 
   const onRefresh = () => {
     dispatch(FarmActions.fetchFarms(true));

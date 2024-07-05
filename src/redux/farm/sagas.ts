@@ -56,18 +56,16 @@ function* UPDATE_FARM(action: SagaAction) {
   const farms: normalizeData = yield select(FarmSelectors.SelectFarmList);
   const updatedFarms = {
     entities: {
-      farms : {
+      farms: {
         ...farms.entities.farms,
         [farmId]: result,
-      }
+      },
     },
     result: farms.result,
   };
 
-
   yield put(FarmActions.updateFarmLocally(result as Farm, updatedFarms));
 }
-
 
 function* DELETE_FARM(action: SagaAction) {
   const { farmId } = yield select(FarmSelectors.SelectSelectedFarm);
@@ -76,27 +74,28 @@ function* DELETE_FARM(action: SagaAction) {
     runEffect,
     action,
     FarmsEffects.deleteFarm,
-    farmId,
+    farmId
   );
   if (resultHasError(result as ErrorModel)) yield cancel();
 
   const farms: normalizeData = yield select(FarmSelectors.SelectFarmList);
-  
-  const updatedResult = (farms.result as string[]).filter((id: string) => id !== farmId);
+
+  const updatedResult = (farms.result as string[]).filter(
+    (id: string) => id !== farmId
+  );
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { [farmId]: _, ...newFarmsEntities } = farms.entities.farms;
 
   const updatedFarms = {
     entities: {
-      farms: {...newFarmsEntities},
+      farms: { ...newFarmsEntities },
     },
     result: updatedResult,
   };
 
-  successToast("Farm is successfully deleted")
+  successToast("Farm is successfully deleted");
   yield put(FarmActions.updateFarmLocally(null, updatedFarms));
 }
-
 
 function* GET_FARM_FROM_STORAGE(): Generator {
   const searchParams = new URLSearchParams(window.location.search);
@@ -134,7 +133,6 @@ function* GET_FARM_FROM_STORAGE_FINISHED(action: SagaAction) {
     action.payload
   );
 }
-
 
 export default function* rootSaga() {
   yield all([
