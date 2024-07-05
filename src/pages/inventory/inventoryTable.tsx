@@ -15,6 +15,7 @@ import requestingSelector from "@/redux/requesting/requestingSelector";
 import FullAlertError from "@/components/common/error/FullAlertError";
 import { getTranslation } from "@/translation/i18n";
 import { DeleteOutlined } from "@ant-design/icons";
+import FarmSelectors from "@/redux/farm/FarmSelectors";
 
 const { Search } = AntdInput;
 
@@ -35,6 +36,7 @@ const InventoryTable = () => {
   const error = useSelector((state) =>
     selectError(state, InventoryActions.FETCH_INVENTORIES_FINISHED)
   );
+  const selectedFarmId = useSelector(FarmSelectors.SelectSelectedFarmId);
   const selectedInventory = useSelector(
     InventorySelectors.selectSelectedInventory
   );
@@ -139,6 +141,13 @@ const InventoryTable = () => {
     setProductFilteredInventories(inventories);
     setSearchFilteredInventories(inventories);
   }, [inventories]);
+
+  console.log("selectedFarmId", selectedFarmId);
+  useEffect(() => {
+    if (selectedFarmId) {
+      dispatch(InventoryActions.fetchInventories());
+    }
+  }, [selectedFarmId]);
 
   return (
     <Card
