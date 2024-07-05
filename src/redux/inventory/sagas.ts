@@ -54,6 +54,20 @@ function* PATCH_INVENTORY(action: SagaAction): Generator {
   );
   if (resultHasError(result)) yield cancel();
 
+  const inventories :any = yield select(InventorySelectors.selectNormalizedInventories);
+  const updatedInventories ={
+    ...inventories.entities.inventories,
+    [action.payload?.id]: result
+  }
+
+  yield put(
+    InventoryActions.updateInventoriesLocally({
+      selectedInventory: result,
+      inventories: {result: inventories.result,
+        entities: { inventories: updatedInventories }}
+    })
+  );
+
   successToast("Inventory updated successfully");
 }
 
@@ -76,8 +90,10 @@ function* DELETE_INVENTORY(action: SagaAction): Generator {
   const { [action.payload]: _, ...newInventories } = inventories?.entities?.inventories;
   yield put(
     InventoryActions.updateInventoriesLocally({
-      result: inventoryIds,
-      entities: { inventories: newInventories },
+      selectedInventory: null,
+      inventories:{result: inventoryIds,
+        entities: { inventories: newInventories }}
+      ,
     })
   );
   yield put(InventoryActions.unselectInventory());

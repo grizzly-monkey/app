@@ -37,7 +37,8 @@ export default BaseReducer(initialState, {
   [InventoryActions.UPDATE_INVENTORIES_LOCALLY](state, action) {
       return {
           ...state,
-          inventories: action.payload,
+          selectedInventory: action.payload.selectedInventory,
+          inventories: action.payload.inventories,
       };
   },
 

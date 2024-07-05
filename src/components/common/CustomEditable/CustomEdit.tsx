@@ -196,7 +196,7 @@ const CustomEdit = ({
               style={{ minWidth: 0, cursor: "text" }}
             >
               <UserDefineFields
-                fieldDecorator={[`${userDefineField.fieldId}`, `${name}`]}
+                fieldDecorator={userDefineField.fieldId?[`${userDefineField.fieldId}`, `${name}`]:[`${name}`]}
                 field={{
                   type: presetType,
                   defaultValue: defaultValues,
