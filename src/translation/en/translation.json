@@ -40,6 +40,7 @@
   "inventoryManagement.quantityPlaceholder": "Enter quantity",
   "inventoryManagement.quantityError": "Please input quantity",
   "inventoryManagement.initialStock": "Initial Stock",
+  "inventoryManagement.wastagePlaceholder": "Enter wastage",
   "inventoryManagement.stock": "Stock",
   "inventoryManagement.used": "Used",
   "inventoryManagement.wastage": "Wastage",

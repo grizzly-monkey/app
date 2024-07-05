@@ -4,6 +4,7 @@ import { makeSelectErrorModel } from "@/redux/error/errorSelector";
 import InventoryActions from "@/redux/inventory/actions";
 import InventorySelectors from "@/redux/inventory/selectors";
 import requestingSelector from "@/redux/requesting/requestingSelector";
+import { getTranslation } from "@/translation/i18n";
 import Fields from "@/utilities/fields/field";
 import { Form, FormInstance } from "antd";
 import { useEffect } from "react";
@@ -136,6 +137,7 @@ const InventoryDetails = ({
                       inputDataTestId: "first-name-input",
                     }}
                     containerDataTestId="first-name-container"
+                    placeholder={getTranslation("global.description")}
                   >
                     {selectedInventory?.description}
                   </CustomEdit>
@@ -162,6 +164,7 @@ const InventoryDetails = ({
                       inputDataTestId: "last-name-input",
                     }}
                     containerDataTestId="last-name-container"
+                    placeholder={getTranslation("inventoryManagement.providerPlaceholder")}
                   >
                     {selectedInventory?.provider}
                   </CustomEdit>
@@ -190,6 +193,7 @@ const InventoryDetails = ({
                       inputDataTestId: "quantity-input",
                     }}
                     containerDataTestId="quantity-container"
+                    placeholder={getTranslation("inventoryManagement.quantityPlaceholder")}
                   >
                     {selectedInventory?.quantity}
                   </CustomEdit>
@@ -217,6 +221,7 @@ const InventoryDetails = ({
                       inputDataTestId: "wastage-input",
                     }}
                     containerDataTestId="wastage-container"
+                    placeholder={getTranslation("inventoryManagement.wastagePlaceholder")}
                   >
                     {selectedInventory?.wastage}
                   </CustomEdit>
