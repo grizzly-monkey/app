@@ -49,9 +49,10 @@ interface CustomEditProps {
   tagRender?: ReactNode;
   isHidden?: boolean;
   setSubmitDisable: (arg: boolean) => void;
-  containerDataTestId?: string;
   isSubmitDisable?: boolean;
   bottomMarginLevel?: number;
+  containerDataTestId?: string;
+  inputDataTestId?: string;
 }
 
 const CustomEdit = ({
@@ -195,7 +196,11 @@ const CustomEdit = ({
               style={{ minWidth: 0, cursor: "text" }}
             >
               <UserDefineFields
-                fieldDecorator={[`${userDefineField.fieldId}`, `${name}`]}
+                fieldDecorator={
+                  userDefineField.fieldId
+                    ? [`${userDefineField.fieldId}`, `${name}`]
+                    : [`${name}`]
+                }
                 field={{
                   type: presetType,
                   defaultValue: defaultValues,
@@ -284,24 +289,5 @@ CustomEdit.propTypes = {
   setSubmitDisable: PropTypes.func.isRequired,
   isSubmitDisable: PropTypes.bool,
 };
-
-// CustomEdit.defaultProps = {
-//   disabled: false,
-//   tooltip: null,
-//   preset: false,
-//   type: "string",
-//   label: "",
-//   isEmpty: false,
-//   emptyLabel: "",
-//   children: null,
-//   placeholder: "",
-//   customValidator: () => Promise.resolve(),
-//   onChange: null,
-//   isFullWidth: null,
-//   tagRender: null,
-//   isHidden: false,
-//   isSubmitDisable: false,
-//   setSubmitDisable: () => {},
-// };
 
 export default CustomEdit;

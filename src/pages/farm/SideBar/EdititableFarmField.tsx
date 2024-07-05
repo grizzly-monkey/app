@@ -14,7 +14,7 @@ interface EditableFarmFieldProps {
   fieldName: string;
   value: string;
   placeholder?: string;
-  farmId: string;
+  farmId?: string;
   isParseField?: boolean;
   customValidator?: (context: object, value: string) => Promise<void>;
   udf?: object;
@@ -27,7 +27,6 @@ const EditableFarmField = ({
   fieldName,
   value,
   placeholder,
-  farmId,
   isParseField,
   customValidator,
   udf,
@@ -53,7 +52,6 @@ const EditableFarmField = ({
   useEffect(() => {
     if (error) {
       applyErrorsToFields(form, error.errors);
-      console.log("errors in useEffect", error, form);
       error.errors.forEach((err: errorDetail) => {
         if (err.location.includes("nutrient.dilutionRatio")) {
           form.setFields([
@@ -123,7 +121,6 @@ const EditableFarmField = ({
         setActive={() => setIsActive(!isActive)}
         userDefineField={{
           ...udf,
-          fieldId: farmId,
           inputDataTestId: `${fieldName}-input`,
         }}
         isSubmitDisable={isSubmitDisable}
