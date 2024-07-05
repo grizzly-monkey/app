@@ -43,3 +43,8 @@ padding: 2px 10px;
     flex: 1;
     display: flex;
   }
+
+  .cardHighlight {
+    background-color: rgba($primary, 0.1);
+    border: 1px solid $primary;
+  }

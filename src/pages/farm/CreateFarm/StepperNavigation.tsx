@@ -92,6 +92,7 @@ const StepperNavigation = ({
   const previousStep = () => setCurrent(current - 1);
 
   const goBack = () => {
+    dispatch(removeByActionType(FarmActions.ADD_FARM_FINISHED));
     navigate(routePaths.farm);
   };
 
@@ -256,11 +257,12 @@ const StepperNavigation = ({
       }}
     >
       {current === stepper[stepperNames.FARM_CREATION] && (
-        <div style={{ width: "150px", display: "flex", gap: "10px" }}>
+        <div style={{ width: "30%", display: "flex", gap: "10px" }}>
           <Button
             label={getTranslation("global.cancel")}
             onClick={goBack}
             loading={false}
+            type="default"
           />
           <Button
             label={getTranslation("global.next")}
@@ -271,11 +273,12 @@ const StepperNavigation = ({
       )}
 
       {current === stepper[stepperNames.RESERVOIRS] && (
-        <div style={{ width: "150px", display: "flex", gap: "10px" }}>
+        <div style={{ width: "30%", display: "flex", gap: "10px" }}>
           <Button
             label={getTranslation("global.back")}
             onClick={previousStep}
             loading={false}
+            type="default"
           />
           <Button
             className="btn-success"
@@ -287,8 +290,15 @@ const StepperNavigation = ({
       )}
 
       {current === stepper[stepperNames.POLYHOUSES] && (
-        <div style={{ width: "75px", display: "flex", gap: "10px" }}>
+        <div style={{ width: "30%", display: "flex", gap: "10px" }}>
           <Button
+            label={getTranslation("global.cancel")}
+            onClick={goBack}
+            loading={false}
+            type="default"
+          />
+          <Button
+            className="btn-success"
             label={getTranslation("global.add")}
             onClick={addPolyHousesToFarm}
             loading={polyhouseLoading}
