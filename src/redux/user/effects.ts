@@ -1,4 +1,4 @@
-import { delToModel, getToModel, patchToModel, postToModel, putToModel } from "@/utilities/effectUtility";
+import { delToModel, getToModel, postToModel, putToModel } from "@/utilities/effectUtility";
 import UserModel from "./models/getModels/userModel";
 import api from "@/utilities/api";
 import { getErrorInstanceFromCognitoError } from "../session/effects";
